@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-outfit);
-  --font-display: var(--font-space-grotesk);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-inter);
 }
 
 :root {
-  --background: #020617;
-  --foreground: #f8fafc;
-  --primary: #38bdf8;
-  --secondary: #818cf8;
+  --background: #000000;
+  --foreground: #ffffff;
+  --primary: #7F3DFF;
+  --secondary: #C87DFF;
+  --card-bg: #1E1E1E;
+  --accent: #262626;
 }
 
 * {

@@ -12,40 +12,19 @@ if (typeof window !== "undefined") {
 
 const features = [
     {
-        title: "Molecular Research",
-        desc: "Unlocking the secrets of life through advanced molecular dynamics and genetic engineering.",
-        icon: Dna,
-        color: "text-blue-400",
+        title: "VLSI and Semiconductor",
+        desc: "ASL is doing doing doing",
+        color: "from-purple-500/20",
     },
     {
-        title: "Quantum Synthesis",
-        desc: "Developing next-gen materials using quantum chemical simulations and atomic-level precision.",
-        icon: Zap,
-        color: "text-purple-400",
+        title: "Hardware, PCB & Embedded Systems",
+        desc: "ASL is doing doing doing",
+        color: "from-blue-500/20",
     },
     {
-        title: "AI Analysis",
-        desc: "Leveraging deep learning for predictive scientific modelling and automated data interpretation.",
-        icon: Cpu,
-        color: "text-cyan-400",
-    },
-    {
-        title: "Safety First",
-        desc: "Highest biosafety level protocols (BSL-4 equivalent) for all experimental biological research.",
-        icon: ShieldCheck,
-        color: "text-indigo-400",
-    },
-    {
-        title: "Discovery Pipeline",
-        desc: "Rapid prototyping and validation of scientific hypotheses in a high-throughput lab environment.",
-        icon: Workflow,
-        color: "text-emerald-400",
-    },
-    {
-        title: "Advanced Scrutiny",
-        desc: "Rigorous peer-review and multi-stage verification of all experimental research outputs.",
-        icon: Search,
-        color: "text-sky-400",
+        title: "Robotics & Automation",
+        desc: "ASL is doing doing doing",
+        color: "from-indigo-500/20",
     },
 ];
 
@@ -55,39 +34,32 @@ export default function Features() {
     useGSAP(() => {
         gsap.from(".feature-card", {
             opacity: 0,
-            y: 50,
+            y: 30,
             duration: 0.8,
             stagger: 0.2,
             scrollTrigger: {
                 trigger: ".feature-grid",
                 start: "top 80%",
-                toggleActions: "play none none reverse",
             }
         });
     }, { scope: container });
 
     return (
-        <section ref={container} className="py-24 relative overflow-hidden bg-slate-950">
+        <section ref={container} id="projects" className="py-24 bg-black">
             <div className="container mx-auto px-6">
-                <div className="max-w-3xl mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold font-display mb-6">Pioneering Science</h2>
-                    <p className="text-slate-400 text-lg leading-relaxed">
-                        AlphaScienceLab combines unconventional thinking with rigorous scientific methodologies
-                        to address the most complex challenges of the 21st century.
-                    </p>
-                </div>
-
-                <div className="feature-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="feature-grid grid grid-cols-1 md:grid-cols-3 gap-8">
                     {features.map((feature, idx) => (
                         <div
                             key={idx}
-                            className="feature-card p-10 glass border border-white/5 rounded-3xl group hover:border-primary/30 transition-all hover:bg-white/5"
+                            className="feature-card relative overflow-hidden p-12 bg-[#1E1E1E] border border-white/5 rounded-[40px] group hover:border-[#7F3DFF]/50 transition-all min-h-[400px] flex flex-col justify-end"
                         >
-                            <div className={`p-4 rounded-2xl bg-white/5 inline-block mb-8 group-hover:scale-110 transition-transform ${feature.color}`}>
-                                <feature.icon className="w-8 h-8" />
+                            {/* Radial gradient glow */}
+                            <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br ${feature.color} to-transparent blur-[80px] opacity-50 group-hover:opacity-100 transition-opacity`} />
+
+                            <div className="relative z-10">
+                                <h3 className="text-3xl font-black font-display mb-4 uppercase tracking-tighter leading-tight">{feature.title}</h3>
+                                <p className="text-slate-500 font-medium tracking-wide text-sm uppercase">Minimalist description here</p>
                             </div>
-                            <h3 className="text-2xl font-bold font-display mb-4 group-hover:text-primary transition-colors line-clamp-1">{feature.title}</h3>
-                            <p className="text-slate-400 leading-relaxed font-sans">{feature.desc}</p>
                         </div>
                     ))}
                 </div>

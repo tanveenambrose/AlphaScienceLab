@@ -1,20 +1,15 @@
 import type { Metadata } from "next";
-import { Outfit, Space_Grotesk } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "AlphaScienceLab | Advanced Discovery & Research",
-  description: "Exploring the frontiers of science with cutting-edge experimental research and groundbreaking discoveries at AlphaScienceLab.",
+  title: "AlphaScienceLab | Creativity Starts From Belief",
+  description: "Advanced Research, Experimental Automation, and Scientific Discoveries.",
 };
 
 export default function RootLayout({
@@ -25,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${outfit.variable} ${spaceGrotesk.variable} antialiased bg-[#020617] text-white`}
+        className={`${inter.variable} antialiased bg-black text-white`}
       >
         {children}
       </body>
