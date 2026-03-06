@@ -105,7 +105,8 @@ export default function Hero() {
                     style={{
                         marginTop: "clamp(10px, 2vh, 40px)",
                         marginBottom: "clamp(10px, 2vh, 40px)",
-                        marginLeft: "clamp(-20px, -6vw, -160px)",
+                        marginLeft: "clamp(-90px, -6vw, -300px)",
+                        marginRight: "clamp(20px, 6vw, 300px)",
                         paddingTop: "clamp(10px, 1.4vh, 22px)",
                         paddingBottom: "clamp(10px, 1.4vh, 22px)",
                         paddingLeft: "clamp(20px, 6vw, 160px)",
