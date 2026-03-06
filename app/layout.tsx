@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Bakbak_One, Anton, Aldrich } from "next/font/google";
 import "./globals.css";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import IceEdgeGlow from "@/components/IceEdgeGlow";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -37,15 +39,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${bakbak.variable} ${anton.variable} ${aldrich.variable} antialiased bg-black text-white`}
+        suppressHydrationWarning
       >
         {/* Global animated RGB background — fixed, sits behind all content */}
         <AnimatedBackground />
-        <div className="relative z-10">
-          {children}
-        </div>
+        {/* Ice edge glow — layered above bg, below content */}
+        <IceEdgeGlow />
+        <SmoothScrollProvider>
+          <div className="relative z-10">
+            {children}
+          </div>
+        </SmoothScrollProvider>
       </body>
     </html>
   );

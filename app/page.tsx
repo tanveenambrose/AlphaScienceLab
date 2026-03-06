@@ -9,6 +9,8 @@ import CustomCursor from "@/components/CustomCursor";
 export default function Home() {
   return (
     <main className="min-h-screen text-white">
+      {/* Animated ice scan line */}
+      <div className="ice-scanline" aria-hidden="true" />
       <CustomCursor />
       <Navbar />
       <Hero />

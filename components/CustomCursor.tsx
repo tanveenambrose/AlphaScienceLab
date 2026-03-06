@@ -1,12 +1,19 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 export default function CustomCursor() {
     const cursorRef = useRef<HTMLDivElement>(null);
+    // Don't render on the server — avoids hydration mismatch from inline style
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!mounted) return;
         const cursor = cursorRef.current;
         if (!cursor) return;
 
@@ -45,7 +52,9 @@ export default function CustomCursor() {
             window.removeEventListener("mousemove", moveCursor);
             window.removeEventListener("mouseover", handleHover);
         };
-    }, []);
+    }, [mounted]);
+
+    if (!mounted) return null;
 
     return (
         <div

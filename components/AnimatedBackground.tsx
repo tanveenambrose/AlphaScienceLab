@@ -11,6 +11,7 @@ export default function AnimatedBackground() {
             aria-hidden="true"
             className="fixed inset-0 pointer-events-none overflow-hidden"
             style={{ zIndex: 0 }}
+            suppressHydrationWarning
         >
             {/* ── Orb 1 — purple/magenta (top-right) ─────────── */}
             <div className="rgb-orb rgb-orb-1" />
