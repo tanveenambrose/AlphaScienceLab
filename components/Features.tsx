@@ -12,19 +12,19 @@ if (typeof window !== "undefined") {
 
 const features = [
     {
-        title: "VLSI and Semiconductor",
-        desc: "ASL is doing doing doing",
-        color: "from-purple-500/20",
+        title: "VLSI & Semiconductors",
+        desc: "Specializing in advanced integrated circuit design, CMOS technology, and semiconductor device physics.",
+        color: "from-primary/20",
     },
     {
-        title: "Hardware, PCB & Embedded Systems",
-        desc: "ASL is doing doing doing",
-        color: "from-blue-500/20",
+        title: "Embedded Systems",
+        desc: "Developing robust industrial solutions with PCB design, firmware optimization, and real-time processing.",
+        color: "from-secondary/20",
     },
     {
-        title: "Robotics & Automation",
-        desc: "ASL is doing doing doing",
-        color: "from-indigo-500/20",
+        title: "Robotics & AI",
+        desc: "Engineering the next generation of autonomous systems with integrated machine learning and computer vision.",
+        color: "from-accent/40",
     },
 ];
 
@@ -45,7 +45,7 @@ export default function Features() {
     }, { scope: container });
 
     return (
-        <section ref={container} id="projects" className="py-24 bg-black">
+        <section ref={container} id="projects" className="py-24 relative">
             <div className="container mx-auto px-6">
                 <div className="feature-grid grid grid-cols-1 md:grid-cols-3 gap-8">
                     {features.map((feature, idx) => (
@@ -58,7 +58,7 @@ export default function Features() {
 
                             <div className="relative z-10">
                                 <h3 className="text-3xl font-black font-display mb-4 uppercase tracking-tighter leading-tight">{feature.title}</h3>
-                                <p className="text-slate-500 font-medium tracking-wide text-sm uppercase">Minimalist description here</p>
+                                <p className="text-slate-400 font-medium tracking-wide text-sm leading-relaxed">{feature.desc}</p>
                             </div>
                         </div>
                     ))}

@@ -35,7 +35,7 @@ export default function Stories() {
     }, { scope: container });
 
     return (
-        <section ref={container} className="py-24 bg-black overflow-hidden">
+        <section ref={container} className="py-24 relative">
             <div className="container mx-auto px-6">
                 <div className="flex items-center gap-4 mb-12">
                     <div className="w-2 h-2 bg-[#7F3DFF] rounded-full" />

@@ -8,7 +8,7 @@ import CustomCursor from "@/components/CustomCursor";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-black">
+    <main className="min-h-screen text-white">
       <CustomCursor />
       <Navbar />
       <Hero />
