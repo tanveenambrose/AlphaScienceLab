@@ -64,14 +64,9 @@ export default function Navbar() {
             className={clsx(
                 "fixed top-0 inset-x-0 z-[100] transition-all duration-300 px-8 py-4",
                 scrolled
-                    ? "border-b border-white/10 shadow-lg"
-                    : "border-b border-white/5"
+                    ? "bg-black/80 backdrop-blur-xl border-b border-white/5"
+                    : "bg-transparent"
             )}
-            style={{
-                background: "rgba(0, 0, 0, 0.40)",
-                backdropFilter: "blur(24px)",
-                WebkitBackdropFilter: "blur(24px)",
-            }}
         >
             <div className="max-w-7xl mx-auto flex items-center justify-between relative">
 

@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import Image from "next/image";
 
 /* Splits a string into individual letter <span>s */
 function SplitText({ text, className, useSmallCaps }: { text: string; className?: string; useSmallCaps?: boolean }) {
@@ -114,52 +115,12 @@ export default function Hero() {
                 display: "inline-block"
             });
 
-            /* ── Glitch Animation Logic ── */
-            let glitchTween: gsap.core.Tween | null = null;
-
-            const startGlitch = () => {
-                if (glitchTween) glitchTween.kill();
-                glitchTween = gsap.to([".kicker-char", ".belief-char"], {
-                    duration: 0.08,
-                    x: "random(-24, -20)",
-                    opacity: "random(0.1, 0.4)",
-                    skewX: "random(-10, 10)",
-                    filter: () => `blur(${gsap.utils.random(4, 10)}px)`,
-                    repeat: -1,
-                    yoyo: true,
-                    ease: "none",
-                });
-            };
-
-            const stopGlitch = (targets: string) => {
-                if (glitchTween) {
-                    glitchTween.kill();
-                    glitchTween = null;
-                }
-
-                // Faster, smoother snap back to clean state
-                gsap.to(targets, {
-                    opacity: 1,
-                    x: 0,
-                    skewX: 0,
-                    filter: "blur(0px)",
-                    duration: 0.4,
-                    stagger: { each: 0.03, ease: "expo.out" },
-                    ease: "expo.out",
-                });
-            };
-
             /* ════════════════════════════════════════
                INTRO — plays once on page load
-               Order: ALPHA → SCIENCE → LAB
-                      then CREATIVITY STARTS + FROM BELIEF
-                      then strip + buttons
-            ════════════════════════════════════════ */
+             ════════════════════════════════════════ */
             const intro = gsap.timeline({
                 defaults: { ease: "expo.out" },
             });
-
-            // No startGlitch here — first time is clean
 
             /* ① ALPHA letters cascade in */
             intro.to(
@@ -194,8 +155,6 @@ export default function Hero() {
             /* ⑤ Strip and buttons ease in last */
             intro.to(".hero-strip", { opacity: 1, duration: 0.65 }, "-=0.2");
             intro.to(".hero-btns", { opacity: 1, duration: 0.65 }, "-=0.4");
-
-            /* Animation plays once and holds final position */
         },
         { scope: container }
     );
@@ -204,9 +163,23 @@ export default function Hero() {
         <section
             ref={container}
             suppressHydrationWarning
-            className="relative w-full"
-            style={{ minHeight: "100svh", overflowX: "hidden" }}
+            className="relative w-full min-h-screen bg-black overflow-hidden"
         >
+            {/* Background Image with Overlay */}
+            <div className="absolute inset-0 z-0">
+                <Image
+                    src="/hero_background.png"
+                    alt="ASL Laboratory"
+                    fill
+                    className="object-cover opacity-60"
+                    priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
+                {/* Purple Glow */}
+                <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-[#7B61FF] rounded-full blur-[180px] opacity-20" />
+            </div>
+
             {/* ── Main content ── */}
             <div
                 className="relative flex flex-col items-start justify-center text-left z-10 w-full"
@@ -220,14 +193,12 @@ export default function Hero() {
             >
                 {/* ① Kicker — letter-by-letter from left */}
                 <p
-                    className="hero-kicker font-accent text-white/75 leading-none ml-6"
+                    className="hero-kicker font-accent text-[#7B61FF] leading-none mb-4"
                     style={{
                         fontSize: "clamp(14px, 3.2vw, 60px)",
                         lineHeight: 0.9,
                         letterSpacing: "0.02em",
-                        marginBottom: "clamp(6px, 1.2vh, 24px)",
                         textTransform: "uppercase",
-                        paddingLeft: "clamp(6px, 1vw, 48px)",
                         overflow: "hidden",
                     }}
                 >
@@ -304,25 +275,12 @@ export default function Hero() {
                         marginLeft: "50%",
                         transform: "translateX(-50%)",
                         padding: "clamp(14px, 2vh, 28px) 0",
-                        background: "#000000",
+                        background: "rgba(0,0,0,0.5)",
                         borderTop: "1px solid rgba(255,255,255,0.08)",
                         borderBottom: "1px solid rgba(255,255,255,0.08)",
                         backdropFilter: "blur(10px)",
                     }}
                 >
-                    {/* Background Part 1: Left segment (Black in center, Maroon on left) */}
-                    <div
-                        className="absolute left-0 top-0 bottom-0 w-1/2"
-                        style={{ background: "linear-gradient(270deg, #000000 0%, rgba(61, 16, 34, 0.7) 100%)" }}
-                    />
-
-                    {/* Background Part 2: Right segment (Black in center, Purple on right) */}
-                    <div
-                        className="absolute right-0 top-0 bottom-0 w-1/2"
-                        style={{ background: "linear-gradient(90deg, #000000 0%, rgba(150, 46, 155, 0.7) 100%)" }}
-                    />
-
-                    {/* Content */}
                     <p
                         className="relative z-20 font-tech text-center m-0"
                         style={{
@@ -331,9 +289,6 @@ export default function Hero() {
                             fontWeight: 400,
                             letterSpacing: "-0.06em",
                             color: "#e4e4e7",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
                         }}
                     >
                         Innovating in VLSI, Robotics, Software, and Design
@@ -346,43 +301,30 @@ export default function Hero() {
                     style={{
                         gap: "clamp(12px, 2.5vw, 40px)",
                         marginTop: "clamp(20px, 4vh, 60px)",
-                        minHeight: "120px", // Reserve space to avoid layout shift
                     }}
                 >
                     <button
-                        id="hero-explore-btn"
-                        className="hero-btn glass-btn font-sans font-semibold text-white flex items-center justify-center p-0 relative z-40"
+                        className="hero-btn glass-btn font-sans font-semibold text-white flex items-center justify-center relative z-40"
                         onMouseEnter={() => !isMobile && handleInteraction("projects")}
                         onMouseLeave={() => !isMobile && handleInteraction(null)}
-                        onClick={() => isMobile && handleInteraction(activeGrid === "projects" ? null : "projects")}
                         style={{
                             width: "clamp(180px, 28vw, 420px)",
                             height: "clamp(48px, 5.2vw, 84px)",
                             borderRadius: "50px",
                             fontSize: "clamp(14px, 2vw, 35.84px)",
-                            fontWeight: 600,
-                            lineHeight: 1,
-                            letterSpacing: "0em",
-                            textAlign: "center",
                         }}
                     >
                         Explore projects
                     </button>
                     <button
-                        id="hero-team-btn"
-                        className="hero-btn glass-btn font-sans font-semibold text-white flex items-center justify-center p-0 relative z-40"
+                        className="hero-btn glass-btn font-sans font-semibold text-white flex items-center justify-center relative z-40"
                         onMouseEnter={() => !isMobile && handleInteraction("team")}
                         onMouseLeave={() => !isMobile && handleInteraction(null)}
-                        onClick={() => isMobile && handleInteraction(activeGrid === "team" ? null : "team")}
                         style={{
                             width: "clamp(180px, 28vw, 420px)",
                             height: "clamp(48px, 5.2vw, 84px)",
                             borderRadius: "50px",
                             fontSize: "clamp(14px, 2vw, 35.84px)",
-                            fontWeight: 600,
-                            lineHeight: 1,
-                            letterSpacing: "0em",
-                            textAlign: "center",
                         }}
                     >
                         Meet the team
@@ -412,14 +354,6 @@ export default function Hero() {
                         </div>
                     </div>
                 </div>
-
-                {/* Mobile 'Click Outside' Overlay */}
-                {isMobile && activeGrid && (
-                    <div
-                        className="fixed inset-0 z-30"
-                        onClick={() => handleInteraction(null)}
-                    />
-                )}
             </div>
         </section>
     );
