@@ -53,81 +53,146 @@
 /* ─── Reusable components ────────────────────────────────── */
 @layer components {
 
-  /* Glass Card */
+  /* Glass Card — refined and sharp */
   .glass-card {
     background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.08) 0%,
-        rgba(255, 255, 255, 0.03) 100%);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.02) 100%);
+    backdrop-filter: blur(12px) saturate(220%);
+    -webkit-backdrop-filter: blur(12px) saturate(220%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
-  /* Glass Button — premium frosted glass pill */
+  @keyframes glass-shimmer {
+    0% {
+      transform: translateX(-150%) skewX(-25deg);
+    }
+
+    100% {
+      transform: translateX(250%) skewX(-25deg);
+    }
+  }
+
+  /* Glass Button — high-visibility premium frosted effect */
   .glass-btn {
-    background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.18) 0%,
-        rgba(255, 255, 255, 0.07) 50%,
-        rgba(255, 255, 255, 0.12) 100%);
-    backdrop-filter: blur(20px) saturate(200%);
-    -webkit-backdrop-filter: blur(20px) saturate(200%);
-    border: 1.5px solid rgba(255, 255, 255, 0.38);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px) saturate(220%);
+    -webkit-backdrop-filter: blur(10px) saturate(220%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     box-shadow:
-      0 4px 24px rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.25),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.06);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      0 6px 28px rgba(0, 0, 0, 0.4),
+      inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     position: relative;
     overflow: hidden;
     cursor: pointer;
   }
 
-  /* Shimmer sweep on hover */
+  /* Intense shimmer sweep on hover */
   .glass-btn::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: -110%;
-    width: 70%;
-    height: 100%;
+    top: -50%;
+    left: -120%;
+    width: 60%;
+    height: 200%;
     background: linear-gradient(90deg,
         transparent 0%,
-        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0.45) 50%,
         transparent 100%);
-    transition: left 0.55s ease;
+    transform: skewX(-25deg);
+    transition: left 0.6s ease;
     pointer-events: none;
+    z-index: 1;
   }
 
   .glass-btn:hover::before {
-    left: 140%;
+    left: 180%;
   }
 
   .glass-btn:hover {
-    background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.26) 0%,
-        rgba(255, 255, 255, 0.12) 50%,
-        rgba(255, 255, 255, 0.18) 100%);
-    border-color: rgba(255, 255, 255, 0.60);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.55);
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.45),
-      0 0 24px rgba(255, 255, 255, 0.07),
-      inset 0 1px 0 rgba(255, 255, 255, 0.35);
-    transform: translateY(-2px);
+      0 12px 36px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px) scale(1.02);
   }
 
   .glass-btn:active {
-    transform: translateY(0) scale(0.97);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px) scale(0.98);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
-  /* Subtitle strip */
+  /* Continuous subtle glint animation */
+  .glass-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -150%;
+    width: 40%;
+    height: 200%;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.12) 50%,
+        transparent 100%);
+    transform: skewX(-25deg);
+    animation: glass-shimmer 6s infinite linear;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  @keyframes glass-shimmer {
+    0% {
+      transform: translateX(-150%) skewX(-25deg);
+    }
+
+    100% {
+      transform: translateX(350%) skewX(-25deg);
+    }
+  }
+
+  /* Subtitle strip — with subtle glass shimmer loop */
   .subtitle-strip {
     background: linear-gradient(270deg, #000000 0%, #3D1022 100%);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .subtitle-strip::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 100%);
+    transform: skewX(-20deg);
+    animation: strip-shimmer 6s infinite linear;
+    pointer-events: none;
+  }
+
+  @keyframes strip-shimmer {
+    0% {
+      left: -110%;
+    }
+
+    50% {
+      left: 160%;
+    }
+
+    100% {
+      left: 160%;
+    }
   }
 
   /* Custom cursor */
