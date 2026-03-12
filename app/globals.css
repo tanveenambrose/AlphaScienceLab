@@ -216,7 +216,7 @@
   .rgb-orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(110px);
+    filter: blur(80px);
     opacity: 0.42;
     will-change: transform;
   }
