@@ -9,17 +9,17 @@ const areas = [
     {
         title: "VLSI and Semiconductor",
         desc: "Pushing the boundaries of integrated circuit design and semiconductor technology.",
-        image: "/research/vlsi_grid.png",
+        image: "/projects/VLSI and Semiconductor.png",
     },
     {
         title: "Hardware, PCB & Embedded Systems",
         desc: "Designing robust hardware architectures and high-performance embedded solutions.",
-        image: "/research/embedded_grid.png",
+        image: "/projects/Hardware, PCB & Embedded Systems.png",
     },
     {
         title: "Robotics & Automation",
         desc: "Innovating in autonomous systems and advanced robotic control mechanisms.",
-        image: "/research/robotics_grid.png",
+        image: "/projects/Robotics & Automation.png",
     },
 ];
 
@@ -47,13 +47,13 @@ export default function ResearchAreas() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: idx * 0.1 }}
-                            className="flex-shrink-0 w-[354px] h-[529px] group relative rounded-[30px] overflow-hidden border border-white/10 hover:border-[#7B61FF]/50 transition-all duration-500 snap-start"
+                            className="flex-shrink-0 w-[354px] h-[529px] group relative rounded-[30px] overflow-hidden border-[3px] border-[#B578FF]/30 hover:border-[#B578FF]/60 transition-all duration-500 snap-start backdrop-blur-md bg-black/20"
                         >
                             <NextImage
                                 src={area.image}
                                 alt={area.title}
                                 fill
-                                className="object-cover opacity-50 group-hover:opacity-70 group-hover:scale-110 transition-all duration-700"
+                                className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-110 transition-all duration-700"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
                             <div className="absolute bottom-0 p-10">

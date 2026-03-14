@@ -65,48 +65,18 @@ export default function ProjectsGallery() {
                 </div>
 
                 {/* Main Featured Card */}
-                <div className="relative bg-[#0A0A0A] border border-white/5 rounded-[40px] overflow-hidden min-h-[550px] flex flex-col md:flex-row shadow-[0_40px_100px_rgba(0,0,0,0.8)]">
-
-                    {/* Image Area with Inner Product Glow */}
-                    <div className="w-full md:w-1/2 relative h-[350px] md:h-auto overflow-hidden p-8">
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={activeProject.id}
-                                initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-                                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                                exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
-                                transition={{ duration: 0.6, ease: "circOut" }}
-                                className="relative w-full h-full flex items-center justify-center"
-                            >
-                                {/* Inner Soft Glow around the image */}
-                                <div
-                                    className="absolute inset-0 rounded-full blur-[100px] opacity-40 transition-colors duration-1000"
-                                    style={{ backgroundColor: activeProject.color }}
-                                />
-
-                                <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 shadow-3xl">
-                                    <Image
-                                        src={activeProject.image}
-                                        alt={activeProject.title}
-                                        fill
-                                        className="object-cover"
-                                        priority
-                                    />
-                                </div>
-                            </motion.div>
-                        </AnimatePresence>
-                    </div>
+                <div className="relative bg-[#0A0A0A] border border-white/5 rounded-[40px] overflow-hidden min-h-[600px] flex flex-col md:flex-row shadow-[0_40px_100px_rgba(0,0,0,0.8)]">
 
                     <div className="w-full md:w-1/2 p-10 md:p-20 flex flex-col justify-center">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={activeProject.id}
-                                initial={{ opacity: 0, x: 30 }}
+                                initial={{ opacity: 0, x: -30 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -30 }}
+                                exit={{ opacity: 0, x: 30 }}
                                 transition={{ duration: 0.5, delay: 0.1 }}
                             >
-                                <h3 className="text-4xl md:text-6xl font-black text-white mb-8 uppercase tracking-tight leading-none">
+                                <h3 className="text-4xl md:text-6xl font-accent font-black text-white mb-8 uppercase tracking-tight leading-none">
                                     {activeProject.title}
                                 </h3>
                                 <p className="text-zinc-400 text-lg md:text-xl leading-relaxed mb-12 font-light">
@@ -131,6 +101,36 @@ export default function ProjectsGallery() {
                                             <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                                         </button>
                                     </div>
+                                </div>
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
+
+                    {/* Image Area with Inner Product Glow */}
+                    <div className="w-full md:w-1/2 relative h-[400px] md:h-auto overflow-hidden p-8">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={activeProject.id}
+                                initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+                                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                                exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
+                                transition={{ duration: 0.6, ease: "circOut" }}
+                                className="relative w-full h-full flex items-center justify-center"
+                            >
+                                {/* Inner Soft Glow around the image */}
+                                <div
+                                    className="absolute inset-0 rounded-full blur-[100px] opacity-40 transition-colors duration-1000"
+                                    style={{ backgroundColor: activeProject.color }}
+                                />
+
+                                <div className="relative w-full aspect-[3/2] rounded-2xl overflow-hidden border border-white/10 shadow-3xl">
+                                    <Image
+                                        src={activeProject.image}
+                                        alt={activeProject.title}
+                                        fill
+                                        className="object-cover opacity-100"
+                                        priority
+                                    />
                                 </div>
                             </motion.div>
                         </AnimatePresence>

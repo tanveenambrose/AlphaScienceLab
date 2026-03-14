@@ -168,16 +168,17 @@ export default function Hero() {
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/hero_background.png"
+                    src="/projects/hero_img.png"
                     alt="ASL Laboratory"
                     fill
-                    className="object-cover opacity-60"
+                    className="object-cover opacity-100"
                     priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
-                {/* Purple Glow */}
-                <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-[#7B61FF] rounded-full blur-[180px] opacity-20" />
+                {/* Subtle edge vignetting instead of heavy overlays */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                {/* Enhanced Ambient Glow */}
+                <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[800px] h-[800px] bg-[#7B61FF] rounded-full blur-[250px] opacity-25" />
             </div>
 
             {/* ── Main content ── */}

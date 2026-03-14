@@ -16,19 +16,19 @@ const researchAreas = [
     {
         title: "VLSI & Semiconductors",
         desc: "Advanced integrated circuit design, CMOS technology, and semiconductor physics.",
-        image: "/research/vlsi.png",
+        image: "/projects/VLSI and Semiconductor.png",
         color: "from-[#CB70FF] to-[#E2AEFF]",
     },
     {
         title: "Embedded Systems",
         desc: "Industrial solutions with PCB design, firmware optimization, and real-time processing.",
-        image: "/research/embedded.png",
+        image: "/projects/Hardware, PCB & Embedded Systems.png",
         color: "from-[#8C4FFF] to-[#B578FF]",
     },
     {
         title: "Robotics & AI",
         desc: "Engineering autonomous systems with machine learning and computer vision.",
-        image: "/research/robotics.png",
+        image: "/projects/Robotics & Automation.png",
         color: "from-[#7F3DFF] to-[#CB70FF]",
     },
     {
@@ -143,7 +143,7 @@ export default function Features() {
                     {researchAreas.map((area, idx) => (
                         <div
                             key={idx}
-                            className="feature-card min-w-[320px] md:min-w-[420px] h-[550px] relative rounded-[40px] overflow-hidden group snap-start border border-white/10 hover:border-primary/40 transition-colors duration-500"
+                            className="feature-card min-w-[354px] w-[354px] h-[529px] relative rounded-[30px] overflow-hidden group snap-start border-[3px] border-[#B578FF]/30 hover:border-[#B578FF]/60 transition-all duration-500 backdrop-blur-md bg-black/20"
                         >
                             {/* Glass Background */}
                             <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-white/[0.02] backdrop-blur-md" />
