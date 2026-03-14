@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Lenis from "lenis";
+import { ReactLenis } from "lenis/react";
+import type { LenisRef } from "lenis/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import "lenis/dist/lenis.css";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -11,7 +13,7 @@ if (typeof window !== "undefined") {
 
 /**
  * SmoothScrollProvider
- * Initialises Lenis on mount and drives its RAF loop.
+ * Initialises ReactLenis on mount and drives its RAF loop with GSAP's ticker.
  * Place this high in the component tree (e.g. inside RootLayout).
  */
 export default function SmoothScrollProvider({
@@ -19,34 +21,44 @@ export default function SmoothScrollProvider({
 }: {
     children: React.ReactNode;
 }) {
-    const lenisRef = useRef<Lenis | null>(null);
+    const lenisRef = useRef<LenisRef>(null);
 
     useEffect(() => {
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            touchMultiplier: 2,
-        });
-
-        lenisRef.current = lenis;
-
-        // Synchronize Lenis with GSAP ScrollTrigger
-        lenis.on("scroll", ScrollTrigger.update);
-
         const update = (time: number) => {
-            lenis.raf(time * 1000);
+            lenisRef.current?.lenis?.raf(time * 1000);
         };
 
         gsap.ticker.add(update);
-
         gsap.ticker.lagSmoothing(0);
 
         return () => {
-            lenis.destroy();
             gsap.ticker.remove(update);
-            lenisRef.current = null;
         };
     }, []);
 
-    return <>{children}</>;
+    useEffect(() => {
+        if (!lenisRef.current?.lenis) return;
+        
+        const lenis = lenisRef.current.lenis;
+        lenis.on("scroll", ScrollTrigger.update);
+        
+        return () => {
+            lenis.off("scroll", ScrollTrigger.update);
+        };
+    }, []);
+
+    return (
+        <ReactLenis 
+            root 
+            ref={lenisRef} 
+            autoRaf={false} 
+            options={{
+                duration: 1.2,
+                easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                touchMultiplier: 2,
+            }}
+        >
+            {children}
+        </ReactLenis>
+    );
 }

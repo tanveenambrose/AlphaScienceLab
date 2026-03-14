@@ -4,6 +4,8 @@ import "./globals.css";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import IceEdgeGlow from "@/components/IceEdgeGlow";
+import Preloader from "@/components/Preloader";
+import { PreloaderProvider } from "@/components/PreloaderContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -44,15 +46,18 @@ export default function RootLayout({
         className={`${inter.variable} ${bakbak.variable} ${anton.variable} ${aldrich.variable} antialiased bg-black text-white`}
         suppressHydrationWarning
       >
-        {/* Global animated RGB background — fixed, sits behind all content */}
-        <AnimatedBackground />
-        {/* Ice edge glow — layered above bg, below content */}
-        <IceEdgeGlow />
-        <SmoothScrollProvider>
-          <div className="relative z-10">
-            {children}
-          </div>
-        </SmoothScrollProvider>
+        <PreloaderProvider>
+          <Preloader />
+          {/* Global animated RGB background — fixed, sits behind all content */}
+          <AnimatedBackground />
+          {/* Ice edge glow — layered above bg, below content */}
+          <IceEdgeGlow />
+          <SmoothScrollProvider>
+            <div className="relative z-10">
+              {children}
+            </div>
+          </SmoothScrollProvider>
+        </PreloaderProvider>
       </body>
     </html>
   );

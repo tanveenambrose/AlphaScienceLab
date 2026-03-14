@@ -51,7 +51,7 @@ export default function Navbar() {
         };
     }, []);
 
-    const handleLinkClick = (link: any) => {
+    const handleLinkClick = (link: { name: string; href: string; dropdown?: string[] | undefined }) => {
         if (isMobile && link.dropdown) {
             setActiveDropdown(activeDropdown === link.name ? null : link.name);
         } else if (!link.dropdown) {

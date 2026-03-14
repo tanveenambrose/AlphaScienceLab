@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Image from "next/image";
+import { usePreloader } from "./PreloaderContext";
 
 /* Splits a string into individual letter <span>s */
 function SplitText({ text, className, useSmallCaps }: { text: string; className?: string; useSmallCaps?: boolean }) {
@@ -80,6 +81,7 @@ export default function Hero() {
     const container = useRef<HTMLDivElement>(null);
     const [activeGrid, setActiveGrid] = useState<"projects" | "team" | null>(null);
     const [isMobile, setIsMobile] = useState(false);
+    const { preloaderFinished } = usePreloader();
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -114,6 +116,8 @@ export default function Hero() {
                 filter: "blur(8px)",
                 display: "inline-block"
             });
+
+            if (!preloaderFinished) return;
 
             /* ════════════════════════════════════════
                INTRO — plays once on page load
@@ -156,7 +160,7 @@ export default function Hero() {
             intro.to(".hero-strip", { opacity: 1, duration: 0.65 }, "-=0.2");
             intro.to(".hero-btns", { opacity: 1, duration: 0.65 }, "-=0.4");
         },
-        { scope: container }
+        { scope: container, dependencies: [preloaderFinished] }
     );
 
     return (
