@@ -6,37 +6,29 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const projects = [
-    {
-        id: 1,
-        title: "SOCCER BOT",
-        subtitle: "Featured projects of Alpha Science Lab",
-        description: "Robo soccer bots are available as both pre-built remote-controlled toys for casual play and as DIY kits designed for educational purposes or competitive leagues. The type of product you choose will depend on whether you are looking for a simple toy or a more involved robotics project.",
-        image: "/projects/soccer_bot.png",
-        color: "#962E9B",
-    },
-    {
-        id: 2,
-        title: "LINE FOLLOWER ROBOT",
-        subtitle: "Featured projects of Alpha Science Lab",
-        description: "An automated guided vehicle that follows visual lines embedded on the floor. These robots are widely used in industrial automation for transporting materials along fixed paths with high precision.",
-        image: "/projects/line_follower.png",
-        color: "#7B61FF",
-    },
-    {
-        id: 3,
-        title: "VLSI DESIGN",
-        subtitle: "Featured projects of Alpha Science Lab",
-        description: "Advanced integrated circuit design focusing on low-power architectures and high-performance computing. Our research pushes the limits of semiconductor technology through innovative transistor-level optimizations.",
-        image: "/projects/vlsi_design.png",
-        color: "#3D7FFF",
-        link: "/projects/vlsi",
-    },
-];
-
 export default function ProjectsGallery() {
+    const [projects, setProjects] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [activeIndex, setActiveIndex] = useState(0);
-    const activeProject = projects[activeIndex];
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const res = await fetch("/api/admin/projects");
+                const data = await res.json();
+                if (data && data.length > 0) {
+                    setProjects(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch projects frontend:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchProjects();
+    }, []);
+
+    const activeProject = projects[activeIndex] || projects[0] || {} as any;
 
     const nextProject = () => {
         setActiveIndex((prev) => (prev + 1) % projects.length);
@@ -45,6 +37,22 @@ export default function ProjectsGallery() {
     const prevProject = () => {
         setActiveIndex((prev) => (prev - 1 + projects.length) % projects.length);
     };
+
+    if (isLoading) {
+        return (
+            <section id="projects-gallery" className="py-24 bg-black relative overflow-hidden flex items-center justify-center min-h-screen">
+                <div className="w-12 h-12 border-4 border-zinc-900 border-t-[#EC0D6E] rounded-full animate-spin"></div>
+            </section>
+        )
+    }
+
+    if (projects.length === 0) {
+        return (
+            <section id="projects-gallery" className="py-24 bg-black relative overflow-hidden flex items-center justify-center min-h-[50vh]">
+                <p className="text-zinc-500 font-display text-xl uppercase tracking-widest">No Projects Found</p>
+            </section>
+        )
+    }
 
     return (
         <section id="projects-gallery" className="py-24 bg-black relative overflow-hidden">

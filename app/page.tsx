@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ProjectsGallery from "@/components/ProjectsGallery";
+import PhotoGallery from "@/components/PhotoGallery";
 import ResearchAreas from "@/components/ResearchAreas";
 import Stories from "@/components/Stories";
 import JoinSection from "@/components/JoinSection";
@@ -17,6 +18,7 @@ export default function Home() {
       <div id="projects">
         <ProjectsGallery />
       </div>
+      <PhotoGallery />
       <Stories />
       <JoinSection />
       <Footer />
