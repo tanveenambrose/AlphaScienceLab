@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import NextImage from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import BackgroundGlow from "./BackgroundGlow";
 
@@ -10,6 +11,7 @@ const areas = [
         title: "VLSI and Semiconductor",
         desc: "Pushing the boundaries of integrated circuit design and semiconductor technology.",
         image: "/projects/VLSI and Semiconductor.png",
+        link: "/projects/vlsi",
     },
     {
         title: "Hardware, PCB & Embedded Systems",
@@ -49,6 +51,7 @@ export default function ResearchAreas() {
                             transition={{ duration: 0.5, delay: idx * 0.1 }}
                             className="flex-shrink-0 w-[354px] h-[529px] group relative rounded-[30px] overflow-hidden border-[3px] border-[#B578FF]/30 hover:border-[#B578FF]/60 transition-all duration-500 snap-start backdrop-blur-md bg-black/20"
                         >
+                            <Link href={area.link || "#"} className="w-full h-full block">
                             <NextImage
                                 src={area.image}
                                 alt={area.title}
@@ -64,6 +67,7 @@ export default function ResearchAreas() {
                                     {area.desc}
                                 </p>
                             </div>
+                            </Link>
                         </motion.div>
                     ))}
                 </div>

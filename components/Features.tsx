@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import clsx from "clsx";
 
@@ -18,6 +19,7 @@ const researchAreas = [
         desc: "Advanced integrated circuit design, CMOS technology, and semiconductor physics.",
         image: "/projects/VLSI and Semiconductor.png",
         color: "from-[#CB70FF] to-[#E2AEFF]",
+        link: "/projects/vlsi",
     },
     {
         title: "Embedded Systems",
@@ -141,9 +143,10 @@ export default function Features() {
                     style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
                     {researchAreas.map((area, idx) => (
-                        <div
+                        <Link
+                            href={area.link || "#"}
                             key={idx}
-                            className="feature-card min-w-[354px] w-[354px] h-[529px] relative rounded-[30px] overflow-hidden group snap-start border-[3px] border-[#B578FF]/30 hover:border-[#B578FF]/60 transition-all duration-500 backdrop-blur-md bg-black/20"
+                            className="feature-card min-w-[354px] w-[354px] h-[529px] block relative rounded-[30px] overflow-hidden group snap-start border-[3px] border-[#B578FF]/30 hover:border-[#B578FF]/60 transition-all duration-500 backdrop-blur-md bg-black/20"
                         >
                             {/* Glass Background */}
                             <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-white/[0.02] backdrop-blur-md" />
@@ -182,7 +185,7 @@ export default function Features() {
 
                             {/* Hover Inner Glow */}
                             <div className={`absolute inset-0 bg-gradient-to-br ${area.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none`} />
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const projects = [
@@ -29,6 +30,7 @@ const projects = [
         description: "Advanced integrated circuit design focusing on low-power architectures and high-performance computing. Our research pushes the limits of semiconductor technology through innovative transistor-level optimizations.",
         image: "/projects/vlsi_design.png",
         color: "#3D7FFF",
+        link: "/projects/vlsi",
     },
 ];
 
@@ -84,9 +86,9 @@ export default function ProjectsGallery() {
                                 </p>
 
                                 <div className="flex items-center gap-8">
-                                    <button className="bg-white text-black px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-white/90 transition-all duration-300">
+                                    <Link href={activeProject.link || "#"} className="bg-white text-black px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-white/90 transition-all duration-300">
                                         View Details
-                                    </button>
+                                    </Link>
                                     <div className="flex gap-4">
                                         <button
                                             onClick={prevProject}

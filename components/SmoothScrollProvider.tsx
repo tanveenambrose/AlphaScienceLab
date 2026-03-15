@@ -38,20 +38,20 @@ export default function SmoothScrollProvider({
 
     useEffect(() => {
         if (!lenisRef.current?.lenis) return;
-        
+
         const lenis = lenisRef.current.lenis;
         lenis.on("scroll", ScrollTrigger.update);
-        
+
         return () => {
             lenis.off("scroll", ScrollTrigger.update);
         };
     }, []);
 
     return (
-        <ReactLenis 
-            root 
-            ref={lenisRef} 
-            autoRaf={false} 
+        <ReactLenis
+            root
+            ref={lenisRef}
+            autoRaf={false}
             options={{
                 duration: 1.2,
                 easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

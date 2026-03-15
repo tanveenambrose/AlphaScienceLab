@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,7 +16,7 @@ const navLinks = [
             "VLSI and Semiconductor", "Hardware, PCB & Embedded Systems",
             "Robotics & Automation", "Software & Web Development",
             "Structural Analysis", "2D and 3D Design",
-            "Research, Innovation & Documentation", "Others"
+            "Research, Innovation & Documentation", "All Projects"
         ]
     },
     {
@@ -29,11 +30,18 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+    const pathname = usePathname();
     const [scrolled, setScrolled] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [logoError, setLogoError] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [isMobile, setIsMobile] = useState(false);
+
+    const isLinkActive = (linkName: string) => {
+        if (linkName === "Home" && pathname === "/") return true;
+        if (linkName === "Projects" && pathname.startsWith("/projects")) return true;
+        return false;
+    };
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20);
@@ -94,41 +102,70 @@ export default function Navbar() {
                             onMouseEnter={() => !isMobile && setActiveDropdown(link.name)}
                             onMouseLeave={() => !isMobile && setActiveDropdown(null)}
                         >
-                            <button
-                                onClick={() => isMobile && handleLinkClick(link)}
-                                className={clsx(
-                                    "relative py-2 text-[15px] font-semibold tracking-wide flex items-center gap-1 transition-colors duration-200",
-                                    activeDropdown === link.name ? "text-white" : "text-white/70 hover:text-white"
-                                )}
-                            >
-                                {link.name}
-                                {link.dropdown && (
-                                    <ChevronDown className={clsx("w-3.5 h-3.5 transition-transform duration-300", activeDropdown === link.name && "rotate-180")} />
-                                )}
+                            {link.name === "Home" ? (
+                                <Link
+                                    href={link.href}
+                                    className={clsx(
+                                        "relative py-2 text-[15px] font-semibold tracking-wide flex items-center gap-1 transition-colors duration-200",
+                                        isLinkActive(link.name) ? "text-white" : "text-white/70 hover:text-white"
+                                    )}
+                                >
+                                    {link.name}
+                                    {isLinkActive(link.name) ? (
+                                        <span className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full bg-primary" />
+                                    ) : (
+                                        <span className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full bg-white/40 transition-transform duration-200 origin-left scale-x-0 group-hover:scale-x-100" />
+                                    )}
+                                </Link>
+                            ) : (
+                                <button
+                                    onClick={() => isMobile && handleLinkClick(link)}
+                                    className={clsx(
+                                        "relative py-2 text-[15px] font-semibold tracking-wide flex items-center gap-1 transition-colors duration-200",
+                                        activeDropdown === link.name || isLinkActive(link.name) ? "text-white" : "text-white/70 hover:text-white"
+                                    )}
+                                >
+                                    {link.name}
+                                    {link.dropdown && (
+                                        <ChevronDown className={clsx("w-3.5 h-3.5 transition-transform duration-300", activeDropdown === link.name && "rotate-180")} />
+                                    )}
 
-                                {/* Underline */}
-                                {link.name === "Home" ? (
-                                    <span className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full bg-primary" />
-                                ) : (
-                                    <span className={clsx(
-                                        "absolute bottom-0 left-0 right-0 h-[2px] rounded-full bg-white/40 transition-transform duration-200 origin-left",
-                                        activeDropdown === link.name ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                                    )} />
-                                )}
-                            </button>
+                                    {/* Underline */}
+                                    {isLinkActive(link.name) ? (
+                                        <span className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full bg-primary" />
+                                    ) : (
+                                        <span className={clsx(
+                                            "absolute bottom-0 left-0 right-0 h-[2px] rounded-full bg-white/40 transition-transform duration-200 origin-left",
+                                            activeDropdown === link.name ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                                        )} />
+                                    )}
+                                </button>
+                            )}
 
                             {/* Dropdown Desktop */}
                             {link.dropdown && (
                                 <div className={clsx(
-                                    "absolute top-full left-1/2 -translate-x-1/2 mt-4 transition-all duration-300 pointer-events-none",
+                                    "absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-300 pointer-events-none",
                                     activeDropdown === link.name ? "opacity-100 visible translate-y-0 pointer-events-auto" : "opacity-0 invisible -translate-y-2"
                                 )}>
                                     <div className="bg-[#050505]/95 backdrop-blur-2xl border border-primary/40 rounded-sm overflow-hidden shadow-[0_0_30px_rgba(150,46,155,0.2)] w-[360px]">
                                         <div className="grid grid-cols-2">
-                                            {link.dropdown.map((item, i) => (
+                                            {link.dropdown.map((item, i) => {
+                                                let targetUrl = "";
+                                                if (item === "VLSI and Semiconductor") targetUrl = "/projects/vlsi";
+                                                else if (item === "Hardware, PCB & Embedded Systems") targetUrl = "/projects/hardware";
+                                                else if (item === "Robotics & Automation") targetUrl = "/projects/robotics";
+                                                else if (item === "Software & Web Development") targetUrl = "/projects/software";
+                                                else if (item === "Structural Analysis") targetUrl = "/projects/structural";
+                                                else if (item === "2D and 3D Design") targetUrl = "/projects/design";
+                                                else if (item === "Research, Innovation & Documentation") targetUrl = "/projects/research";
+                                                else if (item === "All Projects") targetUrl = "/projects/all";
+                                                else targetUrl = `/#${item.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`;
+
+                                                return (
                                                 <Link
                                                     key={item}
-                                                    href={`#${item.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`}
+                                                    href={targetUrl}
                                                     className={clsx(
                                                         "px-4 py-8 flex items-center justify-center text-center text-[12px] font-black uppercase tracking-widest text-white hover:bg-primary/10 transition-colors min-h-[100px]",
                                                         "border-primary/30",
@@ -138,7 +175,8 @@ export default function Navbar() {
                                                 >
                                                     {item}
                                                 </Link>
-                                            ))}
+                                                )
+                                            })}
                                         </div>
                                     </div>
                                 </div>
@@ -150,6 +188,7 @@ export default function Navbar() {
                 {/* Join ASL glass button */}
                 <button
                     id="nav-join-btn"
+                    onClick={() => window.location.href = '/join'}
                     className="hidden md:block glass-btn rounded-full px-7 py-2.5 text-[15px] font-semibold text-white tracking-wide"
                 >
                     Join ASL
@@ -191,16 +230,29 @@ export default function Navbar() {
 
                             {link.dropdown && activeDropdown === link.name && (
                                 <div className="grid grid-cols-1 w-full mt-4 bg-white/5 border border-white/10 rounded-lg overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300">
-                                    {link.dropdown.map(sub => (
+                                    {link.dropdown.map(sub => {
+                                                let targetUrl = "";
+                                                if (sub === "VLSI and Semiconductor") targetUrl = "/projects/vlsi";
+                                                else if (sub === "Hardware, PCB & Embedded Systems") targetUrl = "/projects/hardware";
+                                                else if (sub === "Robotics & Automation") targetUrl = "/projects/robotics";
+                                                else if (sub === "Software & Web Development") targetUrl = "/projects/software";
+                                                else if (sub === "Structural Analysis") targetUrl = "/projects/structural";
+                                                else if (sub === "2D and 3D Design") targetUrl = "/projects/design";
+                                                else if (sub === "Research, Innovation & Documentation") targetUrl = "/projects/research";
+                                                else if (sub === "All Projects") targetUrl = "/projects/all";
+                                                else targetUrl = `/#${sub.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`;
+
+                                                return (
                                         <Link
                                             key={sub}
-                                            href="#"
+                                            href={targetUrl}
                                             onClick={() => setIsOpen(false)}
                                             className="px-6 py-4 text-center text-sm font-bold text-white/80 border-b border-white/5 hover:bg-white/10"
                                         >
                                             {sub}
                                         </Link>
-                                    ))}
+                                        )
+                                    })}
                                 </div>
                             )}
                         </div>
@@ -209,6 +261,7 @@ export default function Navbar() {
 
                 <button
                     id="mobile-join-btn"
+                    onClick={() => window.location.href = '/join'}
                     className="glass-btn rounded-full px-12 py-4 text-xl font-semibold text-white tracking-wide mt-4"
                 >
                     Join ASL

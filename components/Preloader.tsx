@@ -3,13 +3,22 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePreloader } from "./PreloaderContext";
+import { usePathname } from "next/navigation";
 
 export default function Preloader() {
-  const [isLoading, setIsLoading] = useState(true);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+  
+  const [isLoading, setIsLoading] = useState(isHomePage);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { setPreloaderFinished } = usePreloader();
 
   useEffect(() => {
+    if (!isHomePage) {
+      setPreloaderFinished(true);
+      return;
+    }
+
     // Disable scrolling while preloader is active
     document.body.style.overflow = "hidden";
 
@@ -37,7 +46,7 @@ export default function Preloader() {
       clearTimeout(timeout);
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [isHomePage, setPreloaderFinished]);
 
   // When preloader closes, restore body scrolling
   useEffect(() => {

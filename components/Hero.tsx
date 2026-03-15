@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePreloader } from "./PreloaderContext";
 
 /* Splits a string into individual letter <span>s */
@@ -60,21 +61,21 @@ function SplitText({ text, className, useSmallCaps }: { text: string; className?
 }
 
 const PROJECT_CATEGORIES = [
-    "VLSI and Semiconductor",
-    "Hardware, PCB & Embedded Systems",
-    "Robotics & Automation",
-    "Software & Web Development",
-    "Structural Analysis",
-    "2D and 3D Design",
-    "Research, Innovation & Documentation",
-    "Others"
+    { name: "VLSI and Semiconductor", href: "/projects/vlsi" },
+    { name: "Hardware, PCB & Embedded Systems", href: "/projects/hardware" },
+    { name: "Robotics & Automation", href: "/projects/robotics" },
+    { name: "Software & Web Development", href: "/projects/software" },
+    { name: "Structural Analysis", href: "/projects/structural" },
+    { name: "2D and 3D Design", href: "/projects/design" },
+    { name: "Research, Innovation & Documentation", href: "/projects/research" },
+    { name: "All Projects", href: "/projects/all" }
 ];
 
 const TEAM_CATEGORIES = [
-    "Members",
-    "Executives",
-    "Alumni",
-    "Photo Gallery"
+    { name: "Members", href: "/#members" },
+    { name: "Executives", href: "/#executives" },
+    { name: "Alumni", href: "/#alumni" },
+    { name: "Photo Gallery", href: "/#photo-gallery" }
 ];
 
 export default function Hero() {
@@ -181,8 +182,8 @@ export default function Hero() {
                 {/* Subtle edge vignetting instead of heavy overlays */}
                 <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                {/* Enhanced Ambient Glow */}
-                <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[800px] h-[800px] bg-[#7B61FF] rounded-full blur-[250px] opacity-25" />
+                {/* Enhanced Ambient Glow - Pink/Red vibe for Image 2 design */}
+                <div className="absolute bottom-0 left-1/3 -translate-x-1/2 w-[900px] h-[800px] bg-[#FF0F5B] rounded-full blur-[250px] opacity-25 translate-y-1/4" />
             </div>
 
             {/* ── Main content ── */}
@@ -198,13 +199,16 @@ export default function Hero() {
             >
                 {/* ① Kicker — letter-by-letter from left */}
                 <p
-                    className="hero-kicker font-accent text-[#7B61FF] leading-none mb-4"
+                    className="hero-kicker font-accent leading-none mb-4"
                     style={{
                         fontSize: "clamp(14px, 3.2vw, 60px)",
                         lineHeight: 0.9,
                         letterSpacing: "0.02em",
                         textTransform: "uppercase",
                         overflow: "hidden",
+                        color: "transparent",
+                        WebkitTextStroke: "clamp(1px, 0.15vw, 2px) white",
+                        paddingLeft: "clamp(30px, 8vw, 120px)"
                     }}
                 >
                     <SplitText text="CREATIVITY STARTS" className="kicker-char" useSmallCaps />
@@ -229,13 +233,15 @@ export default function Hero() {
                         </h1>
                         <span
                             id="hero-from-belief"
-                            className="font-accent text-white/80"
+                            className="font-accent"
                             style={{
                                 fontSize: "clamp(14px, 3.2vw, 60px)",
                                 lineHeight: 0.9,
                                 paddingBottom: "clamp(4px, 0.6vw, 14px)",
                                 textTransform: "uppercase",
                                 overflow: "hidden",
+                                color: "transparent",
+                                WebkitTextStroke: "clamp(1px, 0.15vw, 2px) white",
                             }}
                         >
                             <SplitText text="FROM BELIEF" className="belief-char" useSmallCaps />
@@ -280,10 +286,11 @@ export default function Hero() {
                         marginLeft: "50%",
                         transform: "translateX(-50%)",
                         padding: "clamp(14px, 2vh, 28px) 0",
-                        background: "rgba(0,0,0,0.5)",
-                        borderTop: "1px solid rgba(255,255,255,0.08)",
-                        borderBottom: "1px solid rgba(255,255,255,0.08)",
-                        backdropFilter: "blur(10px)",
+                        background: "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.15) 35%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.15) 65%, transparent 100%)",
+                        borderTop: "1px solid transparent",
+                        borderBottom: "1px solid transparent",
+                        borderImage: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 35%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.1) 65%, transparent 100%) 1",
+                        backdropFilter: "blur(12px)",
                     }}
                 >
                     <p
@@ -335,6 +342,7 @@ export default function Hero() {
                         Meet the team
                     </button>
 
+
                     {/* Popover Grid: CATEGORIES */}
                     <div
                         className={`absolute top-full left-1/2 -translate-x-1/2 w-full max-w-[90vw] md:max-w-[1200px] mt-8 bg-black z-50 overflow-hidden transition-all duration-500 pointer-events-none ${activeGrid ? "opacity-100 translate-y-0 scale-100 pointer-events-auto" : "opacity-0 -translate-y-4 scale-95"}`}
@@ -345,16 +353,17 @@ export default function Hero() {
                     >
                         <div className="grid grid-cols-1 md:grid-cols-2">
                             {(activeGrid === "projects" ? PROJECT_CATEGORIES : TEAM_CATEGORIES).map((cat, i) => (
-                                <div
+                                <Link
                                     key={i}
+                                    href={cat.href}
                                     className="p-8 flex items-center justify-center text-center font-tech text-white/90 cursor-pointer hover:bg-white/5 transition-colors border-[0.5px] border-[#962E9B]/30"
                                     style={{
                                         fontSize: "clamp(12px, 1.4vw, 24px)",
                                         minHeight: "100px",
                                     }}
                                 >
-                                    {cat}
-                                </div>
+                                    {cat.name}
+                                </Link>
                             ))}
                         </div>
                     </div>

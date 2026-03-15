@@ -40,7 +40,7 @@ export default function JoinSection() {
                                 placeholder="Email address"
                                 className="flex-1 bg-black/50 border border-white/10 rounded-xl sm:rounded-2xl px-5 sm:px-8 py-4 sm:py-5 text-white text-sm sm:text-base font-medium focus:border-primary outline-none transition-all glass"
                             />
-                            <button className="px-8 sm:px-10 py-4 sm:py-5 bg-primary text-white rounded-xl sm:rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-all shadow-[0_0_30px_rgba(127,61,255,0.4)] hover:shadow-[0_0_50px_rgba(127,61,255,0.6)] cursor-pointer whitespace-nowrap">
+                            <button onClick={() => window.location.href = '/join'} className="px-8 sm:px-10 py-4 sm:py-5 bg-primary text-white rounded-xl sm:rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-all shadow-[0_0_30px_rgba(127,61,255,0.4)] hover:shadow-[0_0_50px_rgba(127,61,255,0.6)] cursor-pointer whitespace-nowrap">
                                 Join Now
                             </button>
                         </div>

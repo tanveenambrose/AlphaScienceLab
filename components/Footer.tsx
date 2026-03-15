@@ -1,86 +1,76 @@
-import { Twitter, Github, Linkedin, MessageSquare } from "lucide-react";
+import Image from "next/image";
+import { Instagram, Facebook, Linkedin, Twitter } from "lucide-react";
 
 export default function Footer() {
     return (
-        <footer className="py-16 sm:py-20 lg:py-24 border-t border-white/5 relative z-10">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Top row */}
-                <div className="flex flex-col md:flex-row justify-between items-start mb-14 sm:mb-24 gap-10 sm:gap-12">
-
-                    {/* Brand + socials */}
-                    <div className="max-w-xs">
-                        <div className="flex items-center gap-2 mb-6 sm:mb-8">
-                            <span className="text-2xl sm:text-3xl font-black font-display tracking-tighter uppercase">
-                                ASL
-                            </span>
+        <footer className="w-full relative z-10 bg-[#080309] border-t border-white/5 py-12 md:py-16">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+                
+                {/* Main Content Grid row */}
+                <div className="flex flex-col md:flex-row justify-between items-center gap-14 md:gap-0 mt-8 mb-20 w-full">
+                    
+                    {/* Left: Logo & Title */}
+                    <div className="flex flex-col items-center md:items-start md:flex-1">
+                        <div className="relative w-[110px] h-[60px] mb-3">
+                            <Image
+                                src="/assests/asl.png"
+                                alt="ASL Logo"
+                                fill
+                                style={{ objectFit: "contain" }}
+                            />
                         </div>
-                        <p className="text-slate-500 text-sm leading-relaxed mb-6 sm:mb-8">
-                            Advanced Research, Experimental Automation, and Scientific Discoveries.
-                        </p>
-                        <div className="flex gap-3 sm:gap-4">
-                            {[Twitter, Github, Linkedin, MessageSquare].map((Icon, idx) => (
-                                <a
-                                    key={idx}
-                                    href="#"
-                                    className="p-3 sm:p-4 bg-[#1E1E1E] rounded-full border border-white/5 hover:border-[#7F3DFF]/50 transition-all text-slate-400 hover:text-[#7F3DFF]"
-                                >
-                                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                                </a>
-                            ))}
-                        </div>
+                        <span className="font-tech text-white text-[15px] font-bold tracking-[0.1em] whitespace-nowrap">
+                            ALPHA SCIENCE LAB
+                        </span>
                     </div>
 
-                    {/* Nav links grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-10 sm:gap-16 w-full md:w-auto">
-                        <div>
-                            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-5 sm:mb-8">Navigation</h4>
-                            <ul className="space-y-3 sm:space-y-4">
-                                {["Home", "Projects", "About", "Team"].map((link) => (
-                                    <li key={link}>
-                                        <a href="#" className="text-xs sm:text-sm font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors">
-                                            {link}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                    {/* Center: Social Icons */}
+                    <div className="flex justify-center items-center gap-5 md:flex-1">
+                        {[
+                            { Icon: Instagram, href: "#", label: "Instagram" },
+                            { Icon: Facebook, href: "https://www.facebook.com/Alpha.Science.Lab", label: "Facebook" },
+                            { Icon: Linkedin, href: "https://www.linkedin.com/company/alpha-science-lab", label: "LinkedIn" },
+                            { Icon: Twitter, href: "#", label: "Twitter" }
+                        ].map((social, idx) => (
+                            <a
+                                key={idx}
+                                href={social.href}
+                                target={social.href !== "#" ? "_blank" : undefined}
+                                rel={social.href !== "#" ? "noopener noreferrer" : undefined}
+                                aria-label={social.label}
+                                className="w-9 h-9 flex items-center justify-center text-white hover:text-primary transition-colors"
+                            >
+                                <social.Icon className="w-5 h-5" strokeWidth={1.5} />
+                            </a>
+                        ))}
+                    </div>
 
-                        <div>
-                            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-5 sm:mb-8">Legal</h4>
-                            <ul className="space-y-3 sm:space-y-4">
-                                {["Privacy", "Terms", "Ethics"].map((link) => (
-                                    <li key={link}>
-                                        <a href="#" className="text-xs sm:text-sm font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors">
-                                            {link}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        <div className="col-span-2 md:col-span-1">
-                            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-5 sm:mb-8">Stay Updated</h4>
-                            <div className="relative group">
+                    {/* Right: Newsletter */}
+                    <div className="flex flex-col items-center md:items-end w-full max-w-xs md:flex-1">
+                        <div className="w-full flex flex-col items-center md:items-start">
+                            <label className="block text-white text-[14px] font-semibold mb-3 tracking-wide text-center md:text-left">
+                                Stay Updated
+                            </label>
+                            <div className="w-full flex flex-col gap-3">
                                 <input
                                     type="email"
-                                    placeholder="Your email"
-                                    className="w-full bg-[#1E1E1E] border border-white/5 rounded-xl sm:rounded-2xl px-5 sm:px-6 py-3 sm:py-4 text-sm font-medium focus:outline-none focus:border-[#7F3DFF]/50 transition-all pr-20 sm:pr-24"
+                                    placeholder="Write mail here"
+                                    className="w-full rounded-full px-5 py-3.5 bg-gradient-to-r from-[#7B177D] to-[#360938] text-white placeholder-white/40 text-[12px] focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-inner"
                                 />
-                                <button className="absolute right-2 top-2 bottom-2 px-4 sm:px-6 bg-[#7F3DFF] text-white rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform">
-                                    Join
-                                </button>
+                                <div className="flex justify-end w-full">
+                                   <button className="rounded-full px-6 py-1.5 bg-black border border-white text-white text-[10px] font-semibold tracking-wider hover:bg-white/10 hover:border-white transition-colors cursor-pointer mr-2">
+                                       Submit
+                                   </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Bottom row */}
-                <div className="flex flex-col sm:flex-row justify-between items-center pt-8 sm:pt-12 border-t border-white/5 gap-4">
-                    <p className="text-slate-600 text-[10px] font-black uppercase tracking-[0.3em] text-center sm:text-left">
-                        © {new Date().getFullYear()} Alpha Science Lab. All rights reserved.
-                    </p>
-                    <p className="text-slate-700 text-[10px] font-bold uppercase tracking-widest">
-                        Crafted with precision
+                {/* Footer Copyright */}
+                <div className="flex justify-center items-center">
+                    <p className="text-white text-[12px] tracking-[0.05em] text-center uppercase font-medium">
+                        COPYRIGHT: © 2024 ALPHA SCIENCE LAB.
                     </p>
                 </div>
             </div>
