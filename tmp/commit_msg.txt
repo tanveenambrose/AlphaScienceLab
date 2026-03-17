@@ -1,0 +1,1 @@
+Fix Firebase Admin init for Vercel env vars + admin UI updates

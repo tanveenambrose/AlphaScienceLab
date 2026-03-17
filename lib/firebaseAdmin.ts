@@ -1,7 +1,5 @@
 import * as admin from "firebase-admin";
 
-import { serviceAccount } from "./firebaseServiceAccount";
-
 declare global {
     var __MOCK_FIRESTORE_DATA: any;
 }
@@ -60,38 +58,57 @@ let st: admin.storage.Storage | any = {
 };
 let au: admin.auth.Auth | any = {} as any;
 
-if (!admin.apps.length) {
-    try {
-        let certOptions: admin.ServiceAccount;
-        
-        if (process.env.FIREBASE_PRIVATE_KEY) {
-            certOptions = {
-                projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-                clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-                privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-            };
-        } else {
-            // Fallback to local secret file
-            certOptions = require("../firebase-secret.json");
-        }
+let firebaseInitialized = false;
 
-        admin.initializeApp({
-            credential: admin.credential.cert(certOptions),
-            storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-        });
+function tryInitFirebase() {
+    if (admin.apps.length > 0) {
         db = admin.firestore();
         st = admin.storage();
         au = admin.auth();
-    } catch (error: any) {
-        console.error("Firebase admin init failed (likely during build or missing valid secret):", error);
-        require('fs').writeFileSync('firebase-error.log', error.toString() + ' ' + error.stack);
+        firebaseInitialized = true;
+        return;
     }
-} else {
-    db = admin.firestore();
-    st = admin.storage();
-    au = admin.auth();
+
+    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+    const privateKey = process.env.FIREBASE_PRIVATE_KEY;
+    const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+
+    if (!projectId || !clientEmail || !privateKey) {
+        console.warn(
+            "⚠️  Firebase Admin SDK: Missing environment variables " +
+            "(FIREBASE_CLIENT_EMAIL and/or FIREBASE_PRIVATE_KEY). " +
+            "Falling back to in-memory mock database."
+        );
+        return;
+    }
+
+    try {
+        // Vercel stores newlines as literal \n in env vars — replace them
+        const formattedKey = privateKey.replace(/\\n/g, "\n");
+
+        admin.initializeApp({
+            credential: admin.credential.cert({
+                projectId,
+                clientEmail,
+                privateKey: formattedKey,
+            }),
+            storageBucket,
+        });
+
+        db = admin.firestore();
+        st = admin.storage();
+        au = admin.auth();
+        firebaseInitialized = true;
+        console.log("✅ Firebase Admin SDK initialized successfully.");
+    } catch (error: any) {
+        console.error("❌ Firebase Admin SDK init failed:", error.message);
+    }
 }
+
+tryInitFirebase();
 
 export const adminDb = db;
 export const adminStorage = st;
 export const adminAuth = au;
+export const isFirebaseReady = firebaseInitialized;
