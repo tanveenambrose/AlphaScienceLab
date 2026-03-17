@@ -2,38 +2,89 @@ import * as admin from "firebase-admin";
 
 import { serviceAccount } from "./firebaseServiceAccount";
 
-let db: admin.firestore.Firestore | any = {
-    collection: () => ({
-        orderBy: () => ({ get: async () => ({ docs: [] }) }),
-        get: async () => ({ docs: [] }),
-        doc: () => ({
-            get: async () => ({ exists: false, data: () => ({}) }),
-            update: async () => ({}),
-            delete: async () => ({})
+declare global {
+    var __MOCK_FIRESTORE_DATA: any;
+}
+
+const initMockDB = () => {
+    if (!global.__MOCK_FIRESTORE_DATA) {
+        global.__MOCK_FIRESTORE_DATA = { projects: [], joinRequests: [], members: [], gallery: [] };
+    }
+    const genId = () => Math.random().toString(36).substring(2, 9);
+    const getCol = (name: string) => {
+        if (!global.__MOCK_FIRESTORE_DATA[name]) global.__MOCK_FIRESTORE_DATA[name] = [];
+        return global.__MOCK_FIRESTORE_DATA[name];
+    };
+    return {
+        collection: (name: string) => ({
+            orderBy: () => ({
+                get: async () => ({ docs: getCol(name).map((d: any) => ({ id: d.id, data: () => d })) })
+            }),
+            get: async () => ({
+                docs: getCol(name).map((d: any) => ({ id: d.id, data: () => d }))
+            }),
+            count: () => ({
+                get: async () => ({ data: () => ({ count: getCol(name).length }) })
+            }),
+            doc: (id: string) => ({
+                get: async () => {
+                    const item = getCol(name).find((i: any) => i.id === id);
+                    return { exists: !!item, data: () => item };
+                },
+                update: async (data: any) => {
+                    const idx = getCol(name).findIndex((i: any) => i.id === id);
+                    if (idx > -1) getCol(name)[idx] = { ...getCol(name)[idx], ...data };
+                },
+                delete: async () => {
+                    global.__MOCK_FIRESTORE_DATA[name] = getCol(name).filter((i: any) => i.id !== id);
+                }
+            }),
+            add: async (data: any) => {
+                const id = genId();
+                getCol(name).push({ ...data, id });
+                return { id };
+            }
+        })
+    };
+};
+
+let db: admin.firestore.Firestore | any = initMockDB();
+let st: admin.storage.Storage | any = {
+    bucket: () => ({
+        file: (name: string) => ({
+            save: async () => {},
+            makePublic: async () => {},
         }),
-        add: async () => ({ id: "mock-id" })
+        name: "mock-bucket"
     })
-} as any;
-let st: admin.storage.Storage | any = {} as any;
+};
 let au: admin.auth.Auth | any = {} as any;
 
 if (!admin.apps.length) {
     try {
-        const rawCreds = require("../firebase-secret.json");
-        const parsedCredentials = {
-            ...rawCreds,
-            private_key: rawCreds.private_key.replace(/\\n/g, '\n')
-        };
+        let certOptions: admin.ServiceAccount;
         
+        if (process.env.FIREBASE_PRIVATE_KEY) {
+            certOptions = {
+                projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+                clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+                privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+            };
+        } else {
+            // Fallback to local secret file
+            certOptions = require("../firebase-secret.json");
+        }
+
         admin.initializeApp({
-            credential: admin.credential.cert(parsedCredentials),
+            credential: admin.credential.cert(certOptions),
             storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
         });
         db = admin.firestore();
         st = admin.storage();
         au = admin.auth();
-    } catch (error) {
+    } catch (error: any) {
         console.error("Firebase admin init failed (likely during build or missing valid secret):", error);
+        require('fs').writeFileSync('firebase-error.log', error.toString() + ' ' + error.stack);
     }
 } else {
     db = admin.firestore();

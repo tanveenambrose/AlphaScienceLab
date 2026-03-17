@@ -19,3 +19,18 @@ export async function DELETE(req: Request, props: { params: Promise<{ id: string
         return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
     }
 }
+
+export async function PUT(req: Request, props: { params: Promise<{ id: string }> }) {
+    if (!(await isAuthenticated())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    try {
+        const { id } = await props.params;
+        const data = await req.json();
+        await adminDb.collection("joinRequests").doc(id).update({
+            ...data,
+            updatedAt: new Date().toISOString()
+        });
+        return NextResponse.json({ success: true, id, ...data });
+    } catch (error) {
+        return NextResponse.json({ error: "Failed to update" }, { status: 500 });
+    }
+}
