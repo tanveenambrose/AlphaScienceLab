@@ -20,7 +20,12 @@ export default function AdminJoinRequests() {
         try {
             const res = await fetch("/api/admin/requests");
             const data = await res.json();
-            setRequests(data);
+            if (Array.isArray(data)) {
+                setRequests(data);
+            } else {
+                console.error("API error or invalid data format:", data);
+                setRequests([]);
+            }
         } catch (error) {
             console.error("Failed to fetch requests", error);
         } finally {

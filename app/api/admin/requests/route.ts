@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { adminDb } from "@/lib/firebaseAdmin";
+import { adminDb, isFirebaseReady } from "@/lib/firebaseAdmin";
 import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
@@ -12,6 +12,7 @@ async function isAuthenticated() {
 export async function GET() {
     if (!(await isAuthenticated())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     try {
+        console.log(`Fetch requests. Firebase Live: ${isFirebaseReady}`);
         const snapshot = await adminDb.collection("joinRequests").orderBy("createdAt", "desc").get();
         const requests = snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
         return NextResponse.json(requests);

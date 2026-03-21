@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { adminDb } from "@/lib/firebaseAdmin";
+import { adminDb, isFirebaseReady } from "@/lib/firebaseAdmin";
 import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
@@ -10,6 +10,7 @@ async function isAuthenticated() {
 }
 
 export async function GET() {
+    console.log(`Dashboard fetch. Firebase Live: ${isFirebaseReady}`);
     if (!(await isAuthenticated())) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

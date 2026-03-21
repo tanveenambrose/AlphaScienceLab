@@ -84,8 +84,12 @@ function tryInitFirebase() {
     }
 
     try {
-        // Vercel stores newlines as literal \n in env vars — replace them
-        const formattedKey = privateKey.replace(/\\n/g, "\n");
+        // Handle potentially quoted or escaped private key strings
+        let formattedKey = privateKey;
+        if (formattedKey.startsWith('"') && formattedKey.endsWith('"')) {
+            formattedKey = formattedKey.substring(1, formattedKey.length - 1);
+        }
+        formattedKey = formattedKey.replace(/\\n/g, "\n");
 
         admin.initializeApp({
             credential: admin.credential.cert({
@@ -100,7 +104,7 @@ function tryInitFirebase() {
         st = admin.storage();
         au = admin.auth();
         firebaseInitialized = true;
-        console.log("✅ Firebase Admin SDK initialized successfully.");
+        console.log("✅ Firebase Admin SDK initialized successfully with Project ID:", projectId);
     } catch (error: any) {
         console.error("❌ Firebase Admin SDK init failed:", error.message);
     }

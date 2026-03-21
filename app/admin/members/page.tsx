@@ -28,7 +28,12 @@ export default function AdminMembers() {
         try {
             const res = await fetch("/api/admin/members");
             const data = await res.json();
-            setMembers(data);
+            if (Array.isArray(data)) {
+                setMembers(data);
+            } else {
+                console.error("API error or invalid data format:", data);
+                setMembers([]);
+            }
         } catch (error) {
             console.error("Failed to fetch members", error);
         } finally {
