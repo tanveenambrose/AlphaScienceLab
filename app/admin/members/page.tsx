@@ -5,8 +5,17 @@ import RequireAuth from "@/components/admin/RequireAuth";
 import { Plus, Pencil, Trash2, X } from "lucide-react";
 import Image from "next/image";
 
+interface Member {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+    department: string;
+    image?: string;
+}
+
 export default function AdminMembers() {
-    const [members, setMembers] = useState<any[]>([]);
+    const [members, setMembers] = useState<Member[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
@@ -71,10 +80,16 @@ export default function AdminMembers() {
         }
     };
 
-    const openModal = (member?: any) => {
+    const openModal = (member?: Member) => {
         if (member) {
             setEditingId(member.id);
-            setFormData(member);
+            setFormData({
+                name: member.name,
+                email: member.email,
+                role: member.role,
+                department: member.department,
+                image: member.image || ""
+            });
         } else {
             setEditingId(null);
             setFormData({

@@ -1,77 +1,75 @@
 import Image from "next/image";
-import { Instagram, Facebook, Linkedin, Twitter } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
     return (
-        <footer className="w-full relative z-10 bg-[#080309] border-t border-white/5 py-12 md:py-16">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-                
-                {/* Main Content Grid row */}
-                <div className="flex flex-col md:flex-row justify-between items-center gap-14 md:gap-0 mt-8 mb-20 w-full">
-                    
-                    {/* Left: Logo & Title */}
-                    <div className="flex flex-col items-center md:items-start md:flex-1">
-                        <div className="relative w-[110px] h-[60px] mb-3">
-                            <Image
-                                src="/assests/asl.png"
-                                alt="ASL Logo"
-                                fill
-                                style={{ objectFit: "contain" }}
-                            />
+        <footer className="bg-surface-container-lowest/80 backdrop-blur-md w-full border-t border-outline-variant/20">
+            <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-stack-md mb-stack-lg">
+                    {/* Brand Column */}
+                    <div className="flex flex-col gap-4">
+                        <Image
+                            src="/assests/asl.png"
+                            alt="ASL Logo"
+                            width={90}
+                            height={40}
+                            style={{ objectFit: "contain" }}
+                        />
+                        <p className="font-body-md text-body-md text-on-surface-variant">Creativity Starts From Belief</p>
+                    </div>
+
+                    {/* Quick Links */}
+                    <div className="flex flex-col gap-4">
+                        <h4 className="font-label-sm text-label-sm uppercase tracking-widest text-primary">Quick Links</h4>
+                        <nav className="flex flex-col gap-2">
+                            <Link href="/about" className="text-on-surface-variant hover:text-secondary transition-colors">About</Link>
+                            <Link href="/#projects" className="text-on-surface-variant hover:text-secondary transition-colors">Courses</Link>
+                            <Link href="/events" className="text-on-surface-variant hover:text-secondary transition-colors">Events</Link>
+                            <Link href="#research" className="text-on-surface-variant hover:text-secondary transition-colors">Research</Link>
+                            <Link href="/join" className="text-on-surface-variant hover:text-secondary transition-colors">Contact</Link>
+                        </nav>
+                    </div>
+
+                    {/* Contact */}
+                    <div className="flex flex-col gap-4">
+                        <h4 className="font-label-sm text-label-sm uppercase tracking-widest text-primary">Contact</h4>
+                        <div className="text-on-surface-variant text-body-md flex flex-col gap-2">
+                            <p>Mymensingh Engineering College</p>
+                            <p>Mymensingh, Bangladesh</p>
+                            <p>Email: contact@asl.mec.ac.bd</p>
                         </div>
-                        <span className="font-tech text-white text-[15px] font-bold tracking-[0.1em] whitespace-nowrap">
-                            ALPHA SCIENCE LAB
-                        </span>
                     </div>
 
-                    {/* Center: Social Icons */}
-                    <div className="flex justify-center items-center gap-5 md:flex-1">
-                        {[
-                            { Icon: Instagram, href: "#", label: "Instagram" },
-                            { Icon: Facebook, href: "https://www.facebook.com/Alpha.Science.Lab", label: "Facebook" },
-                            { Icon: Linkedin, href: "https://www.linkedin.com/company/alpha-science-lab", label: "LinkedIn" },
-                            { Icon: Twitter, href: "#", label: "Twitter" }
-                        ].map((social, idx) => (
-                            <a
-                                key={idx}
-                                href={social.href}
-                                target={social.href !== "#" ? "_blank" : undefined}
-                                rel={social.href !== "#" ? "noopener noreferrer" : undefined}
-                                aria-label={social.label}
-                                className="w-9 h-9 flex items-center justify-center text-white hover:text-primary transition-colors"
-                            >
-                                <social.Icon className="w-5 h-5" strokeWidth={1.5} />
+                    {/* Follow Us */}
+                    <div className="flex flex-col gap-4">
+                        <h4 className="font-label-sm text-label-sm uppercase tracking-widest text-primary">Follow Us</h4>
+                        <div className="flex gap-4">
+                            <a href="#" className="text-on-surface-variant hover:text-secondary transition-all hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(76,215,246,0.6)]">
+                                <span className="material-symbols-outlined">facebook</span>
                             </a>
-                        ))}
-                    </div>
-
-                    {/* Right: Newsletter */}
-                    <div className="flex flex-col items-center md:items-end w-full max-w-xs md:flex-1">
-                        <div className="w-full flex flex-col items-center md:items-start">
-                            <label className="block text-white text-[14px] font-semibold mb-3 tracking-wide text-center md:text-left">
-                                Stay Updated
-                            </label>
-                            <div className="w-full flex flex-col gap-3">
-                                <input
-                                    type="email"
-                                    placeholder="Write mail here"
-                                    className="w-full rounded-full px-5 py-3.5 bg-gradient-to-r from-[#7B177D] to-[#360938] text-white placeholder-white/40 text-[12px] focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-inner"
-                                />
-                                <div className="flex justify-end w-full">
-                                   <button className="rounded-full px-6 py-1.5 bg-black border border-white text-white text-[10px] font-semibold tracking-wider hover:bg-white/10 hover:border-white transition-colors cursor-pointer mr-2">
-                                       Submit
-                                   </button>
-                                </div>
-                            </div>
+                            <a href="#" className="text-on-surface-variant hover:text-secondary transition-all hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(76,215,246,0.6)]">
+                                <span className="material-symbols-outlined">link</span>
+                            </a>
+                            <a href="#" className="text-on-surface-variant hover:text-secondary transition-all hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(76,215,246,0.6)]">
+                                <span className="material-symbols-outlined">photo_camera</span>
+                            </a>
+                            <a href="#" className="text-on-surface-variant hover:text-secondary transition-all hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(76,215,246,0.6)]">
+                                <span className="material-symbols-outlined">code</span>
+                            </a>
+                            <a href="#" className="text-on-surface-variant hover:text-secondary transition-all hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(76,215,246,0.6)]">
+                                <span className="material-symbols-outlined">play_circle</span>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                {/* Footer Copyright */}
-                <div className="flex justify-center items-center">
-                    <p className="text-white text-[12px] tracking-[0.05em] text-center uppercase font-medium">
-                        COPYRIGHT: © 2024 ALPHA SCIENCE LAB.
-                    </p>
+                {/* Bottom Bar */}
+                <div className="pt-8 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="font-body-md text-body-md text-on-surface-variant">© 2026 Alpha Science Lab. All rights reserved.</p>
+                    <div className="flex gap-6">
+                        <a href="#" className="text-on-surface-variant hover:text-primary transition-colors">Privacy Policy</a>
+                        <a href="#" className="text-on-surface-variant hover:text-primary transition-colors">Terms of Service</a>
+                    </div>
                 </div>
             </div>
         </footer>

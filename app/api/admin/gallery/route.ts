@@ -12,9 +12,9 @@ async function isAuthenticated() {
 export async function GET() {
     try {
         const snapshot = await adminDb.collection("gallery").orderBy("createdAt", "desc").get();
-        const gallery = snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
+        const gallery = snapshot.docs.map((doc: { id: string; data: () => Record<string, unknown> }) => ({ id: doc.id, ...doc.data() }));
         return NextResponse.json(gallery);
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to fetch gallery" }, { status: 500 });
     }
 }
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
             createdAt: new Date().toISOString()
         });
         return NextResponse.json({ id: docRef.id, ...data });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to upload image" }, { status: 500 });
     }
 }

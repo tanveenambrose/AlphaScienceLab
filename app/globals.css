@@ -2,433 +2,125 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Base resets ─────────────────────────────────────────── */
 @layer base {
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+    body {
+        background-color: #0A0A0E;
+        color: #d4e4fa;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-image:
+            linear-gradient(to right, rgba(76, 215, 246, 0.07) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(221, 183, 255, 0.07) 1px, transparent 1px);
+        background-size: 40px 40px;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        min-width: 320px;
+        -webkit-tap-highlight-color: transparent;
+    }
 
-  :root {
-    --background: #000000;
-    --foreground: #ffffff;
-  }
+    img,
+    video,
+    svg {
+        max-width: 100%;
+        height: auto;
+    }
 
-  body {
-    background-color: var(--background);
-    color: var(--foreground);
-    font-family: var(--font-inter), sans-serif;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    min-width: 320px;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  /* Responsive images & media */
-  img,
-  video,
-  svg {
-    max-width: 100%;
-    height: auto;
-  }
-
-  /* Prevent long words from breaking layout on mobile */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p {
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
 }
 
-/* ─── Reusable components ────────────────────────────────── */
 @layer components {
-
-  /* Glass Card — refined and sharp */
-  .glass-card {
-    background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.02) 100%);
-    backdrop-filter: blur(12px) saturate(220%);
-    -webkit-backdrop-filter: blur(12px) saturate(220%);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  }
-
-  @keyframes glass-shimmer {
-    0% {
-      transform: translateX(-150%) skewX(-25deg);
+    .glass-panel {
+        background: rgba(22, 22, 30, 0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(221, 183, 255, 0.15);
     }
 
-    100% {
-      transform: translateX(250%) skewX(-25deg);
-    }
-  }
-
-  /* Glass Button — high-visibility premium frosted effect */
-  .glass-btn {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px) saturate(220%);
-    -webkit-backdrop-filter: blur(10px) saturate(220%);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow:
-      0 6px 28px rgba(0, 0, 0, 0.4),
-      inset 0 1px 1px rgba(255, 255, 255, 0.15);
-    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-  }
-
-  /* Intense shimmer sweep on hover */
-  .glass-btn::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -120%;
-    width: 60%;
-    height: 200%;
-    background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.45) 50%,
-        transparent 100%);
-    transform: skewX(-25deg);
-    transition: left 0.6s ease;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .glass-btn:hover::before {
-    left: 180%;
-  }
-
-  .glass-btn:hover {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(255, 255, 255, 0.55);
-    box-shadow:
-      0 12px 36px rgba(0, 0, 0, 0.5),
-      0 0 20px rgba(255, 255, 255, 0.1);
-    transform: translateY(-3px) scale(1.02);
-  }
-
-  .glass-btn:active {
-    transform: translateY(-1px) scale(0.98);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-
-  /* Continuous subtle glint animation */
-  .glass-btn::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -150%;
-    width: 40%;
-    height: 200%;
-    background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.12) 50%,
-        transparent 100%);
-    transform: skewX(-25deg);
-    animation: glass-shimmer 6s infinite linear;
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  @keyframes glass-shimmer {
-    0% {
-      transform: translateX(-150%) skewX(-25deg);
+    .neon-glow {
+        box-shadow: 0 0 20px rgba(76, 215, 246, 0.2);
     }
 
-    100% {
-      transform: translateX(350%) skewX(-25deg);
-    }
-  }
-
-  /* Subtitle strip — with subtle glass shimmer loop */
-  .subtitle-strip {
-    background: linear-gradient(270deg, #000000 0%, #3D1022 100%);
-    backdrop-filter: blur(14px) saturate(180%);
-    -webkit-backdrop-filter: blur(14px) saturate(180%);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .subtitle-strip::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 30%;
-    height: 100%;
-    background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.1) 50%,
-        transparent 100%);
-    transform: skewX(-20deg);
-    animation: strip-shimmer 6s infinite linear;
-    pointer-events: none;
-  }
-
-  @keyframes strip-shimmer {
-    0% {
-      left: -110%;
+    .neon-glow-primary {
+        box-shadow: 0 0 20px rgba(221, 183, 255, 0.2);
     }
 
-    50% {
-      left: 160%;
+    .text-gradient {
+        background: linear-gradient(90deg, #ddb7ff, #4cd7f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
-    100% {
-      left: 160%;
-    }
-  }
-
-  /* Custom cursor */
-  .custom-cursor {
-    width: 20px;
-    height: 20px;
-    background: white;
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    mix-blend-mode: difference;
-  }
-}
-
-/* ─── Utility classes ────────────────────────────────────── */
-@layer utilities {
-  /* ─── Animated RGB background orbs ──────────────── */
-
-  /* Shared orb base */
-  .rgb-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.42;
-    will-change: transform;
-  }
-
-  /* Orb 1 — purple/magenta, top-right */
-  .rgb-orb-1 {
-    width: 80vw;
-    height: 80vw;
-    top: -20vw;
-    right: -20vw;
-    background: radial-gradient(circle, #7B61FF 0%, #500090 40%, transparent 70%);
-    animation: drift1 18s ease-in-out infinite alternate;
-  }
-
-  /* Orb 2 — deep purple, bottom-left */
-  .rgb-orb-2 {
-    width: 70vw;
-    height: 70vw;
-    bottom: -20vw;
-    left: -20vw;
-    background: radial-gradient(circle, #500090 0%, #3D1022 50%, transparent 75%);
-    animation: drift2 22s ease-in-out infinite alternate;
-  }
-
-  /* Orb 3 — deep blue/indigo, bottom-right */
-  .rgb-orb-3 {
-    width: 65vw;
-    height: 65vw;
-    bottom: -15vw;
-    right: -15vw;
-    background: radial-gradient(circle, #3D7FFF 0%, #1030c0 50%, transparent 75%);
-    animation: drift3 26s ease-in-out infinite alternate;
-  }
-
-  /* Orb 4 — violet, top-center */
-  .rgb-orb-4 {
-    width: 60vw;
-    height: 60vw;
-    top: 0;
-    left: 20vw;
-    background: radial-gradient(circle, #962E9B 0%, #500090 50%, transparent 75%);
-    animation: drift4 20s ease-in-out infinite alternate;
-  }
-
-  /* Orb 5 — indigo, mid-left */
-  .rgb-orb-5 {
-    width: 50vw;
-    height: 50vw;
-    top: 30vh;
-    left: -15vw;
-    background: radial-gradient(circle, #7B61FF 0%, #3D7FFF 50%, transparent 75%);
-    animation: drift5 30s ease-in-out infinite alternate;
-  }
-
-
-  @keyframes drift1 {
-    0% {
-      transform: translate(0, 0) scale(1);
+    .glass-card {
+        background: rgba(22, 22, 30, 0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(221, 183, 255, 0.15);
     }
 
-    25% {
-      transform: translate(-6vw, 4vh) scale(1.08);
+    .glass-card:hover {
+        border-color: rgba(221, 183, 255, 0.3);
+        box-shadow: 0 0 20px rgba(221, 183, 255, 0.15);
     }
 
-    50% {
-      transform: translate(-10vw, -2vh) scale(0.95);
+    .glass-btn {
+        background: rgba(22, 22, 30, 0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(221, 183, 255, 0.15);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
     }
 
-    75% {
-      transform: translate(-4vw, 8vh) scale(1.12);
+    .glass-btn:hover {
+        border-color: rgba(221, 183, 255, 0.3);
+        box-shadow: 0 0 20px rgba(221, 183, 255, 0.2);
+        transform: translateY(-2px);
     }
 
-    100% {
-      transform: translate(-8vw, 3vh) scale(1.04);
-    }
-  }
-
-  @keyframes drift2 {
-    0% {
-      transform: translate(0, 0) scale(1);
+    .glass-btn:active {
+        transform: translateY(0) scale(0.98);
     }
 
-    33% {
-      transform: translate(8vw, -5vh) scale(1.1);
+    .timeline-line {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(221, 183, 255, 0.1), rgba(76, 215, 246, 0.8), rgba(221, 183, 255, 0.1));
+        z-index: 0;
     }
 
-    66% {
-      transform: translate(14vw, 4vh) scale(0.92);
+    .timeline-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: #051424;
+        border: 2px solid #4cd7f6;
+        box-shadow: 0 0 10px rgba(76, 215, 246, 0.8);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
     }
-
-    100% {
-      transform: translate(6vw, -8vh) scale(1.06);
-    }
-  }
-
-  @keyframes drift3 {
-    0% {
-      transform: translate(0, 0) scale(1);
-    }
-
-    40% {
-      transform: translate(-12vw, -6vh) scale(1.15);
-    }
-
-    70% {
-      transform: translate(-6vw, -12vh) scale(0.9);
-    }
-
-    100% {
-      transform: translate(-14vw, -4vh) scale(1.08);
-    }
-  }
-
-  @keyframes drift4 {
-    0% {
-      transform: translate(0, 0) scale(1);
-    }
-
-    30% {
-      transform: translate(8vw, 6vh) scale(1.1);
-    }
-
-    60% {
-      transform: translate(-6vw, 10vh) scale(0.88);
-    }
-
-    100% {
-      transform: translate(4vw, 8vh) scale(1.05);
-    }
-  }
-
-  @keyframes drift5 {
-    0% {
-      transform: translate(0, 0) scale(1);
-    }
-
-    35% {
-      transform: translate(10vw, -8vh) scale(1.12);
-    }
-
-    70% {
-      transform: translate(16vw, 4vh) scale(0.93);
-    }
-
-    100% {
-      transform: translate(8vw, -12vh) scale(1.07);
-    }
-  }
-
-  /* ─── Ice / Frost glow utilities ─────────────────────────── */
-
-  /* Animated horizontal ice scan line that drifts slowly down the page */
-  @keyframes ice-scan {
-    0% {
-      transform: translateY(-100vh);
-      opacity: 0;
-    }
-
-    10% {
-      opacity: 1;
-    }
-
-    90% {
-      opacity: 0.6;
-    }
-
-    100% {
-      transform: translateY(100vh);
-      opacity: 0;
-    }
-  }
-
-  .ice-scanline {
-    position: fixed;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(140, 228, 255, 0.18) 20%,
-        rgba(180, 240, 255, 0.55) 50%,
-        rgba(140, 228, 255, 0.18) 80%,
-        transparent 100%);
-    filter: blur(1px);
-    animation: ice-scan 12s linear infinite;
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  /* Frost shimmer on glass cards */
-  .glass-card:hover {
-    border-color: rgba(140, 228, 255, 0.22);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      0 0 28px rgba(100, 210, 255, 0.09);
-    transition: border-color 0.4s ease, box-shadow 0.4s ease;
-  }
-
-  /* Ice text-glow utility */
-  .ice-glow {
-    text-shadow:
-      0 0 12px rgba(100, 220, 255, 0.7),
-      0 0 30px rgba(80, 190, 255, 0.4),
-      0 0 60px rgba(60, 160, 240, 0.2);
-  }
-
-  /* Frost border utility */
-  .frost-border {
-    border: 1px solid rgba(140, 228, 255, 0.18);
-    box-shadow:
-      0 0 16px rgba(100, 210, 255, 0.08),
-      inset 0 0 16px rgba(100, 210, 255, 0.04);
-  }
 }

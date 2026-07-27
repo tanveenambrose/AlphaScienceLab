@@ -13,9 +13,9 @@ async function isAuthenticated() {
 export async function GET() {
     try {
         const snapshot = await adminDb.collection("projects").get();
-        const projects = snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
+        const projects = snapshot.docs.map((doc: { id: string; data: () => Record<string, unknown> }) => ({ id: doc.id, ...doc.data() }));
         return NextResponse.json(projects);
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 });
     }
 }
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
             createdAt: new Date().toISOString()
         });
         return NextResponse.json({ id: docRef.id, ...data });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to create project" }, { status: 500 });
     }
 }

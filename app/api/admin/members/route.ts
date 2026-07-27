@@ -12,9 +12,9 @@ async function isAuthenticated() {
 export async function GET() {
     try {
         const snapshot = await adminDb.collection("members").get();
-        const members = snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
+        const members = snapshot.docs.map((doc: { id: string; data: () => Record<string, unknown> }) => ({ id: doc.id, ...doc.data() }));
         return NextResponse.json(members);
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to fetch members" }, { status: 500 });
     }
 }
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
             createdAt: new Date().toISOString()
         });
         return NextResponse.json({ id: docRef.id, ...data });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to create member" }, { status: 500 });
     }
 }

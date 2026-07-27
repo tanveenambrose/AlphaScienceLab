@@ -15,7 +15,7 @@ export async function DELETE(req: Request, props: { params: Promise<{ id: string
         const { id } = await props.params;
         await adminDb.collection("joinRequests").doc(id).delete();
         return NextResponse.json({ success: true, id });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
     }
 }
@@ -30,7 +30,7 @@ export async function PUT(req: Request, props: { params: Promise<{ id: string }>
             updatedAt: new Date().toISOString()
         });
         return NextResponse.json({ success: true, id, ...data });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to update" }, { status: 500 });
     }
 }

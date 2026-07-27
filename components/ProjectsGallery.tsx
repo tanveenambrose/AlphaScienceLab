@@ -1,13 +1,24 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+interface Project {
+    id: string;
+    title: string;
+    subtitle?: string;
+    description: string;
+    image: string;
+    color: string;
+    link?: string;
+    category?: string;
+}
+
 export default function ProjectsGallery() {
-    const [projects, setProjects] = useState<any[]>([]);
+    const [projects, setProjects] = useState<Project[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -28,7 +39,7 @@ export default function ProjectsGallery() {
         fetchProjects();
     }, []);
 
-    const activeProject = projects[activeIndex] || projects[0] || {} as any;
+    const activeProject: Partial<Project> = projects[activeIndex] || projects[0] || {};
 
     const nextProject = () => {
         setActiveIndex((prev) => (prev + 1) % projects.length);
@@ -135,8 +146,8 @@ export default function ProjectsGallery() {
 
                                 <div className="relative w-full aspect-[3/2] rounded-2xl overflow-hidden border border-white/10 shadow-3xl">
                                     <Image
-                                        src={activeProject.image}
-                                        alt={activeProject.title}
+                                        src={activeProject.image || "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"}
+                                        alt={activeProject.title || "Project Image"}
                                         fill
                                         className="object-cover opacity-100"
                                         priority

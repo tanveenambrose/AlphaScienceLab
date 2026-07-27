@@ -4,12 +4,27 @@ import { useState, useEffect } from "react";
 import RequireAuth from "@/components/admin/RequireAuth";
 import { Trash2, Info, X, Save } from "lucide-react";
 
+interface JoinRequestItem {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    department: string;
+    batch: string;
+    semester: number | string;
+    interest: string;
+    hours: string;
+    skills?: string;
+    reason?: string;
+    createdAt: string;
+}
+
 export default function AdminJoinRequests() {
-    const [requests, setRequests] = useState<any[]>([]);
+    const [requests, setRequests] = useState<JoinRequestItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedRequest, setSelectedRequest] = useState<any | null>(null);
-    const [formData, setFormData] = useState<any>({});
+    const [selectedRequest, setSelectedRequest] = useState<JoinRequestItem | null>(null);
+    const [formData, setFormData] = useState<Partial<JoinRequestItem>>({});
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
@@ -45,6 +60,7 @@ export default function AdminJoinRequests() {
 
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!selectedRequest) return;
         setIsSaving(true);
         try {
             const res = await fetch(`/api/admin/requests/${selectedRequest.id}`, {
@@ -65,7 +81,7 @@ export default function AdminJoinRequests() {
         }
     };
 
-    const openModal = (request: any) => {
+    const openModal = (request: JoinRequestItem) => {
         setSelectedRequest(request);
         setFormData({ ...request });
         setIsModalOpen(true);
@@ -73,7 +89,7 @@ export default function AdminJoinRequests() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData((prev: any) => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     return (

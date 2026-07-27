@@ -5,8 +5,14 @@ import RequireAuth from "@/components/admin/RequireAuth";
 import { Plus, Trash2, X } from "lucide-react";
 import Image from "next/image";
 
+interface GalleryItem {
+    id: string;
+    image: string;
+    title?: string;
+}
+
 export default function AdminGallery() {
-    const [images, setImages] = useState<any[]>([]);
+    const [images, setImages] = useState<GalleryItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newImageUrl, setNewImageUrl] = useState("");

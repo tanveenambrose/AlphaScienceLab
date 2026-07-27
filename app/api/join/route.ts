@@ -10,7 +10,7 @@ export async function POST(req: Request) {
             createdAt: new Date().toISOString()
         });
         return NextResponse.json({ success: true, id: docRef.id });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to submit request" }, { status: 500 });
     }
 }

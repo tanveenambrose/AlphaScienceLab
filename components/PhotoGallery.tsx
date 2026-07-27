@@ -3,8 +3,14 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
+interface GalleryImage {
+    id: string;
+    image: string;
+    title?: string;
+}
+
 export default function PhotoGallery() {
-    const [images, setImages] = useState<any[]>([]);
+    const [images, setImages] = useState<GalleryImage[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {

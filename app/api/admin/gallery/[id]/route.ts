@@ -15,7 +15,7 @@ export async function DELETE(req: Request, props: { params: Promise<{ id: string
         const { id } = await props.params;
         await adminDb.collection("gallery").doc(id).delete();
         return NextResponse.json({ success: true, id });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to delete image" }, { status: 500 });
     }
 }

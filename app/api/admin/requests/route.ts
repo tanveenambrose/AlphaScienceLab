@@ -14,9 +14,9 @@ export async function GET() {
     try {
         console.log(`Fetch requests. Firebase Live: ${isFirebaseReady}`);
         const snapshot = await adminDb.collection("joinRequests").orderBy("createdAt", "desc").get();
-        const requests = snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
+        const requests = snapshot.docs.map((doc: { id: string; data: () => Record<string, unknown> }) => ({ id: doc.id, ...doc.data() }));
         return NextResponse.json(requests);
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to fetch requests" }, { status: 500 });
     }
 }

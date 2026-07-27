@@ -23,7 +23,7 @@ export default function JoinPage() {
             });
             if (res.ok) setStatus("success");
             else setStatus("error");
-        } catch (error) {
+        } catch {
             setStatus("error");
         }
     };

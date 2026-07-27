@@ -14,8 +14,19 @@ const CATEGORIES = [
     "Research, Innovation & Documentation"
 ];
 
+interface ProjectItem {
+    id: string;
+    title: string;
+    subtitle?: string;
+    description: string;
+    image: string;
+    color: string;
+    link?: string;
+    category?: string;
+}
+
 export default function AdminProjects() {
-    const [projects, setProjects] = useState<any[]>([]);
+    const [projects, setProjects] = useState<ProjectItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
@@ -41,7 +52,7 @@ export default function AdminProjects() {
             const res = await fetch("/api/admin/projects");
             const data = await res.json();
             setProjects(data);
-        } catch (error) {
+        } catch {
             console.error("Failed to fetch projects");
         } finally {
             setIsLoading(false);
@@ -106,12 +117,17 @@ export default function AdminProjects() {
         }
     };
 
-    const openModal = (project?: any) => {
+    const openModal = (project?: ProjectItem) => {
         if (project) {
             setEditingId(project.id);
             setFormData({
-                ...project,
-                subtitle: project.subtitle || "Featured projects of Alpha Science Lab"
+                title: project.title,
+                subtitle: project.subtitle || "Featured projects of Alpha Science Lab",
+                description: project.description,
+                image: project.image,
+                color: project.color,
+                link: project.link || "",
+                category: project.category || activeCategory
             });
         } else {
             setEditingId(null);

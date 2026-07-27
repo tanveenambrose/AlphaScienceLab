@@ -1,0 +1,450 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>About Alpha Science Lab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed-dim": "#4cd7f6",
+                    "background": "#051424",
+                    "on-background": "#d4e4fa",
+                    "secondary": "#4cd7f6",
+                    "inverse-primary": "#842bd2",
+                    "surface": "#051424",
+                    "tertiary": "#fbabff",
+                    "outline-variant": "#4d4354",
+                    "surface-container-highest": "#273647",
+                    "surface-container-low": "#0d1c2d",
+                    "on-secondary-container": "#00424e",
+                    "surface-dim": "#051424",
+                    "on-surface": "#d4e4fa",
+                    "primary-container": "#b76dff",
+                    "secondary-fixed": "#acedff",
+                    "on-surface-variant": "#cfc2d6",
+                    "on-primary-container": "#400071",
+                    "on-error-container": "#ffdad6",
+                    "inverse-on-surface": "#233143",
+                    "on-error": "#690005",
+                    "inverse-surface": "#d4e4fa",
+                    "surface-tint": "#ddb7ff",
+                    "error-container": "#93000a",
+                    "on-primary-fixed-variant": "#6900b3",
+                    "secondary-container": "#03b5d3",
+                    "primary-fixed": "#f0dbff",
+                    "on-tertiary-fixed-variant": "#7c008e",
+                    "on-secondary": "#003640",
+                    "on-primary": "#490080",
+                    "outline": "#988d9f",
+                    "primary-fixed-dim": "#ddb7ff",
+                    "error": "#ffb4ab",
+                    "on-tertiary-fixed": "#36003e",
+                    "on-tertiary": "#580065",
+                    "on-primary-fixed": "#2c0051",
+                    "tertiary-fixed-dim": "#fbabff",
+                    "surface-bright": "#2c3a4c",
+                    "primary": "#ddb7ff",
+                    "tertiary-container": "#e14ef6",
+                    "surface-variant": "#273647",
+                    "tertiary-fixed": "#ffd6fd",
+                    "on-secondary-fixed-variant": "#004e5c",
+                    "surface-container-high": "#1c2b3c",
+                    "on-secondary-fixed": "#001f26",
+                    "on-tertiary-container": "#4d0059",
+                    "surface-container-lowest": "#010f1f",
+                    "surface-container": "#122131"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "24px",
+                    "stack-sm": "8px",
+                    "margin-desktop": "48px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "stack-lg": "64px",
+                    "unit": "4px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "body-lg": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-md": [
+                            "Space Grotesk"
+                    ],
+                    "display-md": [
+                            "Space Grotesk"
+                    ],
+                    "display-lg": [
+                            "Space Grotesk"
+                    ],
+                    "headline-lg-mobile": [
+                            "Space Grotesk"
+                    ],
+                    "body-md": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-lg": [
+                            "Space Grotesk"
+                    ],
+                    "label-sm": [
+                            "Geist"
+                    ],
+                    "display-lg-mobile": [
+                            "Space Grotesk"
+                    ]
+            },
+            "fontSize": {
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-md": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "display-lg": [
+                            "72px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "28px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "0.1em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "display-lg-mobile": [
+                            "40px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(22, 22, 30, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(221, 183, 255, 0.15);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .glow-border:hover {
+            box-shadow: 0 0 15px rgba(76, 215, 246, 0.5);
+            border-color: rgba(76, 215, 246, 0.8);
+        }
+        .primary-gradient-btn {
+            background: linear-gradient(135deg, rgba(132, 43, 210, 1) 0%, rgba(225, 78, 246, 1) 100%);
+            box-shadow: 0 0 15px rgba(221, 183, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .primary-gradient-btn:hover {
+            box-shadow: 0 0 25px rgba(221, 183, 255, 0.6);
+            transform: translateY(-2px);
+        }
+        .secondary-outline-btn {
+            border: 1px solid #4cd7f6;
+            color: #4cd7f6;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+        .secondary-outline-btn:hover {
+            background: rgba(76, 215, 246, 0.1);
+            box-shadow: 0 0 15px rgba(76, 215, 246, 0.3);
+        }
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(221, 183, 255, 0.1), rgba(76, 215, 246, 0.8), rgba(221, 183, 255, 0.1));
+            z-index: 0;
+        }
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #051424;
+            border: 2px solid #4cd7f6;
+            box-shadow: 0 0 10px rgba(76, 215, 246, 0.8);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="text-on-surface font-body-md min-h-screen selection:bg-secondary/30 selection:text-secondary-fixed" style="background-color: #0A0A0E; background-image: linear-gradient(to right, rgba(132, 43, 210, 0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(76, 215, 246, 0.15) 1px, transparent 1px); background-size: 40px 40px;">
+<!-- Navigation Shell -->
+<nav class="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-container-max rounded-full border border-primary/20 bg-surface/80 backdrop-blur-xl border border-primary/15 shadow-[0_0_20px_rgba(221,183,255,0.1)] z-50">
+<div class="flex justify-between items-center px-8 py-3 w-full">
+<a class="block h-8 hover:opacity-80 transition-opacity" href="#"><img alt="ASL Logo" class="h-full w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCacAdOIwLwfbeMEUZSy7YgYR29_o0rO87QlTesV1bpw2wR0X-jaT9zORwgbv9StknsJ7U_Lm7W9Ys_9kV3jfwq783Pmjcj3-xs_Ltn2FpIl0C6DnQGnMp1Fc_s1HJEJXp2ALsm5YxXw-xPJ6pomyrW6Jjn4-KEGtA910_dE6MQgBZosHvVbi5-r6jXMl0zUosPPbyHjn95YLQ8uB0q85GIM4JhS2Ll_WHCQWTtyzX7I4p_mSRnR5kOFrOqn1Z279x3Y1U4lBUvZKI"></a>
+<div class="hidden md:flex items-center gap-gutter">
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all" href="#">Home</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all" href="#">Research &amp; Domains</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all" href="#">Projects</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all" href="#">Events</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all" href="#">Team</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold border-b border-primary/50 hover:text-secondary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all" href="#">About</a>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full border border-primary/20 bg-surface/40 backdrop-blur-md text-primary hover:border-secondary hover:text-secondary hover:scale-110 active:scale-95 transition-all duration-300 shadow-[0_0_10px_rgba(221,183,255,0.1)] hover:shadow-[0_0_15px_rgba(76,215,246,0.3)] mr-4" aria-label="Toggle Theme">
+  <span class="material-symbols-outlined text-xl">light_mode</span>
+</button><button class="primary-gradient-btn px-6 py-2 rounded-full font-label-sm text-label-sm uppercase tracking-widest text-white hover:scale-105 active:scale-95 transition-all">Join ASL</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative pt-[120px] pb-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto min-h-[614px] flex flex-col justify-center">
+<div class="absolute inset-0 z-[-1] overflow-hidden opacity-30">
+<div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary-container rounded-full mix-blend-screen filter blur-[150px] opacity-20"></div>
+<div class="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-secondary-container rounded-full mix-blend-screen filter blur-[150px] opacity-20"></div>
+</div>
+<div class="max-w-3xl z-10">
+<div class="inline-block px-3 py-1 rounded-full bg-surface-variant border border-primary/20 mb-stack-md">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary">The Genesis</span>
+</div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-primary mb-stack-md">Forging the Future at <br><span class="text-secondary">MEC</span></h1>
+<p class="font-body-lg text-on-surface-variant max-w-2xl">
+                Alpha Science Lab (ASL) is a premier research and development hub nested within Mymensingh Engineering College. We bridge the gap between theoretical knowledge and practical innovation, specializing in robotics, aerospace, and advanced computational systems.
+            </p>
+</div>
+</header>
+<!-- Mission & Vision -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto relative z-10">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="glass-card rounded-xl p-8 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full filter blur-[40px] group-hover:bg-primary/20 transition-all duration-500"></div>
+<div class="flex items-center gap-4 mb-6">
+<span class="material-symbols-outlined text-4xl text-primary" data-icon="rocket_launch">rocket_launch</span>
+<h2 class="font-headline-md text-primary">Mission</h2>
+</div>
+<p class="font-body-md text-on-surface-variant">
+                    To cultivate a generation of frontier engineers by providing state-of-the-art infrastructure, rigorous mentorship, and a collaborative ecosystem that transforms bold ideas into tangible technological advancements for Bangladesh and beyond.
+                </p>
+</div>
+<div class="glass-card rounded-xl p-8 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full filter blur-[40px] group-hover:bg-secondary/20 transition-all duration-500"></div>
+<div class="flex items-center gap-4 mb-6">
+<span class="material-symbols-outlined text-4xl text-secondary" data-icon="visibility">visibility</span>
+<h2 class="font-headline-md text-secondary">Vision</h2>
+</div>
+<p class="font-body-md text-on-surface-variant">
+                    To become the undisputed epicenter of autonomous systems and aerospace research in South Asia, pioneering solutions that redefine human-machine interaction and propel humanity towards a technologically equitable future.
+                </p>
+</div>
+</div>
+</section>
+<!-- Our Journey (Timeline) -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto relative z-10">
+<div class="text-center mb-stack-lg">
+<h2 class="font-display-md text-primary mb-2">Our Journey</h2>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-secondary">Milestones of Innovation</p>
+</div>
+<div class="relative max-w-4xl mx-auto py-12">
+<div class="timeline-line"></div>
+<!-- Timeline Item 1 -->
+<div class="relative flex justify-between items-center w-full mb-24 group">
+<div class="w-5/12 pr-8 text-right">
+<h3 class="font-headline-md text-primary mb-2">Inception</h3>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant mb-2">2021</p>
+<p class="font-body-md text-on-surface-variant">Founded by a visionary group of MEC students aiming to create a dedicated space for hands-on robotics research.</p>
+</div>
+<div class="timeline-dot group-hover:scale-150 transition-transform duration-300"></div>
+<div class="w-5/12 pl-8">
+<div class="glass-card rounded-lg overflow-hidden h-40 relative group-hover:border-secondary/50 transition-colors">
+<img class="object-cover w-full h-full opacity-60 mix-blend-luminosity hover:mix-blend-normal transition-all duration-500" data-alt="A futuristic, high-contrast cyberpunk lab setup in dark mode. Glowing blue and purple neon lights illuminate a workbench covered in intricate robotic components, circuit boards, and advanced tools. Deep charcoal background, glassmorphism UI elements floating faintly in the air. High-tech, cinematic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzGf6h40H1o1il78-fUD0N7coZVvOxzdE9BgInFGHOEPl8ox2g59_yQQ0NWNAHvGbCH9yGZ5_qq2SOF0Mi6BPWl3sbX1TUseFLB6ydKvNHZiaQgQ5Xl86oGaE3QlhoSC6SEPQoLfR7SNzjWfdfgfal6VXGFC3rpheQwMyCdYTqrnLLIoYLB8O82IU3rdM16PRtOzDCFpjDnfSijxKCAlA12NzRnmSnkO-CTztX8dOjHDv-dfyzJrte-zqYDnug8V2HB_wC3PTPb1s">
+</div>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative flex justify-between items-center w-full mb-24 flex-row-reverse group">
+<div class="w-5/12 pl-8 text-left">
+<h3 class="font-headline-md text-primary mb-2">First Flight</h3>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant mb-2">2022</p>
+<p class="font-body-md text-on-surface-variant">Successful deployment of ASL's first autonomous UAV drone, marking our entry into aerospace engineering domains.</p>
+</div>
+<div class="timeline-dot group-hover:scale-150 transition-transform duration-300"></div>
+<div class="w-5/12 pr-8">
+<div class="glass-card rounded-lg overflow-hidden h-40 relative group-hover:border-secondary/50 transition-colors">
+<img class="object-cover w-full h-full opacity-60 mix-blend-luminosity hover:mix-blend-normal transition-all duration-500" data-alt="A sleek, stealthy autonomous UAV drone suspended in a dark, hangar-like testing facility. Illuminated by sharp cyan laser grids and deep purple ambient lighting. The drone features carbon fiber textures and glowing telemetry sensors. Cinematic, high-tech aerospace lab setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfPZcDwNsouyfMbk0Gl69v6bj_Nym0WL_gtGyELqVqrcrFNlYJMRmKhBfyaTsIwihOqfppmTfW-SUidkfU-B9BdI4aJdiH9cjxE2sS6mGO36flGHS_0u9-NKPc3zGxxhE18APJ1WcrrlP7UrmENczcnTf-7HMXtrAEPdchV2yWojNGuSi6s-i5XenKkvQtztHxZGUhdIOH56jss4Sl8O8yvZDBmDb4_FGGHRcyCWKd1za7geOGCpTiCATC8-bJrU_of47m4GjrFS4">
+</div>
+</div>
+</div>
+<!-- Timeline Item 3 -->
+<div class="relative flex justify-between items-center w-full group">
+<div class="w-5/12 pr-8 text-right">
+<h3 class="font-headline-md text-primary mb-2">Uro Partnership</h3>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant mb-2">2024</p>
+<p class="font-body-md text-on-surface-variant">Secured strategic collaboration with Uro Bangladesh, vastly expanding computational resources and hardware accessibility.</p>
+</div>
+<div class="timeline-dot group-hover:scale-150 transition-transform duration-300"></div>
+<div class="w-5/12 pl-8">
+<div class="glass-card rounded-lg overflow-hidden h-40 relative group-hover:border-secondary/50 transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-6xl text-surface-variant" data-icon="handshake">handshake</span>
+<div class="absolute inset-0 bg-gradient-to-tr from-secondary/10 to-primary/10"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Partnerships -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto relative z-10 border-t border-outline-variant/20">
+<div class="text-center mb-stack-lg">
+<h2 class="font-display-md text-primary mb-2">Strategic Alliances</h2>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-secondary">Powering Our Research</p>
+</div>
+<div class="flex flex-wrap justify-center items-center gap-12">
+<!-- Partner Logo 1 -->
+<div class="glass-card p-6 rounded-xl flex flex-col items-center justify-center w-48 h-32 hover:border-secondary transition-colors group cursor-pointer">
+<span class="font-display-md text-on-surface-variant group-hover:text-secondary transition-colors uppercase tracking-tighter">URO</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant mt-1">Bangladesh</span>
+</div>
+<!-- Partner Logo 2 (Placeholder) -->
+<div class="glass-card p-6 rounded-xl flex flex-col items-center justify-center w-48 h-32 hover:border-primary transition-colors group cursor-pointer opacity-50">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:text-primary transition-colors mb-2" data-icon="business">business</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">Future Partner</span>
+</div>
+</div>
+</section>
+<!-- Join The Lab -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto relative z-10 mb-24">
+<div class="glass-card rounded-2xl p-12 text-center relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
+<h2 class="font-display-md text-white mb-4">Ready to Build the Future?</h2>
+<p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-8">
+                We are constantly looking for brilliant minds in engineering, computer science, and applied physics. Join ASL and gain access to cutting-edge tech and elite mentorship.
+            </p>
+<div class="flex flex-col sm:flex-row justify-center gap-4">
+<button class="primary-gradient-btn px-8 py-4 rounded-lg font-label-sm text-label-sm uppercase tracking-widest text-white flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-xl" data-icon="terminal">terminal</span>
+                    Apply Now
+                </button>
+<button class="secondary-outline-btn px-8 py-4 rounded-lg font-label-sm text-label-sm uppercase tracking-widest flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-xl" data-icon="description">description</span>
+                    View Requirements
+                </button>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full border-t border-outline-variant/10 relative z-10" style="background-color: transparent;"><div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+    <!-- Brand Column -->
+    <div class="flex flex-col gap-4">
+      <a href="#" class="block h-8 hover:opacity-80 transition-opacity">
+        <img alt="ASL Logo" class="h-full w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCacAdOIwLwfbeMEUZSy7YgYR29_o0rO87QlTesV1bpw2wR0X-jaT9zORwgbv9StknsJ7U_Lm7W9Ys_9kV3jfwq783Pmjcj3-xs_Ltn2FpIl0C6DnQGnMp1Fc_s1HJEJXp2ALsm5YxXw-xPJ6pomyrW6Jjn4-KEGtA910_dE6MQgBZosHvVbi5-r6jXMl0zUosPPbyHjn95YLQ8uB0q85GIM4JhS2Ll_WHCQWTtyzX7I4p_mSRnR5kOFrOqn1Z279x3Y1U4lBUvZKI">
+      </a>
+      <p class="font-body-md text-on-surface-variant italic">"Creativity Starts From Belief"</p>
+    </div>
+    <!-- Quick Links -->
+    <div class="flex flex-col gap-4">
+      <h4 class="font-headline-md text-primary text-xl">Quick Links</h4>
+      <nav class="flex flex-col gap-2">
+        <a href="#" class="font-body-md text-on-surface-variant hover:text-secondary transition-colors">About</a>
+        <a href="#" class="font-body-md text-on-surface-variant hover:text-secondary transition-colors">Courses</a>
+        <a href="#" class="font-body-md text-on-surface-variant hover:text-secondary transition-colors">Events</a>
+        <a href="#" class="font-body-md text-on-surface-variant hover:text-secondary transition-colors">Research</a>
+      </nav>
+    </div>
+    <!-- Contact -->
+    <div class="flex flex-col gap-4">
+      <h4 class="font-headline-md text-primary text-xl">Contact</h4>
+      <div class="flex flex-col gap-2 font-body-md text-on-surface-variant">
+        <p class="">Mymensingh Engineering College</p>
+        <p class="">Mymensingh-2200, Bangladesh</p>
+        <a href="mailto:info@asl-mec.org" class="hover:text-secondary transition-colors">info@asl-mec.org</a>
+      </div>
+    </div>
+    <!-- Follow Us -->
+    <div class="flex flex-col gap-4">
+      <h4 class="font-headline-md text-primary text-xl">Follow Us</h4>
+      <div class="flex gap-4"><a href="#" class="text-on-surface-variant hover:text-secondary transition-colors group">
+          <span class="material-symbols-outlined">facebook</span>
+        </a>
+        <a href="#" class="text-on-surface-variant hover:text-secondary transition-colors group">
+          <span class="material-symbols-outlined">link</span>
+        </a>
+        <a href="#" class="text-on-surface-variant hover:text-secondary transition-colors group">
+          <span class="material-symbols-outlined">photo_camera</span>
+        </a>
+        <a href="#" class="text-on-surface-variant hover:text-secondary transition-colors group">
+          <span class="material-symbols-outlined">code</span>
+        </a>
+        <a href="#" class="text-on-surface-variant hover:text-secondary transition-colors group">
+          <span class="material-symbols-outlined">play_circle</span>
+        </a></div>
+    </div>
+  </div>
+  <!-- Bottom Bar -->
+  <div class="pt-8 border-t border-outline-variant/10 flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="font-body-md text-on-surface-variant">© 2026 Alpha Science Lab. MEC Bangladesh.</div>
+    <div class="flex gap-6">
+      <a href="#" class="font-body-md text-on-surface-variant hover:text-primary transition-colors">Privacy Policy</a>
+      <a href="#" class="font-body-md text-on-surface-variant hover:text-primary transition-colors">Terms of Service</a>
+      <a href="#" class="font-body-md text-on-surface-variant hover:text-primary transition-colors">Contact</a>
+    </div>
+  </div>
+</div></footer>
+
+
+
+
+
+
+</body></html>

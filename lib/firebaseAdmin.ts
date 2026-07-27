@@ -1,43 +1,57 @@
 import * as admin from "firebase-admin";
+import { serviceAccount } from "./firebaseServiceAccount";
+
+interface MockItem {
+    id: string;
+    [key: string]: unknown;
+}
 
 declare global {
-    var __MOCK_FIRESTORE_DATA: any;
+    var __MOCK_FIRESTORE_DATA: Record<string, MockItem[]> | undefined;
 }
 
 const initMockDB = () => {
-    if (!global.__MOCK_FIRESTORE_DATA) {
-        global.__MOCK_FIRESTORE_DATA = { projects: [], joinRequests: [], members: [], gallery: [] };
+    if (!globalThis.__MOCK_FIRESTORE_DATA) {
+        globalThis.__MOCK_FIRESTORE_DATA = { projects: [], joinRequests: [], members: [], gallery: [] };
     }
     const genId = () => Math.random().toString(36).substring(2, 9);
-    const getCol = (name: string) => {
-        if (!global.__MOCK_FIRESTORE_DATA[name]) global.__MOCK_FIRESTORE_DATA[name] = [];
-        return global.__MOCK_FIRESTORE_DATA[name];
+    const getCol = (name: string): MockItem[] => {
+        if (!globalThis.__MOCK_FIRESTORE_DATA) {
+            globalThis.__MOCK_FIRESTORE_DATA = { projects: [], joinRequests: [], members: [], gallery: [] };
+        }
+        if (!globalThis.__MOCK_FIRESTORE_DATA[name]) {
+            globalThis.__MOCK_FIRESTORE_DATA[name] = [];
+        }
+        return globalThis.__MOCK_FIRESTORE_DATA[name];
     };
     return {
         collection: (name: string) => ({
             orderBy: () => ({
-                get: async () => ({ docs: getCol(name).map((d: any) => ({ id: d.id, data: () => d })) })
+                get: async () => ({ docs: getCol(name).map((d) => ({ id: d.id, data: () => d })) })
             }),
             get: async () => ({
-                docs: getCol(name).map((d: any) => ({ id: d.id, data: () => d }))
+                docs: getCol(name).map((d) => ({ id: d.id, data: () => d }))
             }),
             count: () => ({
                 get: async () => ({ data: () => ({ count: getCol(name).length }) })
             }),
             doc: (id: string) => ({
                 get: async () => {
-                    const item = getCol(name).find((i: any) => i.id === id);
+                    const item = getCol(name).find((i) => i.id === id);
                     return { exists: !!item, data: () => item };
                 },
-                update: async (data: any) => {
-                    const idx = getCol(name).findIndex((i: any) => i.id === id);
-                    if (idx > -1) getCol(name)[idx] = { ...getCol(name)[idx], ...data };
+                update: async (data: Record<string, unknown>) => {
+                    const col = getCol(name);
+                    const idx = col.findIndex((i) => i.id === id);
+                    if (idx > -1) col[idx] = { ...col[idx], ...data };
                 },
                 delete: async () => {
-                    global.__MOCK_FIRESTORE_DATA[name] = getCol(name).filter((i: any) => i.id !== id);
+                    if (globalThis.__MOCK_FIRESTORE_DATA) {
+                        globalThis.__MOCK_FIRESTORE_DATA[name] = getCol(name).filter((i) => i.id !== id);
+                    }
                 }
             }),
-            add: async (data: any) => {
+            add: async (data: Record<string, unknown>) => {
                 const id = genId();
                 getCol(name).push({ ...data, id });
                 return { id };
@@ -46,19 +60,30 @@ const initMockDB = () => {
     };
 };
 
-let db: admin.firestore.Firestore | any = initMockDB();
-let st: admin.storage.Storage | any = {
+let db: admin.firestore.Firestore = initMockDB() as unknown as admin.firestore.Firestore;
+let st: admin.storage.Storage = {
     bucket: () => ({
-        file: (name: string) => ({
+        file: () => ({
             save: async () => {},
             makePublic: async () => {},
         }),
         name: "mock-bucket"
     })
-};
-let au: admin.auth.Auth | any = {} as any;
+} as unknown as admin.storage.Storage;
+let au: admin.auth.Auth = {} as admin.auth.Auth;
 
 let firebaseInitialized = false;
+
+function formatKey(key: string): string {
+    let k = key.trim();
+    if (k.startsWith('"') && k.endsWith('"')) {
+        k = k.substring(1, k.length - 1);
+    }
+    if (k.includes("\\n")) {
+        k = k.replace(/\\n/g, "\n");
+    }
+    return k;
+}
 
 function tryInitFirebase() {
     if (admin.apps.length > 0) {
@@ -69,33 +94,25 @@ function tryInitFirebase() {
         return;
     }
 
-    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
-    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
-    const privateKey = process.env.FIREBASE_PRIVATE_KEY;
+    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || serviceAccount.project_id;
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL || serviceAccount.client_email;
+    const rawPrivateKey = process.env.FIREBASE_PRIVATE_KEY || serviceAccount.private_key;
     const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
 
-    if (!projectId || !clientEmail || !privateKey) {
+    if (!projectId || !clientEmail || !rawPrivateKey) {
         console.warn(
-            "⚠️  Firebase Admin SDK: Missing environment variables " +
-            "(FIREBASE_CLIENT_EMAIL and/or FIREBASE_PRIVATE_KEY). " +
-            "Falling back to in-memory mock database."
+            "⚠️  Firebase Admin SDK: Missing environment variables. Falling back to in-memory mock database."
         );
         return;
     }
 
     try {
-        // Handle potentially quoted or escaped private key strings
-        let formattedKey = privateKey;
-        if (formattedKey.startsWith('"') && formattedKey.endsWith('"')) {
-            formattedKey = formattedKey.substring(1, formattedKey.length - 1);
-        }
-        formattedKey = formattedKey.replace(/\\n/g, "\n");
-
+        const privateKey = formatKey(rawPrivateKey);
         admin.initializeApp({
             credential: admin.credential.cert({
                 projectId,
                 clientEmail,
-                privateKey: formattedKey,
+                privateKey,
             }),
             storageBucket,
         });
@@ -105,8 +122,9 @@ function tryInitFirebase() {
         au = admin.auth();
         firebaseInitialized = true;
         console.log("✅ Firebase Admin SDK initialized successfully with Project ID:", projectId);
-    } catch (error: any) {
-        console.error("❌ Firebase Admin SDK init failed:", error.message);
+    } catch (error: unknown) {
+        const errMessage = error instanceof Error ? error.message : String(error);
+        console.error("❌ Firebase Admin SDK init failed:", errMessage);
     }
 }
 
