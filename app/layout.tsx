@@ -4,6 +4,7 @@ import "./globals.css";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import Preloader from "@/components/Preloader";
 import { PreloaderProvider } from "@/components/PreloaderContext";
+import GridWaveBg from "@/components/GridWaveBg";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
     variable: "--font-plus-jakarta-sans",
@@ -42,6 +43,7 @@ export default function RootLayout({
                 className={`${plusJakartaSans.variable} ${spaceGrotesk.variable} ${geist.variable} antialiased min-h-screen flex flex-col`}
                 suppressHydrationWarning
             >
+                <GridWaveBg className="fixed inset-0 z-0" />
                 <PreloaderProvider>
                     <Preloader />
                     <SmoothScrollProvider>

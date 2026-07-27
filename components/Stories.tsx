@@ -38,7 +38,7 @@ export default function Stories() {
     const containerRef = useRef<HTMLDivElement>(null);
 
     return (
-        <section ref={containerRef} className="py-24 relative bg-black overflow-hidden">
+        <section ref={containerRef} className="py-24 relative overflow-hidden">
             <BackgroundGlow />
             <div className="max-w-[1254px] mx-auto relative z-10 px-6 xl:px-0">
                 <div className="flex items-center gap-4 mb-10">

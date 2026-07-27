@@ -29,8 +29,7 @@ export default function ResearchAreas() {
     const containerRef = useRef<HTMLDivElement>(null);
 
     return (
-        <section className="py-24 bg-black relative overflow-hidden">
-            <div className="absolute inset-0 grid-bg pointer-events-none" />
+        <section className="py-24 relative overflow-hidden">
             <BackgroundGlow />
             <div className="max-w-[1440px] mx-auto relative z-10">
                 <div className="px-[108px] mb-12">

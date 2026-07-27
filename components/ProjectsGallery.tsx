@@ -51,8 +51,7 @@ export default function ProjectsGallery() {
 
     if (isLoading) {
         return (
-            <section id="projects-gallery" className="py-24 bg-black relative overflow-hidden flex items-center justify-center min-h-screen">
-                <div className="absolute inset-0 grid-bg pointer-events-none" />
+            <section id="projects-gallery" className="py-24 relative overflow-hidden flex items-center justify-center min-h-screen">
                 <div className="w-12 h-12 border-4 border-zinc-900 border-t-[#EC0D6E] rounded-full animate-spin"></div>
             </section>
         )
@@ -60,16 +59,14 @@ export default function ProjectsGallery() {
 
     if (projects.length === 0) {
         return (
-            <section id="projects-gallery" className="py-24 bg-black relative overflow-hidden flex items-center justify-center min-h-[50vh]">
-                <div className="absolute inset-0 grid-bg pointer-events-none" />
+            <section id="projects-gallery" className="py-24 relative overflow-hidden flex items-center justify-center min-h-[50vh]">
                 <p className="text-zinc-500 font-display text-xl uppercase tracking-widest">No Projects Found</p>
             </section>
         )
     }
 
     return (
-        <section id="projects-gallery" className="py-24 bg-black relative overflow-hidden">
-            <div className="absolute inset-0 grid-bg pointer-events-none" />
+        <section id="projects-gallery" className="py-24 relative overflow-hidden">
             {/* Background Glow */}
             <div
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none transition-colors duration-1000"

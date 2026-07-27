@@ -8,7 +8,6 @@ import Events from "@/components/Events";
 export default function ArchivePage() {
     return (
         <main className="min-h-screen flex flex-col">
-            <div className="fixed inset-0 grid-bg pointer-events-none z-0" />
             <Navbar />
             <div className="relative z-10 flex-1">
                 <section className="pt-40 pb-20 text-center">
