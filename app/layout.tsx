@@ -43,7 +43,6 @@ export default function RootLayout({
                 className={`${plusJakartaSans.variable} ${spaceGrotesk.variable} ${geist.variable} antialiased min-h-screen flex flex-col`}
                 suppressHydrationWarning
             >
-                <GridWaveBg className="fixed inset-0 z-0" />
                 <PreloaderProvider>
                     <Preloader />
                     <SmoothScrollProvider>
@@ -52,6 +51,7 @@ export default function RootLayout({
                         </div>
                     </SmoothScrollProvider>
                 </PreloaderProvider>
+                <GridWaveBg className="fixed inset-0 z-[60]" />
             </body>
         </html>
     );
