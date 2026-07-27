@@ -1,5 +1,4 @@
 import * as admin from "firebase-admin";
-import { serviceAccount } from "./firebaseServiceAccount";
 
 interface MockItem {
     id: string;
@@ -94,9 +93,9 @@ function tryInitFirebase() {
         return;
     }
 
-    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || serviceAccount.project_id;
-    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL || serviceAccount.client_email;
-    const rawPrivateKey = process.env.FIREBASE_PRIVATE_KEY || serviceAccount.private_key;
+    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "alpha-science-lab-a7e48";
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL || "";
+    const rawPrivateKey = process.env.FIREBASE_PRIVATE_KEY || "";
     const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
 
     if (!projectId || !clientEmail || !rawPrivateKey) {
