@@ -25,7 +25,7 @@ export default function Footer() {
                             <Link href="/about" className="text-on-surface-variant hover:text-secondary transition-colors">About</Link>
                             <Link href="/#projects" className="text-on-surface-variant hover:text-secondary transition-colors">Courses</Link>
                             <Link href="/events" className="text-on-surface-variant hover:text-secondary transition-colors">Events</Link>
-                            <Link href="#research" className="text-on-surface-variant hover:text-secondary transition-colors">Research</Link>
+                            <Link href="/archive" className="text-on-surface-variant hover:text-secondary transition-colors">Archive</Link>
                             <Link href="/join" className="text-on-surface-variant hover:text-secondary transition-colors">Contact</Link>
                         </nav>
                     </div>

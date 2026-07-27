@@ -30,6 +30,7 @@ export default function ResearchAreas() {
 
     return (
         <section className="py-24 bg-black relative overflow-hidden">
+            <div className="absolute inset-0 grid-bg pointer-events-none" />
             <BackgroundGlow />
             <div className="max-w-[1440px] mx-auto relative z-10">
                 <div className="px-[108px] mb-12">
