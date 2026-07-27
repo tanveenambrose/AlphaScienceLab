@@ -7,7 +7,7 @@ import AboutContent from "@/components/AboutContent";
 
 export default function AboutPage() {
     const dispRef = useRef<SVGFEDisplacementMapElement>(null);
-    const decayRef = useRef<ReturnType<typeof setTimeout>>();
+    const decayRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const handleMouseMove = useCallback(() => {
         if (dispRef.current) {
