@@ -45,7 +45,7 @@ export default function AdminLogin() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center relative p-6 w-full absolute inset-0">
+        <div className="min-h-screen flex items-center justify-center relative p-6">
             {/* The Login Card */}
             <div 
                 className="w-full max-w-md relative z-10 p-8 sm:p-12 rounded-[32px] overflow-hidden"
