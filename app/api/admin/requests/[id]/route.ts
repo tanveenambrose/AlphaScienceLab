@@ -1,36 +1,37 @@
 import { NextResponse } from "next/server";
-import { adminDb } from "@/lib/firebaseAdmin";
 import { cookies } from "next/headers";
+import { getUser, db } from "@/lib/supabase";
 
-export const dynamic = "force-dynamic";
-
-async function isAuthenticated() {
+async function getAuth() {
     const cookieStore = await cookies();
-    return cookieStore.get("admin_token")?.value === "mock-jwt-token-pending-db";
-}
-
-export async function DELETE(req: Request, props: { params: Promise<{ id: string }> }) {
-    if (!(await isAuthenticated())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    try {
-        const { id } = await props.params;
-        await adminDb.collection("joinRequests").doc(id).delete();
-        return NextResponse.json({ success: true, id });
-    } catch {
-        return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
-    }
+    const token = cookieStore.get("sb-access-token")?.value;
+    const user = token ? await getUser(token) : null;
+    return { token, user };
 }
 
 export async function PUT(req: Request, props: { params: Promise<{ id: string }> }) {
-    if (!(await isAuthenticated())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const { user, token } = await getAuth();
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
     try {
         const { id } = await props.params;
-        const data = await req.json();
-        await adminDb.collection("joinRequests").doc(id).update({
-            ...data,
-            updatedAt: new Date().toISOString()
-        });
-        return NextResponse.json({ success: true, id, ...data });
+        const body = await req.json();
+        await db.update("join_requests", id, { ...body, updated_at: new Date().toISOString() }, token);
+        return NextResponse.json({ success: true, id });
     } catch {
         return NextResponse.json({ error: "Failed to update" }, { status: 500 });
+    }
+}
+
+export async function DELETE(req: Request, props: { params: Promise<{ id: string }> }) {
+    const { user, token } = await getAuth();
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    try {
+        const { id } = await props.params;
+        await db.delete("join_requests", id, token);
+        return NextResponse.json({ success: true, id });
+    } catch {
+        return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
     }
 }

@@ -23,6 +23,7 @@ const navLinks = [
     { name: "Events", href: "/events" },
     { name: "Team", href: "#team" },
     { name: "About", href: "/about" },
+    { name: "Join ASL", href: "/login" },
 ];
 
 export default function Navbar() {
@@ -99,7 +100,14 @@ export default function Navbar() {
                             onMouseEnter={() => !isMobile && setActiveDropdown(link.name)}
                             onMouseLeave={() => !isMobile && setActiveDropdown(null)}
                         >
-                                {!link.dropdown ? (
+                                {link.name === "Join ASL" ? (
+                                    <Link
+                                        href={link.href}
+                                        className="bg-gradient-to-r from-primary-container to-tertiary-container text-on-primary-container font-label-sm text-label-sm uppercase tracking-widest px-6 py-2 rounded-full hover:shadow-[0_0_15px_rgba(221,183,255,0.5)] transition-all"
+                                    >
+                                        {link.name}
+                                    </Link>
+                                ) : !link.dropdown ? (
                                 <Link
                                     href={link.href}
                                     className={clsx(
@@ -178,13 +186,12 @@ export default function Navbar() {
                     >
                         <span className="material-symbols-outlined text-[20px]">light_mode</span>
                     </button>
-                    <button
-                        id="nav-join-btn"
-                        onClick={() => window.location.href = '/join'}
-                        className="hidden md:block bg-gradient-to-r from-primary-container to-tertiary-container text-on-primary-container font-label-sm text-label-sm uppercase tracking-widest px-6 py-2 rounded-full hover:shadow-[0_0_15px_rgba(221,183,255,0.5)] transition-all"
+                    <Link
+                        href="/login"
+                        className="hidden md:inline-block border border-primary/30 text-primary font-label-sm text-label-sm uppercase tracking-widest px-6 py-2 rounded-full hover:bg-primary/10 hover:border-primary/50 transition-all"
                     >
-                        Join ASL
-                    </button>
+                        Login
+                    </Link>
                     {/* Mobile hamburger */}
                     <button
                         className="md:hidden text-on-surface focus:outline-none z-[101]"
@@ -210,6 +217,16 @@ export default function Navbar() {
                 <div className="flex flex-col items-center gap-6 w-full max-h-[80vh] overflow-y-auto px-6">
                     {navLinks.map((link) => (
                         <div key={link.name} className="flex flex-col items-center w-full">
+                            {link.name === "Join ASL" ? (
+                                <Link
+                                    href={link.href}
+                                    onClick={() => setIsOpen(false)}
+                                    className="bg-gradient-to-r from-primary-container to-tertiary-container text-on-primary-container font-label-sm text-label-sm uppercase tracking-widest px-8 py-3 rounded-full hover:shadow-[0_0_15px_rgba(221,183,255,0.5)] transition-all"
+                                >
+                                    {link.name}
+                                </Link>
+                            ) : (
+                                <>
                             <div
                                 className="flex items-center gap-3 text-2xl font-headline-lg text-primary tracking-tighter hover:text-secondary transition-colors cursor-pointer"
                                 onClick={() => link.dropdown ? setActiveDropdown(activeDropdown === link.name ? null : link.name) : (setIsOpen(false), window.location.href = link.href)}
@@ -247,17 +264,19 @@ export default function Navbar() {
                                     })}
                                 </div>
                             )}
+                                </>
+                            )}
                         </div>
                     ))}
                 </div>
 
-                <button
-                    id="mobile-join-btn"
-                    onClick={() => window.location.href = '/join'}
-                    className="bg-gradient-to-r from-primary-container to-tertiary-container text-on-primary-container font-label-sm text-label-sm uppercase tracking-widest px-10 py-3 rounded-full hover:shadow-[0_0_15px_rgba(221,183,255,0.5)] transition-all mt-4"
+                <Link
+                    href="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="border border-primary/30 text-primary font-label-sm text-label-sm uppercase tracking-widest px-10 py-3 rounded-full hover:bg-primary/10 hover:border-primary/50 transition-all mt-4"
                 >
-                    Join ASL
-                </button>
+                    Login
+                </Link>
             </div>
         </nav>
     );

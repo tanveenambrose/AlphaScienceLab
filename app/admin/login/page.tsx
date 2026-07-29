@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export default function AdminLogin() {
     const [email, setEmail] = useState("");
@@ -12,7 +14,6 @@ export default function AdminLogin() {
     const router = useRouter();
 
     useEffect(() => {
-        // Quickly check if we have a cookie session to skip login
         fetch("/api/admin/check-auth")
             .then(res => {
                 if (res.ok) router.push("/admin");
@@ -46,8 +47,15 @@ export default function AdminLogin() {
 
     return (
         <div className="min-h-screen flex items-center justify-center relative p-6">
-            {/* The Login Card */}
-            <div 
+            <Link
+                href="/"
+                className="absolute top-6 left-6 z-20 flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm"
+            >
+                <ArrowLeft className="w-4 h-4" />
+                Back to Home
+            </Link>
+
+            <div
                 className="w-full max-w-md relative z-10 p-8 sm:p-12 rounded-[32px] overflow-hidden"
                 style={{
                     background: "rgba(18, 5, 24, 0.4)",
@@ -60,7 +68,7 @@ export default function AdminLogin() {
 
                 <div className="flex flex-col items-center justify-center mb-10 relative z-20">
                     <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-6">
-                       <Image src="/ASL LOGO.png" alt="ASL Logo" width={40} height={40} className="opacity-90 object-contain" />
+                       <Image src="/assests/asl.png" alt="ASL Logo" width={40} height={40} className="opacity-90 object-contain" />
                     </div>
                     <h1 className="text-2xl sm:text-3xl font-display uppercase font-bold text-white tracking-wide text-center">
                         Admin Portal
@@ -77,7 +85,7 @@ export default function AdminLogin() {
 
                     <div className="space-y-2">
                         <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-1">Email Address</label>
-                        <input 
+                        <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -89,7 +97,7 @@ export default function AdminLogin() {
 
                     <div className="space-y-2">
                         <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-1">Password</label>
-                        <input 
+                        <input
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -99,7 +107,7 @@ export default function AdminLogin() {
                         />
                     </div>
 
-                    <button 
+                    <button
                         type="submit"
                         disabled={isLoading}
                         className="w-full py-4 mt-4 rounded-2xl bg-[#EC0D6E] text-white font-semibold text-sm hover:bg-[#ff1a7d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
@@ -109,7 +117,7 @@ export default function AdminLogin() {
                     >
                         {isLoading ? "Authenticating..." : "Sign In"}
                     </button>
-                    
+
                     <p className="text-center text-xs text-zinc-500 mt-4">
                         Please use the authorized ASL Admin credentials.
                     </p>

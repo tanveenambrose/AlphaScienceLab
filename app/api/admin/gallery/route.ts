@@ -1,34 +1,59 @@
 import { NextResponse } from "next/server";
-import { adminDb } from "@/lib/firebaseAdmin";
 import { cookies } from "next/headers";
+import { getUser, db } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-async function isAuthenticated() {
+async function getAuth() {
     const cookieStore = await cookies();
-    return cookieStore.get("admin_token")?.value === "mock-jwt-token-pending-db";
+    const token = cookieStore.get("sb-access-token")?.value;
+    const user = token ? await getUser(token) : null;
+    return { token: user ? token : undefined, user };
 }
 
 export async function GET() {
+    const { token } = await getAuth();
     try {
-        const snapshot = await adminDb.collection("gallery").orderBy("createdAt", "desc").get();
-        const gallery = snapshot.docs.map((doc: { id: string; data: () => Record<string, unknown> }) => ({ id: doc.id, ...doc.data() }));
-        return NextResponse.json(gallery);
-    } catch {
+        const data = await db.getAll("gallery", token);
+        const items = (data || []).map((item: any) => ({
+            ...item,
+            image: item.image || item.image_url || "",
+            image_url: item.image_url || item.image || "",
+            title: item.title || item.caption || "",
+            caption: item.caption || item.title || "",
+        }));
+        return NextResponse.json(items);
+    } catch (error) {
+        console.error("Gallery API GET error:", error);
         return NextResponse.json({ error: "Failed to fetch gallery" }, { status: 500 });
     }
 }
 
 export async function POST(req: Request) {
-    if (!(await isAuthenticated())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const { user, token } = await getAuth();
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
     try {
-        const data = await req.json();
-        const docRef = await adminDb.collection("gallery").add({
-            ...data,
-            createdAt: new Date().toISOString()
-        });
-        return NextResponse.json({ id: docRef.id, ...data });
-    } catch {
+        const body = await req.json();
+        const payload: Record<string, any> = {
+            image_url: body.image_url || body.image || "",
+            caption: body.caption || body.title || "",
+            created_at: new Date().toISOString(),
+        };
+        if (body.category) payload.category = body.category;
+
+        const data = await db.insert("gallery", payload, token);
+        const result = Array.isArray(data) ? data[0] : data;
+        const normalized = result
+            ? {
+                  ...result,
+                  image: result.image_url || result.image || "",
+                  title: result.caption || result.title || "",
+              }
+            : result;
+        return NextResponse.json(normalized);
+    } catch (error) {
+        console.error("Gallery API POST error:", error);
         return NextResponse.json({ error: "Failed to upload image" }, { status: 500 });
     }
 }

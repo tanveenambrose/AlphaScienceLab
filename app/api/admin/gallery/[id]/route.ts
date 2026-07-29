@@ -1,19 +1,18 @@
 import { NextResponse } from "next/server";
-import { adminDb } from "@/lib/firebaseAdmin";
 import { cookies } from "next/headers";
+import { getUser, db } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-async function isAuthenticated() {
-    const cookieStore = await cookies();
-    return cookieStore.get("admin_token")?.value === "mock-jwt-token-pending-db";
-}
-
 export async function DELETE(req: Request, props: { params: Promise<{ id: string }> }) {
-    if (!(await isAuthenticated())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const cookieStore = await cookies();
+    const token = cookieStore.get("sb-access-token")?.value;
+    const user = token ? await getUser(token) : null;
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
     try {
         const { id } = await props.params;
-        await adminDb.collection("gallery").doc(id).delete();
+        await db.delete("gallery", id, token);
         return NextResponse.json({ success: true, id });
     } catch {
         return NextResponse.json({ error: "Failed to delete image" }, { status: 500 });

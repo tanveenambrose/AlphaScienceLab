@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
-import { adminDb, isFirebaseReady } from "@/lib/firebaseAdmin";
+import { db } from "@/lib/supabase";
 
 export async function POST(req: Request) {
     try {
         const data = await req.json();
-        console.log(`Submission received. Firebase Live: ${isFirebaseReady}`);
-        const docRef = await adminDb.collection("joinRequests").add({
+        await db.insert("join_requests", {
             ...data,
-            createdAt: new Date().toISOString()
+            status: "pending",
+            created_at: new Date().toISOString(),
         });
-        return NextResponse.json({ success: true, id: docRef.id });
+        return NextResponse.json({ success: true });
     } catch {
         return NextResponse.json({ error: "Failed to submit request" }, { status: 500 });
     }

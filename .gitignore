@@ -54,3 +54,6 @@ firebase-error.log
 git-error.log
 tsc.log
 test-admin2.js
+
+# MCP configuration
+mcp.json

@@ -26,9 +26,10 @@ export default function AdminGallery() {
         try {
             const res = await fetch("/api/admin/gallery");
             const data = await res.json();
-            setImages(data);
+            setImages(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Failed to fetch gallery", error);
+            setImages([]);
         } finally {
             setIsLoading(false);
         }

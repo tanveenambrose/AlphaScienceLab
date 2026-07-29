@@ -1,34 +1,37 @@
 import { NextResponse } from "next/server";
-import { adminDb } from "@/lib/firebaseAdmin";
 import { cookies } from "next/headers";
+import { getUser, db } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-async function isAuthenticated() {
+async function getAuth() {
     const cookieStore = await cookies();
-    return cookieStore.get("admin_token")?.value === "mock-jwt-token-pending-db";
+    const token = cookieStore.get("sb-access-token")?.value;
+    const user = token ? await getUser(token) : null;
+    return { token: user ? token : undefined, user };
 }
 
 export async function GET() {
+    const { token } = await getAuth();
     try {
-        const snapshot = await adminDb.collection("members").get();
-        const members = snapshot.docs.map((doc: { id: string; data: () => Record<string, unknown> }) => ({ id: doc.id, ...doc.data() }));
-        return NextResponse.json(members);
-    } catch {
+        const data = await db.getAll("members", token);
+        return NextResponse.json(data || []);
+    } catch (error) {
+        console.error("Members API GET error:", error);
         return NextResponse.json({ error: "Failed to fetch members" }, { status: 500 });
     }
 }
 
 export async function POST(req: Request) {
-    if (!(await isAuthenticated())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const { user, token } = await getAuth();
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
     try {
-        const data = await req.json();
-        const docRef = await adminDb.collection("members").add({
-            ...data,
-            createdAt: new Date().toISOString()
-        });
-        return NextResponse.json({ id: docRef.id, ...data });
-    } catch {
+        const body = await req.json();
+        const data = await db.insert("members", { ...body, created_at: new Date().toISOString() }, token);
+        return NextResponse.json(data);
+    } catch (error) {
+        console.error("Members API POST error:", error);
         return NextResponse.json({ error: "Failed to create member" }, { status: 500 });
     }
 }

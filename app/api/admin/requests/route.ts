@@ -1,21 +1,23 @@
 import { NextResponse } from "next/server";
-import { adminDb, isFirebaseReady } from "@/lib/firebaseAdmin";
 import { cookies } from "next/headers";
+import { getUser, db } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-async function isAuthenticated() {
+async function getAuth() {
     const cookieStore = await cookies();
-    return cookieStore.get("admin_token")?.value === "mock-jwt-token-pending-db";
+    const token = cookieStore.get("sb-access-token")?.value;
+    const user = token ? await getUser(token) : null;
+    return { token, user };
 }
 
 export async function GET() {
-    if (!(await isAuthenticated())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const { user, token } = await getAuth();
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
     try {
-        console.log(`Fetch requests. Firebase Live: ${isFirebaseReady}`);
-        const snapshot = await adminDb.collection("joinRequests").orderBy("createdAt", "desc").get();
-        const requests = snapshot.docs.map((doc: { id: string; data: () => Record<string, unknown> }) => ({ id: doc.id, ...doc.data() }));
-        return NextResponse.json(requests);
+        const data = await db.getAll("join_requests", token);
+        return NextResponse.json(data || []);
     } catch {
         return NextResponse.json({ error: "Failed to fetch requests" }, { status: 500 });
     }

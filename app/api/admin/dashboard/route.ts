@@ -1,34 +1,27 @@
 import { NextResponse } from "next/server";
-import { adminDb, isFirebaseReady } from "@/lib/firebaseAdmin";
 import { cookies } from "next/headers";
+import { getUser, db } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-async function isAuthenticated() {
-    const cookieStore = await cookies();
-    return cookieStore.get("admin_token")?.value === "mock-jwt-token-pending-db";
-}
-
 export async function GET() {
-    console.log(`Dashboard fetch. Firebase Live: ${isFirebaseReady}`);
-    if (!(await isAuthenticated())) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const cookieStore = await cookies();
+    const token = cookieStore.get("sb-access-token")?.value;
+
+    if (!token) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const user = await getUser(token);
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     try {
-        const [projectsSnap, requestsSnap, membersSnap, gallerySnap] = await Promise.all([
-            adminDb.collection("projects").count().get(),
-            adminDb.collection("joinRequests").count().get(),
-            adminDb.collection("members").count().get(),
-            adminDb.collection("gallery").count().get(),
+        const [projects, requests, members, gallery] = await Promise.all([
+            db.count("projects"),
+            db.count("join_requests"),
+            db.count("members"),
+            db.count("gallery"),
         ]);
 
-        return NextResponse.json({
-            projects: projectsSnap.data().count,
-            requests: requestsSnap.data().count,
-            members: membersSnap.data().count,
-            gallery: gallerySnap.data().count,
-        });
+        return NextResponse.json({ projects, requests, members, gallery });
     } catch (error) {
         console.error("Dashboard stats error:", error);
         return NextResponse.json({ error: "Failed to fetch dashboard stats" }, { status: 500 });
