@@ -4,14 +4,18 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ShieldCheck, UserCheck, Lock, Mail, Loader2, ArrowRight } from "lucide-react";
+import { useAuth } from "@/lib/authContext";
 
 export default function LoginPage() {
+    const [loginType, setLoginType] = useState<"admin" | "member">("member");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+
     const router = useRouter();
+    const { login } = useAuth();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -19,18 +23,19 @@ export default function LoginPage() {
         setIsLoading(true);
 
         try {
-            const res = await fetch("/api/admin/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-            });
+            const res = await login(email, password, loginType);
 
-            if (!res.ok) {
-                const data = await res.json();
-                throw new Error(data.error || "Login failed");
+            if (!res.success) {
+                setError(res.error || "Invalid email or password");
+                return;
             }
 
-            router.push("/admin");
+            // Redirect based on login type
+            if (loginType === "member") {
+                router.push("/");
+            } else {
+                router.push("/admin");
+            }
             router.refresh();
         } catch (err) {
             setError(err instanceof Error ? err.message : "Something went wrong");
@@ -40,73 +45,139 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center relative p-6 bg-surface">
+        <div className="min-h-screen flex items-center justify-center relative p-6 bg-[#07020d] overflow-hidden">
+            {/* Background Glow Effect */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-[20%] left-[15%] w-[500px] h-[500px] bg-[#EC0D6E]/15 rounded-full blur-[140px]" />
+                <div className="absolute bottom-[20%] right-[15%] w-[450px] h-[450px] bg-[#8B5CF6]/15 rounded-full blur-[140px]" />
+            </div>
+
+            {/* Top Back Navigation */}
             <Link
                 href="/"
-                className="absolute top-6 left-6 z-20 flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors text-sm"
+                className="absolute top-8 left-8 z-20 flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm font-semibold group"
             >
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                 Back to Home
             </Link>
 
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-[15%] left-[5%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
-                <div className="absolute bottom-[10%] right-[5%] w-[400px] h-[400px] bg-[#EC0D6E]/10 rounded-full blur-[100px]" />
-            </div>
+            {/* Login Card */}
+            <div
+                className="w-full max-w-md relative z-10 p-8 sm:p-10 rounded-[32px] overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(236,13,110,0.15)]"
+                style={{
+                    background: "rgba(18, 5, 26, 0.75)",
+                    backdropFilter: "blur(24px)",
+                }}
+            >
+                {/* Radial Glow Header */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[40%] opacity-30 bg-[radial-gradient(circle,rgba(236,13,110,0.8)_0%,transparent_70%)] blur-[30px] pointer-events-none" />
 
-            <div className="w-full max-w-md relative z-10 p-8 sm:p-12 rounded-[32px] overflow-hidden border border-primary/20 bg-surface-container/80 backdrop-blur-2xl shadow-[0_0_40px_rgba(221,183,255,0.1)]">
-                <div className="flex flex-col items-center mb-10">
-                    <div className="w-16 h-16 rounded-full bg-surface-container-highest border border-primary/20 flex items-center justify-center mb-6">
-                        <Image src="/assests/asl.png" alt="ASL Logo" width={40} height={40} className="opacity-90 object-contain" />
+                {/* Logo & Heading */}
+                <div className="flex flex-col items-center justify-center mb-8 relative z-20">
+                    <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4 shadow-inner">
+                        <Image src="/assests/asl.png" alt="ASL Logo" width={40} height={40} className="object-contain" priority />
                     </div>
-                    <h1 className="text-2xl sm:text-3xl font-display uppercase font-bold text-on-surface tracking-wide text-center">
-                        Sign In
+                    {/* CRITICAL: Page heading is strictly 'Login' */}
+                    <h1 className="text-3xl font-display uppercase font-extrabold text-white tracking-wider text-center">
+                        Login
                     </h1>
-                    <p className="text-on-surface-variant mt-2 text-sm text-center">Access the Admin Portal</p>
+                    <p className="text-zinc-400 mt-1.5 text-xs text-center">
+                        Welcome to Alpha Science Lab Portal
+                    </p>
                 </div>
 
-                <form onSubmit={handleLogin} className="space-y-5">
+                {/* Dual Option Toggle: Admin Login vs Member Login */}
+                <div className="grid grid-cols-2 p-1.5 bg-white/5 border border-white/10 rounded-2xl mb-6 relative z-20">
+                    <button
+                        type="button"
+                        onClick={() => { setLoginType("member"); setError(""); }}
+                        className={`py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
+                            loginType === "member"
+                                ? "bg-gradient-to-r from-[#EC0D6E] to-[#9333EA] text-white shadow-[0_0_20px_rgba(236,13,110,0.4)]"
+                                : "text-zinc-400 hover:text-white"
+                        }`}
+                    >
+                        <UserCheck size={16} />
+                        Member Login
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => { setLoginType("admin"); setError(""); }}
+                        className={`py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
+                            loginType === "admin"
+                                ? "bg-gradient-to-r from-[#EC0D6E] to-[#9333EA] text-white shadow-[0_0_20px_rgba(236,13,110,0.4)]"
+                                : "text-zinc-400 hover:text-white"
+                        }`}
+                    >
+                        <ShieldCheck size={16} />
+                        Admin Login
+                    </button>
+                </div>
+
+                {/* Login Form */}
+                <form onSubmit={handleLogin} className="space-y-4 relative z-20">
                     {error && (
-                        <div className="p-3 bg-error-container/20 border border-error/30 rounded-xl text-error text-sm text-center">
+                        <div className="p-3.5 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-400 text-xs text-center font-medium">
                             {error}
                         </div>
                     )}
 
-                    <div className="space-y-2">
-                        <label className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider ml-1">Email</label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            placeholder="admin@alphasciencelab.com"
-                            className="w-full px-5 py-4 rounded-2xl bg-surface-container-high border border-primary/10 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary/50 focus:bg-surface-container-higher transition-all outline-none"
-                        />
+                    <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest ml-1">
+                            {loginType === "admin" ? "Admin Email" : "Member Email"}
+                        </label>
+                        <div className="relative">
+                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4" />
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                placeholder={loginType === "admin" ? "admin@alphasciencelab.com" : "member@alphasciencelab.com"}
+                                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-[#EC0D6E]/50 focus:bg-white/10 transition-all outline-none"
+                            />
+                        </div>
                     </div>
 
-                    <div className="space-y-2">
-                        <label className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider ml-1">Password</label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            placeholder="••••••••"
-                            className="w-full px-5 py-4 rounded-2xl bg-surface-container-high border border-primary/10 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary/50 focus:bg-surface-container-higher transition-all outline-none"
-                        />
+                    <div className="space-y-1.5">
+                        <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest ml-1">
+                            Password
+                        </label>
+                        <div className="relative">
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4" />
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                placeholder="••••••••"
+                                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-[#EC0D6E]/50 focus:bg-white/10 transition-all outline-none"
+                            />
+                        </div>
                     </div>
 
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full py-4 mt-2 rounded-2xl bg-gradient-to-r from-primary-container to-tertiary-container text-on-primary-container font-semibold text-sm hover:shadow-[0_0_20px_rgba(221,183,255,0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        className="w-full py-4 mt-4 rounded-2xl bg-gradient-to-r from-[#EC0D6E] via-[#A855F7] to-[#6366F1] text-white font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_25px_rgba(236,13,110,0.5)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
                     >
-                        {isLoading ? "Authenticating..." : "Sign In"}
+                        {isLoading ? (
+                            <>
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                Authenticating...
+                            </>
+                        ) : (
+                            <>
+                                Login as {loginType === "admin" ? "Admin" : "Member"}
+                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </>
+                        )}
                     </button>
 
-                    <p className="text-center text-xs text-on-surface-variant/60 mt-6 leading-relaxed">
-                        These credentials are for administrators only. <br />
-                        Not for general users.
+                    <p className="text-center text-[11px] text-zinc-500 mt-4 leading-relaxed">
+                        {loginType === "member"
+                            ? "After successful login, members are redirected to the homepage."
+                            : "Restricted administrative portal. Authorized personnel only."}
                     </p>
                 </form>
             </div>

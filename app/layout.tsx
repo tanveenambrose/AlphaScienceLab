@@ -5,6 +5,7 @@ import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import Preloader from "@/components/Preloader";
 import { PreloaderProvider } from "@/components/PreloaderContext";
 import GridWaveBg from "@/components/GridWaveBg";
+import { AuthProvider } from "@/lib/authContext";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
     variable: "--font-plus-jakarta-sans",
@@ -39,19 +40,21 @@ export default function RootLayout({
                     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
                 />
             </head>
-<body
+            <body
                 className={`${plusJakartaSans.variable} ${spaceGrotesk.variable} ${geist.variable} antialiased min-h-screen flex flex-col`}
                 suppressHydrationWarning
             >
-                <PreloaderProvider>
-                    <Preloader />
-                    <SmoothScrollProvider>
-                        <div className="relative z-10">
-                            {children}
-                        </div>
-                    </SmoothScrollProvider>
-                </PreloaderProvider>
-                <GridWaveBg className="fixed inset-0 z-[60]" />
+                <AuthProvider>
+                    <PreloaderProvider>
+                        <Preloader />
+                        <SmoothScrollProvider>
+                            <div className="relative z-10">
+                                {children}
+                            </div>
+                        </SmoothScrollProvider>
+                    </PreloaderProvider>
+                    <GridWaveBg className="fixed inset-0 z-[60]" />
+                </AuthProvider>
             </body>
         </html>
     );
