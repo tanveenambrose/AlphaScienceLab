@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { X, User, Lock, Camera, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useAuth } from "@/lib/authContext";
@@ -13,8 +13,8 @@ interface ProfileModalProps {
 export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     const { user, updateProfile } = useAuth();
 
-    const [name, setName] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState("");
+    const [name, setName] = useState(user?.name || "");
+    const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl || "");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -24,12 +24,11 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     const [error, setError] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
 
-    useEffect(() => {
-        if (user) {
-            setName(user.name || "");
-            setAvatarUrl(user.avatarUrl || "");
-        }
-    }, [user, isOpen]);
+    const handleClose = () => {
+        setError("");
+        setSuccessMsg("");
+        onClose();
+    };
 
     if (!isOpen || !user) return null;
 
@@ -96,7 +95,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                         </div>
                     </div>
                     <button
-                        onClick={onClose}
+                        onClick={handleClose}
                         className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
                     >
                         <X size={18} />
@@ -240,7 +239,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                     <div className="pt-2 flex items-center justify-end gap-3">
                         <button
                             type="button"
-                            onClick={onClose}
+                            onClick={handleClose}
                             className="px-5 py-2.5 rounded-xl border border-white/10 text-zinc-300 hover:bg-white/5 text-sm font-semibold transition-colors"
                         >
                             Cancel

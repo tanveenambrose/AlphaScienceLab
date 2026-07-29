@@ -15,12 +15,12 @@ export async function GET() {
     const { token } = await getAuth();
     try {
         const data = await db.getAll("gallery", token);
-        const items = (data || []).map((item: any) => ({
+        const items = (data || []).map((item: Record<string, unknown>) => ({
             ...item,
-            image: item.image || item.image_url || "",
-            image_url: item.image_url || item.image || "",
-            title: item.title || item.caption || "",
-            caption: item.caption || item.title || "",
+            image: (item.image as string) || (item.image_url as string) || "",
+            image_url: (item.image_url as string) || (item.image as string) || "",
+            title: (item.title as string) || (item.caption as string) || "",
+            caption: (item.caption as string) || (item.title as string) || "",
         }));
         return NextResponse.json(items);
     } catch (error) {
@@ -35,7 +35,7 @@ export async function POST(req: Request) {
 
     try {
         const body = await req.json();
-        const payload: Record<string, any> = {
+        const payload: Record<string, unknown> = {
             image_url: body.image_url || body.image || "",
             caption: body.caption || body.title || "",
             created_at: new Date().toISOString(),

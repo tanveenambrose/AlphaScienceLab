@@ -21,13 +21,13 @@ export async function GET() {
             data = [];
         }
 
-        const items = (data || []).map((item: any) => ({
+        const items = (data || []).map((item: Record<string, unknown>) => ({
             ...item,
-            image: item.image || item.image_url || "",
-            image_url: item.image_url || item.image || "",
-            title: item.title || item.caption || "Archive Item",
-            caption: item.caption || item.title || "",
-            category: item.category || "Project Artifact",
+            image: (item.image as string) || (item.image_url as string) || "",
+            image_url: (item.image_url as string) || (item.image as string) || "",
+            title: (item.title as string) || (item.caption as string) || "Archive Item",
+            caption: (item.caption as string) || (item.title as string) || "",
+            category: (item.category as string) || "Project Artifact",
         }));
 
         if (items.length === 0) {
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
     const { token } = await getAuth();
     try {
         const body = await req.json();
-        const payload: Record<string, any> = {
+        const payload: Record<string, unknown> = {
             image_url: body.image || body.image_url || "",
             caption: body.title || body.caption || "",
             category: body.category || "General Archive",

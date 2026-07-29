@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import RequireAuth from "@/components/admin/RequireAuth";
-import { Calendar, Plus, Trash2, X, MapPin, Clock, Search, Edit3 } from "lucide-react";
+import { Calendar, Plus, Trash2, X, MapPin, Clock, Search } from "lucide-react";
 import Image from "next/image";
 
 interface EventItem {

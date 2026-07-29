@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-let eventsList = [
+const eventsList = [
     {
         id: "evt_1",
         title: "ASL Annual Quantum & AI Hackathon 2026",

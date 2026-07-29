@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 export default function AboutContent() {
     return (
         <>
@@ -66,9 +68,11 @@ export default function AboutContent() {
                         <div className="timeline-dot group-hover:scale-150 transition-transform duration-300" />
                         <div className="w-5/12 pl-8">
                             <div className="glass-card rounded-lg overflow-hidden h-40 relative group-hover:border-secondary/50 transition-colors">
-                                <img
+                                <Image
                                     className="object-cover w-full h-full opacity-60 mix-blend-luminosity hover:mix-blend-normal transition-all duration-500"
                                     alt="Inception"
+                                    fill
+                                    unoptimized
                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzGf6h40H1o1il78-fUD0N7coZVvOxzdE9BgInFGHOEPl8ox2g59_yQQ0NWNAHvGbCH9yGZ5_qq2SOF0Mi6BPWl3sbX1TUseFLB6ydKvNHZiaQgQ5Xl86oGaE3QlhoSC6SEPQoLfR7SNzjWfdfgfal6VXGFC3rpheQwMyCdYTqrnLLIoYLB8O82IU3rdM16PRtOzDCFpjDnfSijxKCAlA12NzRnmSnkO-CTztX8dOjHDv-dfyzJrte-zqYDnug8V2HB_wC3PTPb1s"
                                 />
                             </div>
@@ -84,9 +88,11 @@ export default function AboutContent() {
                         <div className="timeline-dot group-hover:scale-150 transition-transform duration-300" />
                         <div className="w-5/12 pr-8">
                             <div className="glass-card rounded-lg overflow-hidden h-40 relative group-hover:border-secondary/50 transition-colors">
-                                <img
+                                <Image
                                     className="object-cover w-full h-full opacity-60 mix-blend-luminosity hover:mix-blend-normal transition-all duration-500"
                                     alt="First Flight"
+                                    fill
+                                    unoptimized
                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfPZcDwNsouyfMbk0Gl69v6bj_Nym0WL_gtGyELqVqrcrFNlYJMRmKhBfyaTsIwihOqfppmTfW-SUidkfU-B9BdI4aJdiH9cjxE2sS6mGO36flGHS_0u9-NKPc3zGxxhE18APJ1WcrrlP7UrmENczcnTf-7HMXtrAEPdchV2yWojNGuSi6s-i5XenKkvQtztHxZGUhdIOH56jss4Sl8O8yvZDBmDb4_FGGHRcyCWKd1za7geOGCpTiCATC8-bJrU_of47m4GjrFS4"
                                 />
                             </div>

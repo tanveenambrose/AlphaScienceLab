@@ -37,7 +37,7 @@ export default function AdminSidebar() {
     interface NavItem {
         name: string;
         href: string;
-        icon: any;
+        icon: React.ComponentType<{ size?: number; className?: string }>;
         badge?: number;
     }
 

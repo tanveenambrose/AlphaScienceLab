@@ -61,10 +61,10 @@ export default function PhotoGallery() {
                 const data = await res.json();
                 if (Array.isArray(data)) {
                     const validImages: GalleryImage[] = data
-                        .map((img: any) => ({
-                            id: img.id || String(Math.random()),
-                            image: img.image || img.image_url || "",
-                            title: img.title || img.caption || "",
+                        .map((img: Record<string, unknown>) => ({
+                            id: (img.id as string) || String(Math.random()),
+                            image: (img.image as string) || (img.image_url as string) || "",
+                            title: (img.title as string) || (img.caption as string) || "",
                         }))
                         .filter((img: GalleryImage) => Boolean(img.image));
                     setImages(validImages);

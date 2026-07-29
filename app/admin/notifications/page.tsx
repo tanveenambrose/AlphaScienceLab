@@ -16,7 +16,6 @@ import {
     CheckCircle2,
     XCircle
 } from "lucide-react";
-import Image from "next/image";
 
 interface NotificationItem {
     id: string;
@@ -225,7 +224,7 @@ export default function AdminNotifications() {
 
                                         {item.content && (
                                             <div className="p-3.5 rounded-2xl bg-white/5 border border-white/5 text-zinc-200 text-xs mt-2 italic">
-                                                "{item.content}"
+                                                &quot;{item.content}&quot;
                                             </div>
                                         )}
 

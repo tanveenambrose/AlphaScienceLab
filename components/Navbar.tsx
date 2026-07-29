@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, User, LogOut, Settings, Shield } from "lucide-react";
+import { Menu, X, ChevronDown, LogOut, Settings, Shield } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import clsx from "clsx";
