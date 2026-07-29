@@ -133,7 +133,7 @@ export default function LoginPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                                placeholder={loginType === "admin" ? "admin@alphasciencelab.com" : "member@alphasciencelab.com"}
+                                placeholder={loginType === "admin" ? "admin@alphasciencelab.com or media@alphasciencelab.com" : "member@alphasciencelab.com"}
                                 className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-[#EC0D6E]/50 focus:bg-white/10 transition-all outline-none"
                             />
                         </div>
@@ -177,7 +177,7 @@ export default function LoginPage() {
                     <p className="text-center text-[11px] text-zinc-500 mt-4 leading-relaxed">
                         {loginType === "member"
                             ? "After successful login, members are redirected to the homepage."
-                            : "Restricted administrative portal. Authorized personnel only."}
+                            : "Main Admin and Media Team log in here. Section access is automatically granted based on your login email."}
                     </p>
                 </form>
             </div>

@@ -18,14 +18,24 @@ export async function GET() {
             return NextResponse.json({ authenticated: false }, { status: 200 });
         }
 
-        const role = userRoleCookie || (supabaseUser.email?.includes("admin") ? "admin" : "member");
+        const email = (supabaseUser.email || "").toLowerCase();
+        let role = userRoleCookie;
+        if (!role) {
+            if (email.includes("media")) {
+                role = "media";
+            } else if (email.includes("admin")) {
+                role = "main";
+            } else {
+                role = "member";
+            }
+        }
 
         return NextResponse.json({
             authenticated: true,
             user: {
                 id: supabaseUser.id,
                 email: supabaseUser.email,
-                name: supabaseUser.email?.split("@")[0].replace(".", " ").replace(/\b\w/g, (c) => c.toUpperCase()) || "User",
+                name: supabaseUser.email?.split("@")[0].replace(".", " ").replace(/\b\w/g, (c: string) => c.toUpperCase()) || "User",
                 role: role,
                 avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(supabaseUser.email || "user")}`,
             },

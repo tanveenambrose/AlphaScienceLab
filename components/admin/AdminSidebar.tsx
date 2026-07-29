@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { 
@@ -20,22 +19,11 @@ import { useAuth } from "@/lib/authContext";
 export default function AdminSidebar() {
     const pathname = usePathname();
     const router = useRouter();
-    const { logout } = useAuth();
+    const { user, logout } = useAuth();
 
-    // Default to main admin or media team based on state/localStorage
-    const [adminRole, setAdminRole] = useState<"main" | "media">("main");
-
-    useEffect(() => {
-        const savedRole = localStorage.getItem("asl_admin_view_role");
-        if (savedRole === "media" || savedRole === "main") {
-            setAdminRole(savedRole);
-        }
-    }, []);
-
-    const toggleRole = (role: "main" | "media") => {
-        setAdminRole(role);
-        localStorage.setItem("asl_admin_view_role", role);
-    };
+    // Role-based access control based on user's email / role
+    const isMediaTeam = (user?.email?.toLowerCase().includes("media") || user?.role === "media") ?? false;
+    const activeRole: "main" | "media" = isMediaTeam ? "media" : "main";
 
     const handleLogout = async () => {
         try {
@@ -53,7 +41,7 @@ export default function AdminSidebar() {
         badge?: number;
     }
 
-    // Full navigation list
+    // Main Admin Navigation (Displayed ONLY for Main Admin email)
     const mainNavItems: NavItem[] = [
         { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
         { name: "Projects", href: "/admin/projects", icon: FolderKanban },
@@ -64,7 +52,7 @@ export default function AdminSidebar() {
         { name: "Archive", href: "/admin/archive", icon: Archive },
     ];
 
-    // Media Team navigation list (Excludes Join Requests and Notifications)
+    // Media Team Navigation (Displayed ONLY for Media Team email - excludes Join Requests & Notifications)
     const mediaNavItems: NavItem[] = [
         { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
         { name: "Projects", href: "/admin/projects", icon: FolderKanban },
@@ -72,7 +60,7 @@ export default function AdminSidebar() {
         { name: "Archive", href: "/admin/archive", icon: Archive },
     ];
 
-    const currentItems = adminRole === "media" ? mediaNavItems : mainNavItems;
+    const currentItems = activeRole === "media" ? mediaNavItems : mainNavItems;
 
     return (
         <div className="w-64 h-screen bg-[#0a0210] border-r border-white/10 flex flex-col p-5 fixed left-0 top-0 z-50 overflow-y-auto">
@@ -85,41 +73,30 @@ export default function AdminSidebar() {
                 </Link>
             </div>
 
-            {/* Role View Toggle Selector */}
-            <div className="mb-6 p-1.5 bg-white/5 border border-white/10 rounded-xl flex items-center gap-1">
-                <button
-                    onClick={() => toggleRole("main")}
-                    className={`flex-1 py-1.5 px-2 rounded-lg text-[11px] font-bold tracking-wider flex items-center justify-center gap-1.5 transition-all ${
-                        adminRole === "main"
-                            ? "bg-[#EC0D6E] text-white shadow-[0_0_12px_rgba(236,13,110,0.4)]"
-                            : "text-zinc-400 hover:text-white"
-                    }`}
-                    title="Main Admin Dashboard View"
-                >
-                    <Shield size={13} />
-                    Main
-                </button>
-                <button
-                    onClick={() => toggleRole("media")}
-                    className={`flex-1 py-1.5 px-2 rounded-lg text-[11px] font-bold tracking-wider flex items-center justify-center gap-1.5 transition-all ${
-                        adminRole === "media"
-                            ? "bg-[#8B5CF6] text-white shadow-[0_0_12px_rgba(139,92,246,0.4)]"
-                            : "text-zinc-400 hover:text-white"
-                    }`}
-                    title="Media Team Dashboard View"
-                >
-                    <Camera size={13} />
-                    Media
-                </button>
+            {/* Role Access Indicator Pill */}
+            <div className="mb-6 px-3.5 py-2.5 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-2.5">
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-white shrink-0 ${
+                    activeRole === "media" ? "bg-purple-500/20 text-purple-400 border border-purple-500/30" : "bg-[#EC0D6E]/20 text-[#EC0D6E] border border-[#EC0D6E]/30"
+                }`}>
+                    {activeRole === "media" ? <Camera size={16} /> : <Shield size={16} />}
+                </div>
+                <div className="overflow-hidden">
+                    <p className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">Access Granted</p>
+                    <h4 className="text-xs font-extrabold text-white truncate">
+                        {activeRole === "media" ? "Media Team" : "Main Admin"}
+                    </h4>
+                </div>
             </div>
 
-            {/* Active View Indicator */}
-            <div className="mb-4 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 flex items-center gap-2">
-                <span className={`w-2 h-2 rounded-full ${adminRole === "media" ? "bg-purple-400 animate-pulse" : "bg-[#EC0D6E] animate-pulse"}`} />
-                <span className="text-[11px] font-semibold text-zinc-300">
-                    {adminRole === "media" ? "Media Team View" : "Full Admin Access"}
-                </span>
-            </div>
+            {/* User Profile Mini Badge */}
+            {user && (
+                <div className="mb-4 px-3 py-2 rounded-xl bg-white/[0.03] border border-white/5 flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full ${activeRole === "media" ? "bg-purple-400 animate-pulse" : "bg-[#EC0D6E] animate-pulse"}`} />
+                    <span className="text-[11px] font-semibold text-zinc-300 truncate">
+                        {user.email}
+                    </span>
+                </div>
+            )}
 
             {/* Navigation Items */}
             <nav className="flex-1 space-y-1.5">
