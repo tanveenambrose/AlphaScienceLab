@@ -27,7 +27,7 @@ export default function Preloader() {
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
         playPromise.catch((error) => {
-          console.warn("Autoplay with sound prevented, reverting to muted autoplay:", error);
+          console.warn("Autoplay prevented, reverting to muted autoplay:", error);
           if (videoRef.current) {
              videoRef.current.muted = true;
              videoRef.current.play();
@@ -36,8 +36,6 @@ export default function Preloader() {
       }
     }
 
-    // Fallback: If the video fails to load or play, hide the preloader after a max of 12 seconds
-    // to prevent infinite loading.
     const timeout = setTimeout(() => {
       setIsLoading(false);
     }, 12000);
@@ -48,17 +46,11 @@ export default function Preloader() {
     };
   }, [isHomePage, setPreloaderFinished]);
 
-  // When preloader closes, restore body scrolling
-  useEffect(() => {
-    if (!isLoading) {
-      document.body.style.overflow = "";
-      window.scrollTo(0, 0);
-      setPreloaderFinished(true);
-    }
-  }, [isLoading, setPreloaderFinished]);
-
   const handleVideoEnd = () => {
     setIsLoading(false);
+    document.body.style.overflow = "";
+    window.scrollTo(0, 0);
+    setPreloaderFinished(true);
   };
 
   return (

@@ -9,8 +9,8 @@ export async function proxy(request: NextRequest) {
         user = await getUser(accessToken);
     }
 
-    // Protect admin routes
-    if (request.nextUrl.pathname.startsWith("/admin") && !user) {
+    // Protect admin routes (except /admin/login)
+    if (request.nextUrl.pathname.startsWith("/admin") && !request.nextUrl.pathname.startsWith("/admin/login") && !user) {
         const url = request.nextUrl.clone();
         url.pathname = "/login";
         return NextResponse.redirect(url);
