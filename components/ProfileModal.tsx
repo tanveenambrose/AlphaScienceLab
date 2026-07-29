@@ -13,7 +13,6 @@ interface ProfileModalProps {
 export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     const { user, updateProfile } = useAuth();
 
-    const [name, setName] = useState(user?.name || "");
     const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl || "");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -55,7 +54,6 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
         setIsLoading(true);
 
         const res = await updateProfile({
-            name: activeTab === "profile" ? name : undefined,
             avatarUrl: activeTab === "profile" ? avatarUrl : undefined,
             currentPassword: activeTab === "password" ? currentPassword : undefined,
             newPassword: activeTab === "password" ? newPassword : undefined,
@@ -146,54 +144,55 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
 
                     {activeTab === "profile" ? (
                         <>
-                            {/* Avatar Preview */}
-                            <div className="flex flex-col items-center justify-center space-y-3 py-2">
-                                <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-[#EC0D6E]/50 bg-white/5 flex items-center justify-center shadow-[0_0_20px_rgba(236,13,110,0.3)]">
-                                    {avatarUrl ? (
-                                        <Image src={avatarUrl} alt="Profile" fill className="object-cover" />
-                                    ) : (
-                                        <span className="text-2xl font-bold text-white uppercase">
-                                            {name.slice(0, 2) || "AS"}
-                                        </span>
-                                    )}
+                            {/* Profile Picture Update */}
+                            <div className="space-y-2 p-4 rounded-2xl bg-white/5 border border-white/10">
+                                <label className="text-xs font-bold text-[#EC0D6E] uppercase tracking-wider flex items-center gap-1.5">
+                                    <Camera size={14} /> Profile Picture
+                                </label>
+                                <div className="flex items-center gap-4 pt-1">
+                                    <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-[#EC0D6E]/50 bg-white/5 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(236,13,110,0.3)]">
+                                        {avatarUrl ? (
+                                            <Image src={avatarUrl} alt="Profile" fill className="object-cover" />
+                                        ) : (
+                                            <span className="text-xl font-bold text-white uppercase">
+                                                {user.name.slice(0, 2) || "AS"}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="flex-1 space-y-1">
+                                        <input
+                                            type="url"
+                                            value={avatarUrl}
+                                            onChange={(e) => setAvatarUrl(e.target.value)}
+                                            placeholder="Enter image URL (https://...)"
+                                            className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-[#EC0D6E] text-xs outline-none"
+                                        />
+                                        <p className="text-[11px] text-zinc-400">Update your avatar image link above.</p>
+                                    </div>
                                 </div>
-                                <p className="text-xs text-zinc-400 flex items-center gap-1">
-                                    <Camera size={14} /> Profile Picture Preview
-                                </p>
                             </div>
 
-                            <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-zinc-300 uppercase tracking-wider">Full Name</label>
-                                <input
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                    placeholder="Enter your name"
-                                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-[#EC0D6E]/50 transition-all text-sm outline-none"
-                                />
-                            </div>
+                            {/* Read-Only Personal Details */}
+                            <div className="space-y-3 pt-1">
+                                <div className="space-y-1">
+                                    <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Full Name (Read-Only)</label>
+                                    <input
+                                        type="text"
+                                        value={user.name}
+                                        disabled
+                                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/5 text-zinc-300 font-semibold cursor-not-allowed text-sm outline-none"
+                                    />
+                                </div>
 
-                            <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-zinc-300 uppercase tracking-wider">Profile Photo Image URL</label>
-                                <input
-                                    type="url"
-                                    value={avatarUrl}
-                                    onChange={(e) => setAvatarUrl(e.target.value)}
-                                    placeholder="https://example.com/avatar.jpg"
-                                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-[#EC0D6E]/50 transition-all text-sm outline-none"
-                                />
-                                <p className="text-[11px] text-zinc-500">Provide an image URL for your custom profile photo.</p>
-                            </div>
-
-                            <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Email Address</label>
-                                <input
-                                    type="email"
-                                    value={user.email}
-                                    disabled
-                                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/5 text-zinc-400 cursor-not-allowed text-sm outline-none"
-                                />
+                                <div className="space-y-1">
+                                    <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Email Address (Read-Only)</label>
+                                    <input
+                                        type="email"
+                                        value={user.email}
+                                        disabled
+                                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/5 text-zinc-300 font-semibold cursor-not-allowed text-sm outline-none"
+                                    />
+                                </div>
                             </div>
                         </>
                     ) : (

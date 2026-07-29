@@ -206,31 +206,29 @@ export default function Navbar() {
                         </button>
 
                         {user ? (
-                            /* Logged-in Profile Avatar Dropdown */
+                            /* Logged-in Circular Profile Avatar Dropdown */
                             <div className="relative hidden md:block" ref={dropdownRef}>
                                 <button
                                     onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                                    className="flex items-center gap-2 p-1 pl-2.5 pr-1.5 rounded-full border border-[#EC0D6E]/40 bg-surface-container-high/80 hover:border-[#EC0D6E] hover:shadow-[0_0_15px_rgba(236,13,110,0.3)] transition-all group"
+                                    className="relative w-10 h-10 rounded-full border-2 border-[#EC0D6E]/50 bg-[#EC0D6E]/20 hover:border-[#EC0D6E] hover:shadow-[0_0_15px_rgba(236,13,110,0.4)] transition-all flex items-center justify-center overflow-hidden shrink-0 group focus:outline-none"
+                                    aria-label="User Profile Menu"
                                 >
-                                    <span className="text-xs font-bold text-white max-w-[100px] truncate">
-                                        {user.name.split(" ")[0]}
-                                    </span>
-                                    <div className="relative w-8 h-8 rounded-full overflow-hidden border border-white/20 bg-[#EC0D6E]/20 flex items-center justify-center text-white text-xs font-bold shrink-0">
-                                        {user.avatarUrl ? (
-                                            <Image src={user.avatarUrl} alt={user.name} fill className="object-cover" />
-                                        ) : (
-                                            user.name.slice(0, 2).toUpperCase()
-                                        )}
-                                        <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-surface rounded-full" />
-                                    </div>
+                                    {user.avatarUrl ? (
+                                        <Image src={user.avatarUrl} alt={user.name} fill className="object-cover" />
+                                    ) : (
+                                        <span className="text-xs font-bold text-white uppercase">
+                                            {user.name.slice(0, 2).toUpperCase()}
+                                        </span>
+                                    )}
+                                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-surface rounded-full z-10" />
                                 </button>
 
                                 {/* Profile Dropdown Menu */}
                                 {isProfileDropdownOpen && (
-                                    <div className="absolute right-0 mt-3 w-64 rounded-2xl bg-[#0d0414]/95 border border-white/10 backdrop-blur-2xl shadow-[0_0_30px_rgba(236,13,110,0.2)] p-2 z-[110]">
+                                    <div className="absolute right-0 mt-3 w-60 rounded-2xl bg-[#0d0414]/95 border border-white/10 backdrop-blur-2xl shadow-[0_0_30px_rgba(236,13,110,0.2)] p-2 z-[110]">
                                         {/* User Header */}
                                         <div className="p-3 border-b border-white/10 flex items-center gap-3">
-                                            <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#EC0D6E]/40 bg-[#EC0D6E]/20 flex items-center justify-center text-white font-bold text-sm shrink-0">
+                                            <div className="relative w-9 h-9 rounded-full overflow-hidden border border-[#EC0D6E]/40 bg-[#EC0D6E]/20 flex items-center justify-center text-white font-bold text-xs shrink-0">
                                                 {user.avatarUrl ? (
                                                     <Image src={user.avatarUrl} alt={user.name} fill className="object-cover" />
                                                 ) : (
@@ -238,32 +236,29 @@ export default function Navbar() {
                                                 )}
                                             </div>
                                             <div className="overflow-hidden">
-                                                <h4 className="text-sm font-bold text-white truncate">{user.name}</h4>
-                                                <p className="text-[11px] text-zinc-400 truncate">{user.email}</p>
-                                                <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#EC0D6E]/20 text-[#EC0D6E]">
-                                                    {user.role}
-                                                </span>
+                                                <h4 className="text-xs font-bold text-white truncate">{user.name}</h4>
+                                                <p className="text-[10px] text-zinc-400 truncate">{user.email}</p>
                                             </div>
                                         </div>
 
-                                        {/* Actions */}
-                                        <div className="py-2 space-y-1">
+                                        {/* Options: Profile and Sign Out */}
+                                        <div className="py-1 space-y-0.5">
                                             <button
                                                 onClick={() => {
                                                     setIsProfileDropdownOpen(false);
                                                     setIsProfileModalOpen(true);
                                                 }}
-                                                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/5 transition-colors text-left"
+                                                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-200 hover:text-white hover:bg-white/10 transition-colors text-left"
                                             >
                                                 <Settings size={15} className="text-[#EC0D6E]" />
-                                                My Profile (Photo, Name, Password)
+                                                Profile
                                             </button>
 
                                             {(user.role === "admin" || user.role === "media") && (
                                                 <Link
                                                     href="/admin"
                                                     onClick={() => setIsProfileDropdownOpen(false)}
-                                                    className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/5 transition-colors text-left"
+                                                    className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-purple-300 hover:text-white hover:bg-purple-500/10 transition-colors text-left"
                                                 >
                                                     <Shield size={15} className="text-purple-400" />
                                                     Admin Dashboard
