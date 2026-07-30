@@ -149,6 +149,7 @@ export default function ProjectsGallery() {
                                         src={activeProject.image || "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"}
                                         alt={activeProject.title || "Project Image"}
                                         fill
+                                        sizes="(max-width: 768px) 100vw, 50vw"
                                         className="object-cover opacity-100"
                                         priority
                                     />
@@ -170,7 +171,7 @@ export default function ProjectsGallery() {
                                 } p-4 flex items-center gap-4 group`}
                         >
                             <div className="relative w-20 h-full rounded-lg overflow-hidden shrink-0">
-                                <Image src={project.image} alt={project.title} fill className="object-cover" />
+                                <Image src={project.image} alt={project.title} fill sizes="80px" className="object-cover" />
                             </div>
                             <div className="flex flex-col items-start overflow-hidden text-left">
                                 <span className="text-white font-black text-xs uppercase tracking-tighter truncate w-full">

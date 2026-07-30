@@ -176,6 +176,7 @@ export default function Hero() {
                     src="/projects/hero_img.png"
                     alt="ASL Laboratory"
                     fill
+                    sizes="100vw"
                     className="object-cover opacity-100"
                     priority
                 />

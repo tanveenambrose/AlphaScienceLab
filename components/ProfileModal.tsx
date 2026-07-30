@@ -152,7 +152,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                                 <div className="flex items-center gap-4 pt-1">
                                     <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-[#EC0D6E]/50 bg-white/5 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(236,13,110,0.3)]">
                                         {avatarUrl ? (
-                                            <Image src={avatarUrl} alt="Profile" fill className="object-cover" />
+                                            <Image src={avatarUrl} alt="Profile" fill sizes="64px" className="object-cover" unoptimized />
                                         ) : (
                                             <span className="text-xl font-bold text-white uppercase">
                                                 {user.name.slice(0, 2) || "AS"}

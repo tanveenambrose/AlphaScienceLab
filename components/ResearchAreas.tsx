@@ -51,11 +51,12 @@ export default function ResearchAreas() {
                             transition={{ duration: 0.5, delay: idx * 0.1 }}
                             className="flex-shrink-0 w-[354px] h-[529px] group relative rounded-[30px] overflow-hidden border-[3px] border-[#B578FF]/30 hover:border-[#B578FF]/60 transition-all duration-500 snap-start backdrop-blur-md bg-black/20"
                         >
-                            <Link href={area.link || "#"} className="w-full h-full block">
+                            <Link href={area.link || "#"} className="w-full h-full block relative">
                             <NextImage
                                 src={area.image}
                                 alt={area.title}
                                 fill
+                                sizes="(max-width: 768px) 100vw, 354px"
                                 className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-110 transition-all duration-700"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, LogOut, Settings, Shield } from "lucide-react";
+import { Menu, X, ChevronDown, LogOut, Settings, Shield, Sun, Moon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import clsx from "clsx";
@@ -41,7 +41,31 @@ export default function Navbar() {
     // User profile dropdown & modal state
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+    const [avatarError, setAvatarError] = useState(false);
+    const [isDark, setIsDark] = useState(true);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        setAvatarError(false);
+    }, [user?.avatarUrl]);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setIsDark(document.documentElement.classList.contains("dark"));
+        }
+    }, []);
+
+    const toggleTheme = () => {
+        const nextDark = !isDark;
+        setIsDark(nextDark);
+        if (typeof document !== "undefined") {
+            if (nextDark) {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+        }
+    };
 
     const isHome = pathname === "/";
 
@@ -103,7 +127,7 @@ export default function Navbar() {
                                 width={90}
                                 height={40}
                                 priority
-                                style={{ objectFit: "contain" }}
+                                style={{ objectFit: "contain", width: "auto", height: "auto" }}
                                 onError={() => setLogoError(true)}
                             />
                         )}
@@ -199,10 +223,11 @@ export default function Navbar() {
                     {/* Right side: Theme toggle + Profile Avatar OR Login Button */}
                     <div className="flex items-center gap-3">
                         <button
+                            onClick={toggleTheme}
                             className="hidden md:flex items-center justify-center w-10 h-10 rounded-full border border-primary/20 bg-surface/40 backdrop-blur-md text-primary hover:text-secondary hover:border-secondary/50 hover:shadow-[0_0_10px_rgba(76,215,246,0.3)] transition-all duration-300 active:scale-95"
                             aria-label="Toggle Theme"
                         >
-                            <span className="material-symbols-outlined text-[20px]">light_mode</span>
+                            {isDark ? <Sun className="w-5 h-5 text-primary" /> : <Moon className="w-5 h-5 text-secondary" />}
                         </button>
 
                         {user ? (
@@ -213,11 +238,19 @@ export default function Navbar() {
                                     className="relative w-10 h-10 rounded-full border-2 border-[#EC0D6E]/50 bg-[#EC0D6E]/20 hover:border-[#EC0D6E] hover:shadow-[0_0_15px_rgba(236,13,110,0.4)] transition-all flex items-center justify-center overflow-hidden shrink-0 group focus:outline-none"
                                     aria-label="User Profile Menu"
                                 >
-                                    {user.avatarUrl ? (
-                                        <Image src={user.avatarUrl} alt={user.name} fill className="object-cover" />
+                                    {!avatarError && user.avatarUrl ? (
+                                        <Image
+                                            src={user.avatarUrl}
+                                            alt={user.name || "User Profile"}
+                                            fill
+                                            sizes="40px"
+                                            className="object-cover"
+                                            unoptimized
+                                            onError={() => setAvatarError(true)}
+                                        />
                                     ) : (
                                         <span className="text-xs font-bold text-white uppercase">
-                                            {user.name.slice(0, 2).toUpperCase()}
+                                            {user.name ? user.name.slice(0, 2).toUpperCase() : "AS"}
                                         </span>
                                     )}
                                     <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-surface rounded-full z-10" />
@@ -229,10 +262,18 @@ export default function Navbar() {
                                         {/* User Header */}
                                         <div className="p-3 border-b border-white/10 flex items-center gap-3">
                                             <div className="relative w-9 h-9 rounded-full overflow-hidden border border-[#EC0D6E]/40 bg-[#EC0D6E]/20 flex items-center justify-center text-white font-bold text-xs shrink-0">
-                                                {user.avatarUrl ? (
-                                                    <Image src={user.avatarUrl} alt={user.name} fill className="object-cover" />
+                                                {!avatarError && user.avatarUrl ? (
+                                                    <Image
+                                                        src={user.avatarUrl}
+                                                        alt={user.name || "User Profile"}
+                                                        fill
+                                                        sizes="36px"
+                                                        className="object-cover"
+                                                        unoptimized
+                                                        onError={() => setAvatarError(true)}
+                                                    />
                                                 ) : (
-                                                    user.name.slice(0, 2).toUpperCase()
+                                                    user.name ? user.name.slice(0, 2).toUpperCase() : "AS"
                                                 )}
                                             </div>
                                             <div className="overflow-hidden">
@@ -315,8 +356,20 @@ export default function Navbar() {
                         {user && (
                             <div className="p-4 rounded-2xl bg-white/5 border border-white/10 w-full flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-[#EC0D6E]/20 flex items-center justify-center text-white font-bold">
-                                        {user.name.slice(0, 2).toUpperCase()}
+                                    <div className="relative w-10 h-10 rounded-full bg-[#EC0D6E]/20 border border-[#EC0D6E]/40 overflow-hidden flex items-center justify-center text-white font-bold text-xs shrink-0">
+                                        {!avatarError && user.avatarUrl ? (
+                                            <Image
+                                                src={user.avatarUrl}
+                                                alt={user.name || "User Profile"}
+                                                fill
+                                                sizes="40px"
+                                                className="object-cover"
+                                                unoptimized
+                                                onError={() => setAvatarError(true)}
+                                            />
+                                        ) : (
+                                            user.name ? user.name.slice(0, 2).toUpperCase() : "AS"
+                                        )}
                                     </div>
                                     <div>
                                         <h4 className="text-sm font-bold text-white">{user.name}</h4>

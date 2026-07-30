@@ -13,7 +13,7 @@ export default function Footer() {
                             alt="ASL Logo"
                             width={90}
                             height={40}
-                            style={{ objectFit: "contain" }}
+                            style={{ objectFit: "contain", width: "auto", height: "auto" }}
                         />
                         <p className="font-body-md text-body-md text-on-surface-variant">Creativity Starts From Belief</p>
                     </div>

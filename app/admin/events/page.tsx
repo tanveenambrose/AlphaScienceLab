@@ -153,6 +153,7 @@ export default function AdminEvents() {
                                         src={item.image || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80"}
                                         alt={item.title}
                                         fill
+                                        sizes="(max-width: 768px) 100vw, 50vw"
                                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                                     />
                                     <div className="absolute top-4 left-4">

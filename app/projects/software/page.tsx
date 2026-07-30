@@ -38,6 +38,7 @@ export default function SoftwarePage() {
                             src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1600"
                             alt="Semiconductor Microchip"
                             fill
+                            sizes="(max-width: 768px) 100vw, 701px"
                             style={{ objectFit: 'cover' }}
                             className="hover:scale-105 transition-transform duration-700"
                         />
@@ -90,6 +91,7 @@ export default function SoftwarePage() {
                             src="https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&q=80&w=1600"
                             alt="Medical Assistant AI Processor"
                             fill
+                            sizes="(max-width: 768px) 100vw, 701px"
                             style={{ objectFit: 'cover' }}
                             className="hover:scale-105 transition-transform duration-700"
                         />

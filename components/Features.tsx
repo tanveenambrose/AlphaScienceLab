@@ -157,6 +157,7 @@ export default function Features() {
                                     src={area.image}
                                     alt={area.title}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 354px"
                                     className="object-cover opacity-80 group-hover:scale-110 group-hover:opacity-100 transition-all duration-700 ease-out"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />

@@ -72,6 +72,7 @@ export default function AboutContent() {
                                     className="object-cover w-full h-full opacity-60 mix-blend-luminosity hover:mix-blend-normal transition-all duration-500"
                                     alt="Inception"
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 40vw"
                                     unoptimized
                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzGf6h40H1o1il78-fUD0N7coZVvOxzdE9BgInFGHOEPl8ox2g59_yQQ0NWNAHvGbCH9yGZ5_qq2SOF0Mi6BPWl3sbX1TUseFLB6ydKvNHZiaQgQ5Xl86oGaE3QlhoSC6SEPQoLfR7SNzjWfdfgfal6VXGFC3rpheQwMyCdYTqrnLLIoYLB8O82IU3rdM16PRtOzDCFpjDnfSijxKCAlA12NzRnmSnkO-CTztX8dOjHDv-dfyzJrte-zqYDnug8V2HB_wC3PTPb1s"
                                 />
@@ -92,6 +93,7 @@ export default function AboutContent() {
                                     className="object-cover w-full h-full opacity-60 mix-blend-luminosity hover:mix-blend-normal transition-all duration-500"
                                     alt="First Flight"
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 40vw"
                                     unoptimized
                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfPZcDwNsouyfMbk0Gl69v6bj_Nym0WL_gtGyELqVqrcrFNlYJMRmKhBfyaTsIwihOqfppmTfW-SUidkfU-B9BdI4aJdiH9cjxE2sS6mGO36flGHS_0u9-NKPc3zGxxhE18APJ1WcrrlP7UrmENczcnTf-7HMXtrAEPdchV2yWojNGuSi6s-i5XenKkvQtztHxZGUhdIOH56jss4Sl8O8yvZDBmDb4_FGGHRcyCWKd1za7geOGCpTiCATC8-bJrU_of47m4GjrFS4"
                                 />

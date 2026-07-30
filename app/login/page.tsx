@@ -75,7 +75,7 @@ export default function LoginPage() {
                 {/* Logo & Heading */}
                 <div className="flex flex-col items-center justify-center mb-8 relative z-20">
                     <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4 shadow-inner">
-                        <Image src="/assests/asl.png" alt="ASL Logo" width={40} height={40} className="object-contain" priority />
+                        <Image src="/assests/asl.png" alt="ASL Logo" width={40} height={40} style={{ width: "auto", height: "auto" }} className="object-contain" priority />
                     </div>
                     {/* CRITICAL: Page heading is strictly 'Login' */}
                     <h1 className="text-3xl font-display uppercase font-extrabold text-white tracking-wider text-center">

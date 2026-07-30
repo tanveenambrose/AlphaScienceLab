@@ -144,9 +144,7 @@ export default function AdminMembers() {
                                         <td className="py-4 px-6">
                                             <div className="flex items-center gap-4">
                                                 <div className="w-10 h-10 rounded-full bg-zinc-800 overflow-hidden relative">
-                                                    <Image src={item.image || "https://www.w3schools.com/howto/img_avatar.png"} alt="avatar" fill className="object-cover" unoptimized 
-                                                        onError={(e) => { e.currentTarget.src = "https://www.w3schools.com/howto/img_avatar.png" }}
-                                                    />
+                                                    <Image src={item.image || "https://www.w3schools.com/howto/img_avatar.png"} alt="avatar" fill sizes="40px" className="object-cover" unoptimized />
                                                 </div>
                                                 <div>
                                                     <div className="font-semibold text-white">{item.name}</div>

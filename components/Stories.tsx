@@ -82,6 +82,7 @@ export default function Stories() {
                                     src={stories[activeIndex].image}
                                     alt={stories[activeIndex].title}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 726px"
                                     className="object-cover"
                                 />
                                 {/* Gradient overlay to blend image with text area */}

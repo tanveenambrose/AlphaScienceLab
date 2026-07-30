@@ -26,11 +26,10 @@ export default function Preloader() {
       videoRef.current.playbackRate = 1.3;
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.warn("Autoplay prevented, reverting to muted autoplay:", error);
+        playPromise.catch(() => {
           if (videoRef.current) {
-             videoRef.current.muted = true;
-             videoRef.current.play();
+            videoRef.current.muted = true;
+            videoRef.current.play().catch(() => {});
           }
         });
       }
@@ -43,6 +42,9 @@ export default function Preloader() {
     return () => {
       clearTimeout(timeout);
       document.body.style.overflow = "";
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
     };
   }, [isHomePage, setPreloaderFinished]);
 
@@ -66,6 +68,7 @@ export default function Preloader() {
           <video
             ref={videoRef}
             autoPlay
+            muted
             playsInline
             onEnded={handleVideoEnd}
             className="w-full h-full object-cover md:object-contain bg-black"
