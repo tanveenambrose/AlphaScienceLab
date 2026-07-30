@@ -25,7 +25,7 @@ const navLinks = [
     { name: "Events", href: "/events" },
     { name: "Team", href: "#team" },
     { name: "About", href: "/about" },
-    { name: "Join ASL", href: "/login" },
+    { name: "Join ASL", href: "/join" },
 ];
 
 export default function Navbar() {
@@ -45,15 +45,7 @@ export default function Navbar() {
     const [isDark, setIsDark] = useState(true);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        setAvatarError(false);
-    }, [user?.avatarUrl]);
 
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            setIsDark(document.documentElement.classList.contains("dark"));
-        }
-    }, []);
 
     const toggleTheme = () => {
         const nextDark = !isDark;
@@ -143,7 +135,7 @@ export default function Navbar() {
                                 onMouseLeave={() => !isMobile && setActiveDropdown(null)}
                             >
                                 {link.name === "Join ASL" ? (
-                                    <Link
+                                    !user && <Link
                                         href={link.href}
                                         className="bg-gradient-to-r from-primary-container to-tertiary-container text-on-primary-container font-label-sm text-label-sm uppercase tracking-widest px-6 py-2 rounded-full hover:shadow-[0_0_15px_rgba(221,183,255,0.5)] transition-all"
                                     >
@@ -240,6 +232,7 @@ export default function Navbar() {
                                 >
                                     {!avatarError && user.avatarUrl ? (
                                         <Image
+                                            key={user.avatarUrl}
                                             src={user.avatarUrl}
                                             alt={user.name || "User Profile"}
                                             fill
@@ -264,6 +257,7 @@ export default function Navbar() {
                                             <div className="relative w-9 h-9 rounded-full overflow-hidden border border-[#EC0D6E]/40 bg-[#EC0D6E]/20 flex items-center justify-center text-white font-bold text-xs shrink-0">
                                                 {!avatarError && user.avatarUrl ? (
                                                     <Image
+                                                        key={user.avatarUrl}
                                                         src={user.avatarUrl}
                                                         alt={user.name || "User Profile"}
                                                         fill
@@ -391,7 +385,7 @@ export default function Navbar() {
                         {navLinks.map((link) => (
                             <div key={link.name} className="flex flex-col items-center w-full">
                                 {link.name === "Join ASL" ? (
-                                    <Link
+                                    !user && <Link
                                         href={link.href}
                                         onClick={() => setIsOpen(false)}
                                         className="bg-gradient-to-r from-primary-container to-tertiary-container text-on-primary-container font-label-sm text-label-sm uppercase tracking-widest px-8 py-3 rounded-full hover:shadow-[0_0_15px_rgba(221,183,255,0.5)] transition-all"

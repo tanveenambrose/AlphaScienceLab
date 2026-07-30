@@ -79,7 +79,7 @@ export default function Stories() {
                             {/* Right: Image Section (726px) */}
                             <div className="w-[726px] h-[442px] relative rounded-[10px] overflow-hidden">
                                 <NextImage
-                                    src={stories[activeIndex].image}
+                                    src={stories[activeIndex].image || "/assests/asl.png"}
                                     alt={stories[activeIndex].title}
                                     fill
                                     sizes="(max-width: 768px) 100vw, 726px"

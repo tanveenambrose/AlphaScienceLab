@@ -39,11 +39,12 @@ export default function Preloader() {
       setIsLoading(false);
     }, 12000);
 
+    const video = videoRef.current;
     return () => {
       clearTimeout(timeout);
       document.body.style.overflow = "";
-      if (videoRef.current) {
-        videoRef.current.pause();
+      if (video) {
+        video.pause();
       }
     };
   }, [isHomePage, setPreloaderFinished]);

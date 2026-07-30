@@ -53,7 +53,7 @@ export default function ResearchAreas() {
                         >
                             <Link href={area.link || "#"} className="w-full h-full block relative">
                             <NextImage
-                                src={area.image}
+                                src={area.image || "/assests/asl.png"}
                                 alt={area.title}
                                 fill
                                 sizes="(max-width: 768px) 100vw, 354px"

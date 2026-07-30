@@ -19,7 +19,7 @@ import {
 
 interface NotificationItem {
     id: string;
-    type: "media_project_update" | "media_event_update" | "member_post_submission";
+    type: "media_project_update" | "media_event_update" | "member_post_submission" | "join_request";
     title: string;
     description: string;
     author: {
@@ -79,7 +79,7 @@ export default function AdminNotifications() {
             return item.type === "media_project_update" || item.type === "media_event_update";
         }
         if (filterCategory === "feed") {
-            return item.type === "member_post_submission";
+            return item.type === "member_post_submission" || item.type === "join_request";
         }
         return true;
     });
@@ -142,7 +142,7 @@ export default function AdminNotifications() {
                         }`}
                     >
                         <MessageSquare size={14} />
-                        Members Feed Posts
+                        Members & Applications
                     </button>
                 </div>
 
@@ -181,9 +181,9 @@ export default function AdminNotifications() {
                                                 <Calendar size={22} />
                                             </div>
                                         )}
-                                        {item.type === "member_post_submission" && (
+                                        {(item.type === "member_post_submission" || item.type === "join_request") && (
                                             <div className="w-12 h-12 rounded-2xl bg-[#3B82F6]/10 border border-[#3B82F6]/30 flex items-center justify-center text-[#3B82F6]">
-                                                <MessageSquare size={22} />
+                                                {item.type === "join_request" ? <User size={22} /> : <MessageSquare size={22} />}
                                             </div>
                                         )}
                                     </div>
@@ -196,7 +196,7 @@ export default function AdminNotifications() {
                                                     ? "bg-[#8B5CF6]/20 text-purple-300 border border-purple-500/30"
                                                     : "bg-[#3B82F6]/20 text-blue-300 border border-blue-500/30"
                                             }`}>
-                                                {item.type === "media_project_update" ? "Media: Project Update" : item.type === "media_event_update" ? "Media: Event Update" : "Member Feed Post"}
+                                                {item.type === "media_project_update" ? "Media: Project Update" : item.type === "media_event_update" ? "Media: Event Update" : item.type === "join_request" ? "Membership App" : "Member Feed Post"}
                                             </span>
 
                                             {item.status === "approved" && (
