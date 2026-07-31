@@ -52,11 +52,13 @@ export default function AdminSidebar() {
         { name: "Archive", href: "/admin/archive", icon: Archive },
     ];
 
-    // Media Team Navigation (Displayed ONLY for Media Team email - excludes Join Requests & Notifications)
+    // Media Team Navigation (Displayed ONLY for Media Team email - excludes Join Requests)
     const mediaNavItems: NavItem[] = [
         { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
         { name: "Projects", href: "/admin/projects", icon: FolderKanban },
+        { name: "Events", href: "/admin/events", icon: Calendar },
         { name: "Members", href: "/admin/members", icon: Users },
+        { name: "Notifications", href: "/admin/notifications", icon: Bell, badge: 3 },
         { name: "Archive", href: "/admin/archive", icon: Archive },
     ];
 

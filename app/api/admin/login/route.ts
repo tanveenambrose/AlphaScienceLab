@@ -17,7 +17,7 @@ export async function POST(req: Request) {
         }
 
         const normalizedEmail = email.toLowerCase().trim();
-        const isMediaTeam = normalizedEmail.includes("media");
+        const isMediaTeam = normalizedEmail === "racoctanveen15@gmail.com" || normalizedEmail.includes("media");
         const role = isMediaTeam ? "media" : "main";
 
         const name = normalizedEmail.split("@")[0].replace(".", " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
