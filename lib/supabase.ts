@@ -76,6 +76,30 @@ export async function signOut(refreshToken: string) {
     });
 }
 
+export async function adminCreateUser(email: string, password?: string, name?: string) {
+    const res = await fetch(`${getUrl()}/auth/v1/admin/users`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getServiceKey()}`,
+            apikey: getServiceKey(),
+        },
+        body: JSON.stringify({
+            email,
+            password,
+            email_confirm: true,
+            user_metadata: { name },
+        }),
+    });
+
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `Failed to create user: ${res.status}`);
+    }
+
+    return res.json();
+}
+
 // ── Data (server-side with service role) ──────────────────
 
 async function request(

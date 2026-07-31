@@ -11,6 +11,11 @@ interface Member {
     email: string;
     role: string;
     department: string;
+    batch?: string;
+    class_roll?: string;
+    registration?: string;
+    mobile?: string;
+    temp_password?: string;
     image?: string;
 }
 
@@ -26,6 +31,10 @@ export default function AdminMembers() {
         email: "",
         role: "Member",
         department: "",
+        batch: "",
+        class_roll: "",
+        registration: "",
+        mobile: "",
         image: ""
     });
 
@@ -85,9 +94,13 @@ export default function AdminMembers() {
             setEditingId(member.id);
             setFormData({
                 name: member.name,
-                email: member.email,
-                role: member.role,
-                department: member.department,
+                email: member.email || "",
+                role: member.role || "Member",
+                department: member.department || "",
+                batch: member.batch || "",
+                class_roll: member.class_roll || "",
+                registration: member.registration || "",
+                mobile: member.mobile || "",
                 image: member.image || ""
             });
         } else {
@@ -97,6 +110,10 @@ export default function AdminMembers() {
                 email: "",
                 role: "Member",
                 department: "",
+                batch: "",
+                class_roll: "",
+                registration: "",
+                mobile: "",
                 image: ""
             });
         }
@@ -161,7 +178,10 @@ export default function AdminMembers() {
                                                 {item.role}
                                             </span>
                                         </td>
-                                        <td className="py-4 px-6 text-zinc-300">{item.department}</td>
+                                        <td className="py-4 px-6 text-zinc-300">
+                                            {item.department}
+                                            {item.batch && <div className="text-[10px] text-zinc-500">{item.batch} Batch</div>}
+                                        </td>
                                         <td className="py-4 px-6">
                                             <div className="flex items-center justify-end gap-3 opacity-100 transition-opacity">
                                                 <button onClick={() => openModal(item)} className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-blue-400 transition-colors">
@@ -215,6 +235,28 @@ export default function AdminMembers() {
                                         <option value="Member" className="bg-black">Member</option>
                                         <option value="Alumni" className="bg-black">Alumni</option>
                                     </select>
+                                </div>
+                            </div>
+                            
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-semibold text-zinc-400 uppercase mb-2">Batch</label>
+                                    <input type="text" value={formData.batch} placeholder="e.g. 14th" onChange={(e) => setFormData({...formData, batch: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#EC0D6E]/50 outline-none" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-semibold text-zinc-400 uppercase mb-2">Class Roll</label>
+                                    <input type="text" value={formData.class_roll} placeholder="e.g. 210310" onChange={(e) => setFormData({...formData, class_roll: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#EC0D6E]/50 outline-none" />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-semibold text-zinc-400 uppercase mb-2">Registration No.</label>
+                                    <input type="text" value={formData.registration} placeholder="e.g. 1301" onChange={(e) => setFormData({...formData, registration: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#EC0D6E]/50 outline-none" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-semibold text-zinc-400 uppercase mb-2">Mobile</label>
+                                    <input type="text" value={formData.mobile} placeholder="01XXXXXXXXX" onChange={(e) => setFormData({...formData, mobile: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#EC0D6E]/50 outline-none" />
                                 </div>
                             </div>
                             
