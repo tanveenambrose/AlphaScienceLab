@@ -49,26 +49,6 @@ export async function POST(req: Request) {
 
         const inserted = await db.insert("join_requests", joinRequestData);
 
-        // Insert admin review notification
-        try {
-            const notificationData = {
-                type: "join_request",
-                title: "New Membership Application",
-                description: `${fullName} (${department} - ${batch} Batch, Roll: ${classRoll}) applied for ASL membership.`,
-                author_name: fullName,
-                author_role: `Applicant - ${department} ${batch}`,
-                author_email: email,
-                target_name: "ASL Membership",
-                content: `Class Roll: ${classRoll} | Reg: ${registration} | Mobile: ${mobile}`,
-                status: "pending",
-                created_at: new Date().toISOString(),
-            };
-
-            await db.insert("notifications", notificationData);
-        } catch (notifErr) {
-            console.warn("Notification insert warning (non-fatal):", notifErr);
-        }
-
         return NextResponse.json({ success: true, data: inserted });
     } catch (error: any) {
         console.error("Join submission error:", error);

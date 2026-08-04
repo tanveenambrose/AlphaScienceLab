@@ -1,18 +1,19 @@
 "use client";
 
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { 
     LayoutDashboard, 
     FolderKanban, 
-    Calendar,
+    Calendar, 
     Users, 
     Archive, 
-    Mailbox,
-    Bell,
-    LogOut,
-    Shield,
-    Camera
+    Mailbox, 
+    Bell, 
+    LogOut, 
+    Shield, 
+    Camera 
 } from "lucide-react";
 import { useAuth } from "@/lib/authContext";
 
@@ -22,8 +23,49 @@ export default function AdminSidebar() {
     const { user, logout } = useAuth();
 
     // Role-based access control based on user's email / role
-    const isMediaTeam = (user?.email?.toLowerCase().includes("media") || user?.role === "media") ?? false;
+    const userEmail = user?.email?.toLowerCase().trim() || "";
+    const isMediaTeam = userEmail === "racoctanveen15@gmail.com" || user?.role === "media";
     const activeRole: "main" | "media" = isMediaTeam ? "media" : "main";
+
+    // Dynamic Live Counts for Join Requests and Notifications
+    const [counts, setCounts] = useState<{ joinRequests: number; notifications: number }>({
+        joinRequests: 0,
+        notifications: 0,
+    });
+
+    const fetchCounts = useCallback(async () => {
+        try {
+            const res = await fetch("/api/admin/counts");
+            if (res.ok) {
+                const data = await res.json();
+                setCounts({
+                    joinRequests: Number(data.joinRequests) || 0,
+                    notifications: Number(data.notifications) || 0,
+                });
+            }
+        } catch (error) {
+            console.error("Failed to fetch admin counts:", error);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchCounts();
+        
+        // Poll every 12 seconds for real-time updates
+        const interval = setInterval(fetchCounts, 12000);
+
+        const handleFocus = () => fetchCounts();
+        const handleCustomEvent = () => fetchCounts();
+
+        window.addEventListener("focus", handleFocus);
+        window.addEventListener("asl-counts-updated", handleCustomEvent);
+
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener("focus", handleFocus);
+            window.removeEventListener("asl-counts-updated", handleCustomEvent);
+        };
+    }, [fetchCounts, pathname]);
 
     const handleLogout = async () => {
         try {
@@ -39,6 +81,7 @@ export default function AdminSidebar() {
         href: string;
         icon: React.ComponentType<{ size?: number; className?: string }>;
         badge?: number;
+        badgeColor?: string;
     }
 
     // Main Admin Navigation (Displayed ONLY for Main Admin email)
@@ -46,9 +89,21 @@ export default function AdminSidebar() {
         { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
         { name: "Projects", href: "/admin/projects", icon: FolderKanban },
         { name: "Events", href: "/admin/events", icon: Calendar },
-        { name: "Join Requests", href: "/admin/requests", icon: Mailbox },
+        { 
+            name: "Join Requests", 
+            href: "/admin/requests", 
+            icon: Mailbox, 
+            badge: counts.joinRequests > 0 ? counts.joinRequests : undefined,
+            badgeColor: "bg-[#EC0D6E] shadow-[0_0_10px_rgba(236,13,110,0.5)]"
+        },
         { name: "Members", href: "/admin/members", icon: Users },
-        { name: "Notifications", href: "/admin/notifications", icon: Bell, badge: 3 },
+        { 
+            name: "Notifications", 
+            href: "/admin/notifications", 
+            icon: Bell, 
+            badge: counts.notifications > 0 ? counts.notifications : undefined,
+            badgeColor: "bg-[#A855F7] shadow-[0_0_10px_rgba(168,85,247,0.5)]"
+        },
         { name: "Archive", href: "/admin/archive", icon: Archive },
     ];
 
@@ -58,7 +113,13 @@ export default function AdminSidebar() {
         { name: "Projects", href: "/admin/projects", icon: FolderKanban },
         { name: "Events", href: "/admin/events", icon: Calendar },
         { name: "Members", href: "/admin/members", icon: Users },
-        { name: "Notifications", href: "/admin/notifications", icon: Bell, badge: 3 },
+        { 
+            name: "Notifications", 
+            href: "/admin/notifications", 
+            icon: Bell, 
+            badge: counts.notifications > 0 ? counts.notifications : undefined,
+            badgeColor: "bg-[#A855F7] shadow-[0_0_10px_rgba(168,85,247,0.5)]"
+        },
         { name: "Archive", href: "/admin/archive", icon: Archive },
     ];
 
@@ -119,8 +180,8 @@ export default function AdminSidebar() {
                                 <Icon size={19} />
                                 <span className="text-sm">{item.name}</span>
                             </div>
-                            {item.badge && (
-                                <span className="bg-[#EC0D6E] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                            {typeof item.badge === "number" && item.badge > 0 && (
+                                <span className={`text-white text-[11px] font-extrabold px-2 py-0.5 rounded-full flex items-center justify-center min-w-[20px] ${item.badgeColor || "bg-[#EC0D6E]"}`}>
                                     {item.badge}
                                 </span>
                             )}

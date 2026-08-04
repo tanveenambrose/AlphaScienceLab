@@ -208,8 +208,9 @@ export const db = {
     delete: (table: string, id: string, accessToken?: string) =>
         request("DELETE", table, { query: `id=eq.${id}`, accessToken }),
 
-    count: async (table: string, accessToken?: string): Promise<number> => {
-        const url = `${getUrl()}/rest/v1/${table}?select=id&limit=0`;
+    count: async (table: string, query?: string, accessToken?: string): Promise<number> => {
+        const queryPart = query ? `&${query}` : "";
+        const url = `${getUrl()}/rest/v1/${table}?select=id&limit=0${queryPart}`;
         const key = accessToken ? getAnonKey() : getServiceKey();
         const headers: Record<string, string> = {
             apikey: key,

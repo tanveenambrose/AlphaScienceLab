@@ -8,7 +8,6 @@ export async function GET() {
     try {
         const cookieStore = await cookies();
         const accessToken = cookieStore.get("sb-access-token")?.value;
-        const userRoleCookie = cookieStore.get("asl-user-role")?.value;
 
         if (!accessToken) {
             return NextResponse.json({ authenticated: false }, { status: 200 });
@@ -20,22 +19,25 @@ export async function GET() {
             return NextResponse.json({ authenticated: false }, { status: 200 });
         }
 
-        const email = (supabaseUser.email || "").toLowerCase().trim();
-        let role = userRoleCookie;
-        if (!role) {
-            if (email.includes("media")) {
-                role = "media";
-            } else if (email.includes("admin") || email === process.env.SMTP_EMAIL?.toLowerCase().trim()) {
-                role = "main";
-            } else {
-                role = "member";
-            }
+        const normalizedEmail = (supabaseUser.email || "").toLowerCase().trim();
+        const MAIN_ADMIN_EMAIL = "alphasciencelabmecbd@gmail.com";
+        const MEDIA_ADMIN_EMAIL = "racoctanveen15@gmail.com";
+        const envSmtpEmail = process.env.SMTP_EMAIL?.toLowerCase().trim();
+
+        // Strictly determine role from email
+        let role = "member";
+        if (normalizedEmail === MAIN_ADMIN_EMAIL || normalizedEmail === envSmtpEmail) {
+            role = "main";
+        } else if (normalizedEmail === MEDIA_ADMIN_EMAIL) {
+            role = "media";
+        } else {
+            role = "member";
         }
 
         // Fetch member profile from database to get member image and official details
         let memberData: any = null;
         try {
-            memberData = await db.getByEmail("members", email);
+            memberData = await db.getByEmail("members", normalizedEmail);
         } catch (e) {
             console.error("Could not fetch member profile from db:", e);
         }
@@ -43,7 +45,7 @@ export async function GET() {
         const dbImage = memberData?.image || memberData?.image_url;
         const dbName = memberData?.name;
 
-        const defaultName = supabaseUser.email?.split("@")[0].replace(".", " ").replace(/\b\w/g, (c: string) => c.toUpperCase()) || "User";
+        const defaultName = normalizedEmail.split("@")[0].replace(".", " ").replace(/\b\w/g, (c: string) => c.toUpperCase()) || "User";
 
         return NextResponse.json({
             authenticated: true,

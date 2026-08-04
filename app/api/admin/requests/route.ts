@@ -12,8 +12,16 @@ async function getAuth() {
 }
 
 export async function GET() {
-    const { user, token } = await getAuth();
+    const { user } = await getAuth();
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const normalizedEmail = (user.email || "").toLowerCase().trim();
+    const MAIN_ADMIN_EMAIL = "alphasciencelabmecbd@gmail.com";
+    const isMainAdmin = normalizedEmail === MAIN_ADMIN_EMAIL || normalizedEmail === process.env.SMTP_EMAIL?.toLowerCase().trim();
+
+    if (!isMainAdmin) {
+        return NextResponse.json({ error: "Access Denied: Only Main Admin (alphasciencelabmecbd@gmail.com) can access join requests" }, { status: 403 });
+    }
 
     try {
         const data = await db.getAll("join_requests");

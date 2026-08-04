@@ -44,6 +44,9 @@ export default function AdminJoinRequests() {
             } else {
                 setRequests([]);
             }
+            if (typeof window !== "undefined") {
+                window.dispatchEvent(new Event("asl-counts-updated"));
+            }
         } catch (error) {
             console.error("Failed to fetch requests", error);
             setRequests([]);
@@ -63,6 +66,9 @@ export default function AdminJoinRequests() {
             const data = await res.json().catch(() => ({}));
             
             if (res.ok && data.success) {
+                if (typeof window !== "undefined") {
+                    window.dispatchEvent(new Event("asl-counts-updated"));
+                }
                 setActionFeedback({
                     type: "success",
                     message: `Approved ${selectedRequest.full_name}! Account created & welcome email sent${data.tempPassword ? ` with password: ${data.tempPassword}` : ''}.`
@@ -101,6 +107,9 @@ export default function AdminJoinRequests() {
             const data = await res.json().catch(() => ({}));
 
             if (res.ok && data.success) {
+                if (typeof window !== "undefined") {
+                    window.dispatchEvent(new Event("asl-counts-updated"));
+                }
                 if (isModalOpen) {
                     setActionFeedback({
                         type: "success",
@@ -141,7 +150,7 @@ export default function AdminJoinRequests() {
     };
 
     return (
-        <RequireAuth>
+        <RequireAuth requireMainAdmin={true}>
             <div className="relative z-10 w-full h-full flex flex-col gap-8 p-6 md:p-8">
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

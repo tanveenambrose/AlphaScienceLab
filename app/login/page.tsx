@@ -172,7 +172,7 @@ export default function LoginPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                                placeholder={loginType === "admin" ? "admin@alphasciencelab.com or media@alphasciencelab.com" : "member@alphasciencelab.com"}
+                                placeholder={loginType === "admin" ? "alphasciencelabmecbd@gmail.com or racoctanveen15@gmail.com" : "your.email@gmail.com"}
                                 className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-[#EC0D6E]/50 focus:bg-white/10 transition-all outline-none"
                             />
                         </div>
@@ -218,7 +218,7 @@ export default function LoginPage() {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full py-4 mt-4 rounded-2xl bg-gradient-to-r from-[#EC0D6E] via-[#A855F7] to-[#6366F1] text-white font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_25px_rgba(236,13,110,0.5)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                        className="w-full py-4 mt-4 rounded-2xl bg-gradient-to-r from-[#EC0D6E] via-[#A855F7] to-[#6366F1] text-white font-bold text-sm tracking-wider uppercase hover:shadow-[0_0_25px_rgba(236,13_110,0.5)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
                     >
                         {isLoading ? (
                             <>
@@ -235,8 +235,8 @@ export default function LoginPage() {
 
                     <p className="text-center text-[11px] text-zinc-500 mt-4 leading-relaxed">
                         {loginType === "member"
-                            ? "After successful login, members are redirected to the homepage."
-                            : "Main Admin and Media Team log in here. Section access is automatically granted based on your login email."}
+                            ? "Approved ASL members log in here with their registered email and password."
+                            : "Main Admin (alphasciencelabmecbd@gmail.com) and Media Team (racoctanveen15@gmail.com) log in here."}
                     </p>
                 </form>
             </div>

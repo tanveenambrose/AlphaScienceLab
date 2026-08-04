@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function RequireAuth({ children }: { children: React.ReactNode }) {
+export default function RequireAuth({ 
+    children,
+    requireMainAdmin = false
+}: { 
+    children: React.ReactNode;
+    requireMainAdmin?: boolean;
+}) {
     const [isAuthorized, setIsAuthorized] = useState(false);
     const router = useRouter();
 
@@ -11,15 +17,25 @@ export default function RequireAuth({ children }: { children: React.ReactNode })
         fetch("/api/admin/check-auth")
             .then(res => {
                 if (res.ok) {
-                    setIsAuthorized(true);
+                    return res.json();
                 } else {
                     router.push("/admin/login");
+                    return null;
+                }
+            })
+            .then(data => {
+                if (data?.authenticated) {
+                    if (requireMainAdmin && data.role !== "main") {
+                        router.push("/admin");
+                    } else {
+                        setIsAuthorized(true);
+                    }
                 }
             })
             .catch(() => {
                 router.push("/admin/login");
             });
-    }, [router]);
+    }, [router, requireMainAdmin]);
 
     if (!isAuthorized) {
         return (

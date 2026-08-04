@@ -12,11 +12,18 @@ async function getAuth() {
 }
 
 export async function GET() {
-    const { token } = await getAuth();
+    const { token, user } = await getAuth();
+    if (!user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     try {
         const data = await db.getAll("notifications", token);
+        // Exclude join requests - only events, projects, archive, and achievements updates are shown in notifications
+        const filtered = (data || []).filter((n: any) => n.type !== "join_request");
+
         // Map database schema to frontend expectations
-        const formatted = data.map((n: any) => ({
+        const formatted = filtered.map((n: any) => ({
             id: n.id,
             type: n.type,
             title: n.title,
@@ -29,7 +36,7 @@ export async function GET() {
             targetName: n.target_name,
             content: n.content,
             timestamp: new Date(n.created_at).toLocaleString(),
-            status: n.status,
+            status: n.status || "pending",
         }));
         return NextResponse.json(formatted || []);
     } catch (error) {
@@ -39,7 +46,11 @@ export async function GET() {
 }
 
 export async function PATCH(req: Request) {
-    const { token } = await getAuth();
+    const { token, user } = await getAuth();
+    if (!user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     try {
         const { id, status } = await req.json();
         const data = await db.update("notifications", id, { status }, token);
@@ -47,5 +58,25 @@ export async function PATCH(req: Request) {
     } catch (error) {
         console.error("Failed to update notification:", error);
         return NextResponse.json({ error: "Failed to update notification status" }, { status: 500 });
+    }
+}
+
+export async function DELETE(req: Request) {
+    const { token, user } = await getAuth();
+    if (!user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    try {
+        const { searchParams } = new URL(req.url);
+        const id = searchParams.get("id");
+        if (!id) {
+            return NextResponse.json({ error: "Missing notification id" }, { status: 400 });
+        }
+        await db.delete("notifications", id, token);
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error("Failed to delete notification:", error);
+        return NextResponse.json({ error: "Failed to delete notification" }, { status: 500 });
     }
 }

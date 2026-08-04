@@ -11,6 +11,14 @@ export async function POST(req: Request, props: { params: Promise<{ id: string }
 
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+    const normalizedEmail = (user.email || "").toLowerCase().trim();
+    const MAIN_ADMIN_EMAIL = "alphasciencelabmecbd@gmail.com";
+    const isMainAdmin = normalizedEmail === MAIN_ADMIN_EMAIL || normalizedEmail === process.env.SMTP_EMAIL?.toLowerCase().trim();
+
+    if (!isMainAdmin) {
+        return NextResponse.json({ error: "Access Denied: Only Main Admin (alphasciencelabmecbd@gmail.com) can reject join requests" }, { status: 403 });
+    }
+
     try {
         // Fetch request details before deleting
         const joinRequest = await db.getById("join_requests", id);
