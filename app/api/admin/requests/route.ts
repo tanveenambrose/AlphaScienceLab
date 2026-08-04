@@ -16,9 +16,10 @@ export async function GET() {
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     try {
-        const data = await db.getAll("join_requests", token);
+        const data = await db.getAll("join_requests");
         return NextResponse.json(data || []);
-    } catch {
-        return NextResponse.json({ error: "Failed to fetch requests" }, { status: 500 });
+    } catch (err: any) {
+        console.error("Fetch requests error:", err.message, err);
+        return NextResponse.json({ error: "Failed to fetch requests", details: err.message }, { status: 500 });
     }
 }

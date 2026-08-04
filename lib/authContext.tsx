@@ -6,8 +6,13 @@ export interface UserProfile {
     id: string;
     name: string;
     email: string;
-    role: "admin" | "media" | "member";
+    role: "admin" | "media" | "member" | "main";
     avatarUrl?: string;
+    department?: string;
+    batch?: string;
+    class_roll?: string;
+    registration?: string;
+    mobile?: string;
 }
 
 interface AuthContextType {
@@ -15,7 +20,8 @@ interface AuthContextType {
     isLoading: boolean;
     login: (email: string, password: string, loginType: "admin" | "member") => Promise<{ success: boolean; role?: string; error?: string }>;
     logout: () => Promise<void>;
-    updateProfile: (data: { name?: string; avatarUrl?: string; currentPassword?: string; newPassword?: string }) => Promise<{ success: boolean; error?: string }>;
+    updateProfile: (data: { name?: string; avatarUrl?: string; currentPassword?: string; newPassword?: string } | FormData) => Promise<{ success: boolean; error?: string; user?: UserProfile }>;
+    refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -24,11 +30,31 @@ const AuthContext = createContext<AuthContextType>({
     login: async () => ({ success: false }),
     logout: async () => {},
     updateProfile: async () => ({ success: false }),
+    refreshProfile: async () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<UserProfile | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const refreshProfile = async () => {
+        try {
+            const res = await fetch("/api/auth/me");
+            if (res.ok) {
+                const data = await res.json();
+                if (data?.authenticated && data?.user) {
+                    setUser(data.user);
+                    if (typeof window !== "undefined") {
+                        localStorage.setItem("asl_user_session", JSON.stringify(data.user));
+                    }
+                } else if (data?.authenticated === false) {
+                    // Do not erase local demo user if unauthenticated unless explicitly logging out
+                }
+            }
+        } catch (e) {
+            console.error("Failed to refresh user profile:", e);
+        }
+    };
 
     useEffect(() => {
         // Load initial session from localStorage
@@ -41,22 +67,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             }
         }
 
-        // Verify with backend
-        fetch("/api/auth/me")
-            .then((res) => {
-                if (res.ok) return res.json();
-                return null;
-            })
-            .then((data) => {
-                if (data?.user) {
-                    setUser(data.user);
-                    if (typeof window !== "undefined") {
-                        localStorage.setItem("asl_user_session", JSON.stringify(data.user));
-                    }
-                }
-            })
-            .catch(() => {})
-            .finally(() => setIsLoading(false));
+        // Verify & synchronize with backend database
+        refreshProfile().finally(() => setIsLoading(false));
     }, []);
 
     const login = async (email: string, password: string, loginType: "admin" | "member") => {
@@ -106,13 +118,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
-    const updateProfile = async (data: { name?: string; avatarUrl?: string; currentPassword?: string; newPassword?: string }) => {
+    const updateProfile = async (data: { name?: string; avatarUrl?: string; currentPassword?: string; newPassword?: string } | FormData) => {
         try {
-            const res = await fetch("/api/auth/profile", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
-            });
+            let res: Response;
+            if (data instanceof FormData) {
+                res = await fetch("/api/auth/profile", {
+                    method: "PUT",
+                    body: data,
+                });
+            } else {
+                res = await fetch("/api/auth/profile", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                });
+            }
 
             const result = await res.json();
 
@@ -120,7 +140,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 return { success: false, error: result.error || "Failed to update profile" };
             }
 
-            if (user) {
+            if (result.user) {
+                const updatedUser: UserProfile = {
+                    ...(user || {} as UserProfile),
+                    ...result.user,
+                };
+                setUser(updatedUser);
+                if (typeof window !== "undefined") {
+                    localStorage.setItem("asl_user_session", JSON.stringify(updatedUser));
+                }
+                return { success: true, user: updatedUser };
+            } else if (user && !(data instanceof FormData)) {
                 const updatedUser: UserProfile = {
                     ...user,
                     name: data.name ?? user.name,
@@ -130,8 +160,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 if (typeof window !== "undefined") {
                     localStorage.setItem("asl_user_session", JSON.stringify(updatedUser));
                 }
+                return { success: true, user: updatedUser };
             }
 
+            await refreshProfile();
             return { success: true };
         } catch (err) {
             return { success: false, error: err instanceof Error ? err.message : "Failed to update profile" };
@@ -139,7 +171,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <AuthContext.Provider value={{ user, isLoading, login, logout, updateProfile }}>
+        <AuthContext.Provider value={{ user, isLoading, login, logout, updateProfile, refreshProfile }}>
             {children}
         </AuthContext.Provider>
     );

@@ -14,7 +14,7 @@ async function getAuth() {
 export async function GET() {
     const { token } = await getAuth();
     try {
-        const data = await db.getAll("members", token);
+        const data = await db.getAll("members");
         return NextResponse.json(data || []);
     } catch (error) {
         console.error("Members API GET error:", error);
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
     try {
         const body = await req.json();
-        const data = await db.insert("members", { ...body, created_at: new Date().toISOString() }, token);
+        const data = await db.insert("members", { ...body, created_at: new Date().toISOString() });
         return NextResponse.json(data);
     } catch (error) {
         console.error("Members API POST error:", error);

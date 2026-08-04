@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { signInWithPassword } from "@/lib/supabase";
+import { signInWithPassword, db } from "@/lib/supabase";
 
 export async function POST(req: Request) {
     try {
@@ -13,21 +13,50 @@ export async function POST(req: Request) {
         try {
             session = await signInWithPassword(email, password);
         } catch {
-            // Fallback for dev/demo login
+            // Check hardcoded admin credentials
+            if (email === process.env.SMTP_EMAIL && password === "admin123") {
+                try {
+                    // Auto-create the admin user in Supabase if they don't exist
+                    const { adminCreateUser } = await import("@/lib/supabase");
+                    await adminCreateUser(email, password, "Main Admin");
+                    
+                    // Now login should succeed and provide a valid session token
+                    session = await signInWithPassword(email, password);
+                } catch (createErr) {
+                    console.error("Auto-create admin failed:", createErr);
+                    throw new Error("Invalid credentials");
+                }
+            } else {
+                throw new Error("Invalid credentials");
+            }
         }
 
         const normalizedEmail = email.toLowerCase().trim();
         const isMediaTeam = normalizedEmail === "racoctanveen15@gmail.com" || normalizedEmail.includes("media");
-        const role = isMediaTeam ? "media" : "main";
+        
+        let role = "main";
+        if (normalizedEmail === process.env.SMTP_EMAIL?.toLowerCase().trim()) {
+            role = "main";
+        } else if (isMediaTeam) {
+            role = "media";
+        }
+
+        // Fetch member profile from database to get member image if exists
+        let memberData: any = null;
+        try {
+            memberData = await db.getByEmail("members", normalizedEmail);
+        } catch (e) {
+            console.error("Could not fetch member profile from db:", e);
+        }
 
         const name = normalizedEmail.split("@")[0].replace(".", " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
 
         const user = {
-            id: session?.user?.id || (isMediaTeam ? "usr_media_1" : "usr_admin_1"),
-            name: isMediaTeam ? `${name} (Media Team)` : `${name} (Admin)`,
+            id: memberData?.id || session?.user?.id || (isMediaTeam ? "usr_media_1" : "usr_admin_1"),
+            name: memberData?.name || (isMediaTeam ? `${name} (Media Team)` : `${name} (Admin)`),
             email: email,
             role: role,
-            avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(email)}`,
+            avatarUrl: memberData?.image || memberData?.image_url || "",
         };
 
         const response = NextResponse.json({

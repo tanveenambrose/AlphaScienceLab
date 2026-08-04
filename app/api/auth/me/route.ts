@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getUser } from "@/lib/supabase";
+import { getUser, db } from "@/lib/supabase";
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
     try {
@@ -18,29 +20,48 @@ export async function GET() {
             return NextResponse.json({ authenticated: false }, { status: 200 });
         }
 
-        const email = (supabaseUser.email || "").toLowerCase();
+        const email = (supabaseUser.email || "").toLowerCase().trim();
         let role = userRoleCookie;
         if (!role) {
             if (email.includes("media")) {
                 role = "media";
-            } else if (email.includes("admin")) {
+            } else if (email.includes("admin") || email === process.env.SMTP_EMAIL?.toLowerCase().trim()) {
                 role = "main";
             } else {
                 role = "member";
             }
         }
 
+        // Fetch member profile from database to get member image and official details
+        let memberData: any = null;
+        try {
+            memberData = await db.getByEmail("members", email);
+        } catch (e) {
+            console.error("Could not fetch member profile from db:", e);
+        }
+
+        const dbImage = memberData?.image || memberData?.image_url;
+        const dbName = memberData?.name;
+
+        const defaultName = supabaseUser.email?.split("@")[0].replace(".", " ").replace(/\b\w/g, (c: string) => c.toUpperCase()) || "User";
+
         return NextResponse.json({
             authenticated: true,
             user: {
-                id: supabaseUser.id,
+                id: memberData?.id || supabaseUser.id,
                 email: supabaseUser.email,
-                name: supabaseUser.email?.split("@")[0].replace(".", " ").replace(/\b\w/g, (c: string) => c.toUpperCase()) || "User",
+                name: dbName || defaultName,
                 role: role,
-                avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(supabaseUser.email || "user")}`,
+                avatarUrl: dbImage || "",
+                department: memberData?.department || "",
+                batch: memberData?.batch || "",
+                class_roll: memberData?.class_roll || "",
+                registration: memberData?.registration || "",
+                mobile: memberData?.mobile || "",
             },
         });
-    } catch {
+    } catch (err) {
+        console.error("Auth /api/auth/me error:", err);
         return NextResponse.json({ authenticated: false }, { status: 200 });
     }
 }

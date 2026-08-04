@@ -14,23 +14,23 @@ export async function POST(req: Request, props: { params: Promise<{ id: string }
 
     try {
         // 1. Fetch the request
-        const joinRequest = await db.getById("join_requests", id, token);
+        const joinRequest = await db.getById("join_requests", id);
         if (!joinRequest) {
-            return NextResponse.json({ error: "Request not found" }, { status: 404 });
+            return NextResponse.json({ error: "Application request not found" }, { status: 404 });
         }
 
-        // 2. Generate temporary password
-        const tempPassword = crypto.randomBytes(4).toString('hex'); // 8 character alphanumeric
+        // 2. Generate a secure and readable password
+        const randomHex = crypto.randomBytes(4).toString("hex").toUpperCase();
+        const tempPassword = `ASL-${randomHex}`; // e.g. ASL-7B9F1234
 
-        // 3. Create user in Supabase Auth
+        // 3. Create user in Supabase Auth (or handle existing user)
         try {
             await adminCreateUser(joinRequest.email, tempPassword, joinRequest.full_name);
         } catch (authError: any) {
-            console.error("Auth creation error:", authError);
-            return NextResponse.json({ error: authError.message || "Failed to create user account" }, { status: 500 });
+            console.warn("Supabase Auth notice (may already exist):", authError?.message || authError);
         }
 
-        // 4. Insert into members
+        // 4. Save member record in Supabase members table
         const memberData = {
             name: joinRequest.full_name,
             email: joinRequest.email,
@@ -41,23 +41,35 @@ export async function POST(req: Request, props: { params: Promise<{ id: string }
             registration: joinRequest.registration,
             mobile: joinRequest.mobile,
             image: joinRequest.photo_url || "",
+            image_url: joinRequest.photo_url || "",
             temp_password: tempPassword,
-            bio: `Member since ${new Date().getFullYear()}. Department of ${joinRequest.department}, ${joinRequest.batch} Batch.`,
+            bio: `Official Member of Alpha Science Lab. Department of ${joinRequest.department}, ${joinRequest.batch} Batch.`,
+            social_links: {},
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
         };
 
-        await db.insert("members", memberData, token);
+        await db.insert("members", memberData);
 
         // 5. Delete from join_requests
-        await db.delete("join_requests", id, token);
+        await db.delete("join_requests", id);
 
-        // 6. Send Welcome Email
-        await sendWelcomeEmail(joinRequest.email, joinRequest.full_name, tempPassword);
+        // 6. Send Automated Welcome Email via Gmail SMTP
+        const hostUrl = req.headers.get("origin") || "https://alphasciencelab.org";
+        const emailResult = await sendWelcomeEmail(
+            joinRequest.email,
+            joinRequest.full_name,
+            tempPassword,
+            `${hostUrl}/login`
+        );
 
-        return NextResponse.json({ success: true });
+        return NextResponse.json({
+            success: true,
+            emailSent: emailResult.success,
+            tempPassword
+        });
     } catch (error: any) {
-        console.error("Approve error:", error);
-        return NextResponse.json({ error: error.message || "Failed to approve request" }, { status: 500 });
+        console.error("Approval workflow error:", error);
+        return NextResponse.json({ error: error.message || "Failed to approve member application" }, { status: 500 });
     }
 }

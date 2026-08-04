@@ -168,7 +168,7 @@ export default function Hero() {
         <section
             ref={container}
             suppressHydrationWarning
-            className="relative w-full min-h-screen bg-black overflow-hidden"
+            className="relative z-20 w-full min-h-screen bg-black overflow-hidden"
         >
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
@@ -189,7 +189,7 @@ export default function Hero() {
 
             {/* ── Main content ── */}
             <div
-                className="relative flex flex-col items-start justify-center text-left z-10 w-full"
+                className="relative flex flex-col items-start justify-center text-left z-20 w-full"
                 style={{
                     minHeight: "100svh",
                     paddingTop: "clamp(90px, 12vh, 140px)",

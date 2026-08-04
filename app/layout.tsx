@@ -47,7 +47,7 @@ export default function RootLayout({
                             </div>
                         </SmoothScrollProvider>
                     </PreloaderProvider>
-                    <GridWaveBg className="fixed inset-0 z-[60]" />
+                    <GridWaveBg className="fixed inset-0 z-0 pointer-events-none" />
                 </AuthProvider>
             </body>
         </html>

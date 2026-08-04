@@ -17,7 +17,7 @@ export async function PUT(req: Request, props: { params: Promise<{ id: string }>
     try {
         const { id } = await props.params;
         const body = await req.json();
-        await db.update("join_requests", id, { ...body, updated_at: new Date().toISOString() }, token);
+        await db.update("join_requests", id, { ...body, updated_at: new Date().toISOString() });
         return NextResponse.json({ success: true, id });
     } catch {
         return NextResponse.json({ error: "Failed to update" }, { status: 500 });
@@ -32,9 +32,9 @@ export async function DELETE(req: Request, props: { params: Promise<{ id: string
         const { id } = await props.params;
         
         // Fetch request details before deleting to send email
-        const joinRequest = await db.getById("join_requests", id, token);
+        const joinRequest = await db.getById("join_requests", id);
         
-        await db.delete("join_requests", id, token);
+        await db.delete("join_requests", id);
 
         // Send rejection email if request was found
         if (joinRequest && joinRequest.email) {

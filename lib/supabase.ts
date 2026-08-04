@@ -100,6 +100,27 @@ export async function adminCreateUser(email: string, password?: string, name?: s
     return res.json();
 }
 
+export async function adminUpdateUserPassword(userId: string, newPassword: string) {
+    const res = await fetch(`${getUrl()}/auth/v1/admin/users/${userId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getServiceKey()}`,
+            apikey: getServiceKey(),
+        },
+        body: JSON.stringify({
+            password: newPassword,
+        }),
+    });
+
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `Failed to update user password: ${res.status}`);
+    }
+
+    return res.json();
+}
+
 // ── Data (server-side with service role) ──────────────────
 
 async function request(
@@ -153,6 +174,18 @@ export const db = {
             accessToken,
         }).then((r) => (Array.isArray(r) ? r[0] : r)),
 
+    getByField: (table: string, field: string, value: string, accessToken?: string) =>
+        request("GET", table, {
+            query: `${field}=eq.${encodeURIComponent(value)}&select=*`,
+            accessToken,
+        }).then((r) => (Array.isArray(r) ? r[0] : r)),
+
+    getByEmail: (table: string, email: string, accessToken?: string) =>
+        request("GET", table, {
+            query: `email=ilike.${encodeURIComponent(email)}&select=*`,
+            accessToken,
+        }).then((r) => (Array.isArray(r) && r.length > 0 ? r[0] : null)),
+
     insert: (table: string, data: Record<string, unknown>, accessToken?: string) =>
         request("POST", table, { body: data, accessToken }).then((r) =>
             Array.isArray(r) ? r[0] : r
@@ -161,6 +194,13 @@ export const db = {
     update: (table: string, id: string, data: Record<string, unknown>, accessToken?: string) =>
         request("PATCH", table, {
             query: `id=eq.${id}`,
+            body: data,
+            accessToken,
+        }),
+
+    updateByEmail: (table: string, email: string, data: Record<string, unknown>, accessToken?: string) =>
+        request("PATCH", table, {
+            query: `email=ilike.${encodeURIComponent(email)}`,
             body: data,
             accessToken,
         }),
@@ -185,21 +225,23 @@ export const db = {
 // ── Storage ────────────────────────────────────────────────
 
 export async function uploadFile(
-    file: ArrayBuffer,
+    file: ArrayBuffer | Buffer | Uint8Array,
     filename: string,
     contentType: string,
     bucket: string,
-    accessToken: string
+    accessToken?: string
 ) {
     const url = `${getUrl()}/storage/v1/object/${bucket}/${filename}`;
+    const token = accessToken || getServiceKey();
     const res = await fetch(url, {
         method: "POST",
         headers: {
-            Authorization: `Bearer ${accessToken}`,
-            apikey: getAnonKey(),
+            Authorization: `Bearer ${token}`,
+            apikey: getServiceKey() || getAnonKey(),
             "Content-Type": contentType,
+            "x-upsert": "true",
         },
-        body: file,
+        body: file as any,
     });
 
     if (!res.ok) {
@@ -208,4 +250,42 @@ export async function uploadFile(
     }
 
     return `${getUrl()}/storage/v1/object/public/${bucket}/${filename}`;
+}
+
+export async function deleteStorageFile(
+    bucket: string,
+    filename: string,
+    accessToken?: string
+) {
+    try {
+        const url = `${getUrl()}/storage/v1/object/${bucket}/${filename}`;
+        const token = accessToken || getServiceKey();
+        const res = await fetch(url, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                apikey: getServiceKey() || getAnonKey(),
+            },
+        });
+        return res.ok;
+    } catch (err) {
+        console.error(`Failed to delete storage file ${bucket}/${filename}:`, err);
+        return false;
+    }
+}
+
+export async function deleteFileByUrl(fileUrl: string, accessToken?: string) {
+    if (!fileUrl) return false;
+    try {
+        // Matches e.g. /storage/v1/object/public/<bucket>/<filename>
+        const match = fileUrl.match(/\/storage\/v1\/object\/(?:public\/)?([^/]+)\/(.+)$/);
+        if (match) {
+            const bucket = match[1];
+            const filename = decodeURIComponent(match[2]);
+            return await deleteStorageFile(bucket, filename, accessToken);
+        }
+    } catch (err) {
+        console.error("Failed to delete file by URL:", err);
+    }
+    return false;
 }

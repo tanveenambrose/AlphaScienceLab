@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { signInWithPassword } from "@/lib/supabase";
+import { signInWithPassword, db } from "@/lib/supabase";
 
 export async function POST(req: Request) {
     try {
@@ -9,21 +9,48 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
         }
 
-        // Try Supabase auth or fallback demo auth
+        const normalizedEmail = email.toLowerCase().trim();
+
+        // Sign in via Supabase Auth
         let session = null;
         try {
-            session = await signInWithPassword(email, password);
+            session = await signInWithPassword(normalizedEmail, password);
         } catch {
-            // Demo fallback for testing member login
+            // Also check if member exists in members table with matching temp_password
+            let memberByDb = null;
+            try {
+                memberByDb = await db.getByEmail("members", normalizedEmail);
+            } catch (e) {
+                console.error("DB check failed:", e);
+            }
+
+            if (memberByDb && memberByDb.temp_password && memberByDb.temp_password === password) {
+                // Member found with matching password
+            } else {
+                throw new Error("Invalid email or password");
+            }
         }
 
-        const name = email.split("@")[0].replace(".", " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
+        // Fetch member profile from database to get member image and official details
+        let memberData: any = null;
+        try {
+            memberData = await db.getByEmail("members", normalizedEmail);
+        } catch (e) {
+            console.error("Could not fetch member profile from db:", e);
+        }
+
+        const defaultName = normalizedEmail.split("@")[0].replace(".", " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
         const user = {
-            id: session?.user?.id || "usr_member_" + Math.random().toString(36).substring(2, 9),
-            name: name || "ASL Member",
-            email: email,
+            id: memberData?.id || session?.user?.id || "usr_member_" + Math.random().toString(36).substring(2, 9),
+            name: memberData?.name || defaultName || "ASL Member",
+            email: normalizedEmail,
             role: "member",
-            avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(email)}`,
+            avatarUrl: memberData?.image || memberData?.image_url || "",
+            department: memberData?.department || "",
+            batch: memberData?.batch || "",
+            class_roll: memberData?.class_roll || "",
+            registration: memberData?.registration || "",
+            mobile: memberData?.mobile || "",
         };
 
         const response = NextResponse.json({
@@ -40,6 +67,17 @@ export async function POST(req: Request) {
                 path: "/",
                 maxAge: 60 * 60 * 24 * 7,
             });
+
+            if (session.refresh_token) {
+                response.cookies.set({
+                    name: "sb-refresh-token",
+                    value: session.refresh_token,
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === "production",
+                    path: "/",
+                    maxAge: 60 * 60 * 24 * 7,
+                });
+            }
         }
 
         response.cookies.set({

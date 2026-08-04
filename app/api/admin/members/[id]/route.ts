@@ -16,7 +16,7 @@ export async function PUT(req: Request, props: { params: Promise<{ id: string }>
     try {
         const { id } = await props.params;
         const body = await req.json();
-        await db.update("members", id, { ...body, updated_at: new Date().toISOString() }, token);
+        await db.update("members", id, { ...body, updated_at: new Date().toISOString() });
         return NextResponse.json({ id, ...body });
     } catch {
         return NextResponse.json({ error: "Failed to update" }, { status: 500 });
@@ -29,7 +29,7 @@ export async function DELETE(req: Request, props: { params: Promise<{ id: string
 
     try {
         const { id } = await props.params;
-        await db.delete("members", id, token);
+        await db.delete("members", id);
         return NextResponse.json({ success: true, id });
     } catch {
         return NextResponse.json({ error: "Failed to delete" }, { status: 500 });

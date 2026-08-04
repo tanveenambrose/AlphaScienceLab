@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
     return (
-        <footer className="bg-surface-container-lowest/80 backdrop-blur-md w-full border-t border-outline-variant/20">
+        <footer className="relative z-20 bg-surface-container-lowest/80 backdrop-blur-md w-full border-t border-outline-variant/20">
             <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-stack-md mb-stack-lg">
                     {/* Brand Column */}

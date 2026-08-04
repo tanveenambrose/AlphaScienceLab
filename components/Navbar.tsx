@@ -45,7 +45,9 @@ export default function Navbar() {
     const [isDark, setIsDark] = useState(true);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-
+    useEffect(() => {
+        setAvatarError(false);
+    }, [user?.avatarUrl]);
 
     const toggleTheme = () => {
         const nextDark = !isDark;
@@ -231,14 +233,11 @@ export default function Navbar() {
                                     aria-label="User Profile Menu"
                                 >
                                     {!avatarError && user.avatarUrl ? (
-                                        <Image
+                                        <img
                                             key={user.avatarUrl}
                                             src={user.avatarUrl}
                                             alt={user.name || "User Profile"}
-                                            fill
-                                            sizes="40px"
-                                            className="object-cover"
-                                            unoptimized
+                                            className="w-full h-full object-cover"
                                             onError={() => setAvatarError(true)}
                                         />
                                     ) : (
@@ -256,14 +255,11 @@ export default function Navbar() {
                                         <div className="p-3 border-b border-white/10 flex items-center gap-3">
                                             <div className="relative w-9 h-9 rounded-full overflow-hidden border border-[#EC0D6E]/40 bg-[#EC0D6E]/20 flex items-center justify-center text-white font-bold text-xs shrink-0">
                                                 {!avatarError && user.avatarUrl ? (
-                                                    <Image
+                                                    <img
                                                         key={user.avatarUrl}
                                                         src={user.avatarUrl}
                                                         alt={user.name || "User Profile"}
-                                                        fill
-                                                        sizes="36px"
-                                                        className="object-cover"
-                                                        unoptimized
+                                                        className="w-full h-full object-cover"
                                                         onError={() => setAvatarError(true)}
                                                     />
                                                 ) : (
@@ -286,10 +282,10 @@ export default function Navbar() {
                                                 className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-200 hover:text-white hover:bg-white/10 transition-colors text-left"
                                             >
                                                 <Settings size={15} className="text-[#EC0D6E]" />
-                                                Profile
+                                                Profile Settings
                                             </button>
 
-                                            {(user.role === "admin" || user.role === "media") && (
+                                            {(user.role === "admin" || user.role === "media" || user.role === "main") && (
                                                 <Link
                                                     href="/admin"
                                                     onClick={() => setIsProfileDropdownOpen(false)}
@@ -352,13 +348,10 @@ export default function Navbar() {
                                 <div className="flex items-center gap-3">
                                     <div className="relative w-10 h-10 rounded-full bg-[#EC0D6E]/20 border border-[#EC0D6E]/40 overflow-hidden flex items-center justify-center text-white font-bold text-xs shrink-0">
                                         {!avatarError && user.avatarUrl ? (
-                                            <Image
+                                            <img
                                                 src={user.avatarUrl}
                                                 alt={user.name || "User Profile"}
-                                                fill
-                                                sizes="40px"
-                                                className="object-cover"
-                                                unoptimized
+                                                className="w-full h-full object-cover"
                                                 onError={() => setAvatarError(true)}
                                             />
                                         ) : (
@@ -467,4 +460,3 @@ export default function Navbar() {
         </>
     );
 }
-

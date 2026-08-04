@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ShieldCheck, UserCheck, Lock, Mail, Loader2, ArrowRight } from "lucide-react";
+import { ArrowLeft, ShieldCheck, UserCheck, Lock, Mail, Loader2, ArrowRight, KeyRound, CheckCircle2 } from "lucide-react";
 import { useAuth } from "@/lib/authContext";
 
 export default function LoginPage() {
@@ -12,7 +12,9 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [isRecovering, setIsRecovering] = useState(false);
 
     const router = useRouter();
     const { login } = useAuth();
@@ -20,6 +22,7 @@ export default function LoginPage() {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+        setSuccess("");
         setIsLoading(true);
 
         try {
@@ -41,6 +44,36 @@ export default function LoginPage() {
             setError(err instanceof Error ? err.message : "Something went wrong");
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleForgotPassword = async () => {
+        if (!email) {
+            setError("Please enter your email address above to recover your password.");
+            return;
+        }
+        setError("");
+        setSuccess("");
+        setIsRecovering(true);
+
+        try {
+            const res = await fetch("/api/auth/forgot-password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                setError(data.error || "Failed to send recovery email. Please check your email address.");
+            } else {
+                setSuccess(data.message || `Present password sent to ${email}. Please check your inbox.`);
+            }
+        } catch (err: any) {
+            setError(err?.message || "Failed to send recovery email.");
+        } finally {
+            setIsRecovering(false);
         }
     };
 
@@ -77,7 +110,6 @@ export default function LoginPage() {
                     <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4 shadow-inner">
                         <Image src="/assests/asl.png" alt="ASL Logo" width={40} height={40} style={{ width: "auto", height: "auto" }} className="object-contain" priority />
                     </div>
-                    {/* CRITICAL: Page heading is strictly 'Login' */}
                     <h1 className="text-3xl font-display uppercase font-extrabold text-white tracking-wider text-center">
                         Login
                     </h1>
@@ -90,7 +122,7 @@ export default function LoginPage() {
                 <div className="grid grid-cols-2 p-1.5 bg-white/5 border border-white/10 rounded-2xl mb-6 relative z-20">
                     <button
                         type="button"
-                        onClick={() => { setLoginType("member"); setError(""); }}
+                        onClick={() => { setLoginType("member"); setError(""); setSuccess(""); }}
                         className={`py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
                             loginType === "member"
                                 ? "bg-gradient-to-r from-[#EC0D6E] to-[#9333EA] text-white shadow-[0_0_20px_rgba(236,13,110,0.4)]"
@@ -102,7 +134,7 @@ export default function LoginPage() {
                     </button>
                     <button
                         type="button"
-                        onClick={() => { setLoginType("admin"); setError(""); }}
+                        onClick={() => { setLoginType("admin"); setError(""); setSuccess(""); }}
                         className={`py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
                             loginType === "admin"
                                 ? "bg-gradient-to-r from-[#EC0D6E] to-[#9333EA] text-white shadow-[0_0_20px_rgba(236,13,110,0.4)]"
@@ -119,6 +151,13 @@ export default function LoginPage() {
                     {error && (
                         <div className="p-3.5 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-400 text-xs text-center font-medium">
                             {error}
+                        </div>
+                    )}
+
+                    {success && (
+                        <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-emerald-400 text-xs text-center font-medium flex items-center justify-center gap-2">
+                            <CheckCircle2 size={16} className="shrink-0" />
+                            <span>{success}</span>
                         </div>
                     )}
 
@@ -140,9 +179,29 @@ export default function LoginPage() {
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest ml-1">
-                            Password
-                        </label>
+                        <div className="flex items-center justify-between">
+                            <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest ml-1">
+                                Password
+                            </label>
+                            <button
+                                type="button"
+                                onClick={handleForgotPassword}
+                                disabled={isRecovering}
+                                className="text-[11px] text-[#EC0D6E] hover:text-[#ff388e] hover:underline font-bold transition-all flex items-center gap-1 disabled:opacity-50"
+                            >
+                                {isRecovering ? (
+                                    <>
+                                        <Loader2 size={11} className="animate-spin" />
+                                        Sending...
+                                    </>
+                                ) : (
+                                    <>
+                                        <KeyRound size={11} />
+                                        Forgot Password?
+                                    </>
+                                )}
+                            </button>
+                        </div>
                         <div className="relative">
                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4" />
                             <input
