@@ -26,8 +26,9 @@ export async function GET() {
     try {
         const data = await db.getAll("join_requests");
         return NextResponse.json(data || []);
-    } catch (err: any) {
-        console.error("Fetch requests error:", err.message, err);
-        return NextResponse.json({ error: "Failed to fetch requests", details: err.message }, { status: 500 });
+    } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : "Unknown error";
+        console.error("Fetch requests error:", msg, err);
+        return NextResponse.json({ error: "Failed to fetch requests", details: msg }, { status: 500 });
     }
 }

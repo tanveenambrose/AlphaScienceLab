@@ -34,9 +34,9 @@ export async function POST(req: Request) {
         }
 
         // Query member from database
-        let member: any = null;
+        let member: Record<string, unknown> | null = null;
         try {
-            member = await db.getByEmail("members", email);
+            member = (await db.getByEmail("members", email)) as Record<string, unknown> | null;
         } catch (dbErr) {
             console.error("Failed to query member by email:", dbErr);
         }
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
         }
 
         // Member found, retrieve present password
-        const presentPassword = member.temp_password;
+        const presentPassword = member.temp_password as string | undefined;
 
         if (!presentPassword) {
             return NextResponse.json({
@@ -76,7 +76,7 @@ export async function POST(req: Request) {
         // Send email via Gmail SMTP with ASL Logo
         const emailRes = await sendPasswordRecoveryEmail(
             email,
-            member.name || "Member",
+            (member.name as string) || "Member",
             presentPassword
         );
 
@@ -90,10 +90,10 @@ export async function POST(req: Request) {
             success: true,
             message: `Present password successfully sent to ${email}. Please check your inbox and spam folder.`,
         });
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error("Forgot password route error:", err);
         return NextResponse.json({
-            error: err?.message || "Internal server error occurred while recovering password.",
+            error: err instanceof Error ? err.message : "Internal server error occurred while recovering password.",
         }, { status: 500 });
     }
 }

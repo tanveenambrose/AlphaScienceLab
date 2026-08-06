@@ -242,7 +242,7 @@ export async function uploadFile(
             "Content-Type": contentType,
             "x-upsert": "true",
         },
-        body: file as any,
+        body: file as BodyInit,
     });
 
     if (!res.ok) {

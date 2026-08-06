@@ -9,7 +9,7 @@ export default function Footer() {
                     {/* Brand Column */}
                     <div className="flex flex-col gap-4">
                         <Image
-                            src="/assests/asl.png"
+                            src="/assets/asl.png"
                             alt="ASL Logo"
                             width={90}
                             height={40}

@@ -46,7 +46,7 @@ export async function GET() {
         try {
             const allNotifs = await db.getAll("notifications");
             const pendingNotifs = (allNotifs || []).filter(
-                (n: any) => n.type !== "join_request" && (n.status === "pending" || !n.status)
+                (n: { type?: string; status?: string }) => n.type !== "join_request" && (n.status === "pending" || !n.status)
             );
             notificationsCount = pendingNotifs.length;
         } catch (err) {

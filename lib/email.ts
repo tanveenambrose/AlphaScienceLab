@@ -73,7 +73,7 @@ export const sendWelcomeEmail = async (
                     <tr>
                         <td style="padding: 35px 30px; text-align: center; background: linear-gradient(135deg, rgba(236, 13, 110, 0.15), rgba(150, 46, 155, 0.2)); border-bottom: 1px solid rgba(255,255,255,0.08);">
                             <div style="margin-bottom: 14px;">
-                                <img src="https://raw.githubusercontent.com/tanveenambrose/AlphaScienceLab/main/public/assests/asl.png" alt="Alpha Science Lab Logo" width="80" style="max-width: 80px; height: auto; display: inline-block;" />
+                                <img src="https://raw.githubusercontent.com/tanveenambrose/AlphaScienceLab/main/public/assets/asl.png" alt="Alpha Science Lab Logo" width="80" style="max-width: 80px; height: auto; display: inline-block;" />
                             </div>
                             <div style="display: inline-block; padding: 6px 16px; border-radius: 50px; background: rgba(236, 13, 110, 0.15); border: 1px solid rgba(236, 13, 110, 0.4); font-size: 11px; font-weight: bold; letter-spacing: 2px; color: #EC0D6E; text-transform: uppercase; margin-bottom: 14px;">
                                 Membership Officialization
@@ -173,9 +173,9 @@ export const sendWelcomeEmail = async (
 
         console.log(`[Email] Welcome email sent successfully to ${to} (Message ID: ${info.messageId})`);
         return { success: true, messageId: info.messageId };
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error(`[Email] Failed to send welcome email to ${to}:`, error);
-        return { success: false, error: error?.message || "Unknown error sending email" };
+        return { success: false, error: error instanceof Error ? error.message : "Unknown error sending email" };
     }
 };
 
@@ -204,7 +204,7 @@ export const sendRejectionEmail = async (to: string, name: string) => {
                     <tr>
                         <td style="padding: 35px 30px; text-align: center; background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(150, 46, 155, 0.1)); border-bottom: 1px solid rgba(255,255,255,0.08);">
                             <div style="margin-bottom: 12px;">
-                                <img src="https://raw.githubusercontent.com/tanveenambrose/AlphaScienceLab/main/public/assests/asl.png" alt="Alpha Science Lab Logo" width="70" style="max-width: 70px; height: auto; display: inline-block;" />
+                                <img src="https://raw.githubusercontent.com/tanveenambrose/AlphaScienceLab/main/public/assets/asl.png" alt="Alpha Science Lab Logo" width="70" style="max-width: 70px; height: auto; display: inline-block;" />
                             </div>
                             <div style="display: inline-block; padding: 6px 16px; border-radius: 50px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); font-size: 11px; font-weight: bold; letter-spacing: 2px; color: #a1a1aa; text-transform: uppercase; margin-bottom: 12px;">
                                 Application Update
@@ -269,9 +269,9 @@ export const sendRejectionEmail = async (to: string, name: string) => {
 
         console.log(`[Email] Rejection email sent successfully to ${to} (Message ID: ${info.messageId})`);
         return { success: true, messageId: info.messageId };
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error(`[Email] Failed to send rejection email to ${to}:`, error);
-        return { success: false, error: error?.message || "Unknown error sending email" };
+        return { success: false, error: error instanceof Error ? error.message : "Unknown error sending email" };
     }
 };
 
@@ -305,7 +305,7 @@ export const sendPasswordRecoveryEmail = async (
                     <tr>
                         <td style="padding: 35px 30px; text-align: center; background: linear-gradient(135deg, rgba(236, 13, 110, 0.18), rgba(150, 46, 155, 0.25)); border-bottom: 1px solid rgba(255,255,255,0.08);">
                             <div style="margin-bottom: 14px;">
-                                <img src="https://raw.githubusercontent.com/tanveenambrose/AlphaScienceLab/main/public/assests/asl.png" alt="Alpha Science Lab Logo" width="85" style="max-width: 85px; height: auto; display: inline-block;" />
+                                <img src="https://raw.githubusercontent.com/tanveenambrose/AlphaScienceLab/main/public/assets/asl.png" alt="Alpha Science Lab Logo" width="85" style="max-width: 85px; height: auto; display: inline-block;" />
                             </div>
                             <div style="display: inline-block; padding: 6px 18px; border-radius: 50px; background: rgba(236, 13, 110, 0.15); border: 1px solid rgba(236, 13, 110, 0.4); font-size: 11px; font-weight: bold; letter-spacing: 2px; color: #EC0D6E; text-transform: uppercase; margin-bottom: 12px;">
                                 Security & Credential Recovery
@@ -393,8 +393,8 @@ export const sendPasswordRecoveryEmail = async (
 
         console.log(`[Email] Password recovery email sent successfully to ${to} (Message ID: ${info.messageId})`);
         return { success: true, messageId: info.messageId };
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error(`[Email] Failed to send password recovery email to ${to}:`, error);
-        return { success: false, error: error?.message || "Unknown error sending email" };
+        return { success: false, error: error instanceof Error ? error.message : "Unknown error sending email" };
     }
 };

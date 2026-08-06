@@ -46,10 +46,6 @@ export default function Navbar() {
     const [isDark, setIsDark] = useState(true);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        setAvatarError(false);
-    }, [user?.avatarUrl]);
-
     const toggleTheme = () => {
         const nextDark = !isDark;
         setIsDark(nextDark);
@@ -118,7 +114,7 @@ export default function Navbar() {
                     <Link href="/" className="shrink-0">
                         {!logoError && (
                             <Image
-                                src="/assests/asl.png"
+                                src="/assets/asl.png"
                                 alt="ASL Logo"
                                 width={90}
                                 height={40}

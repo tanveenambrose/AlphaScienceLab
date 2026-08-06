@@ -35,9 +35,9 @@ export async function GET() {
         }
 
         // Fetch member profile from database to get member image and official details
-        let memberData: any = null;
+        let memberData: Record<string, unknown> | null = null;
         try {
-            memberData = await db.getByEmail("members", normalizedEmail);
+            memberData = (await db.getByEmail("members", normalizedEmail)) as Record<string, unknown> | null;
         } catch (e) {
             console.error("Could not fetch member profile from db:", e);
         }

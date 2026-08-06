@@ -4,8 +4,34 @@ import { getUser, db } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
+export interface TimelineComment {
+    id: string;
+    author_name: string;
+    author_email?: string;
+    author_avatar?: string;
+    content: string;
+    created_at?: string;
+    replies?: TimelineComment[];
+}
+
+export interface TimelinePost {
+    id: string;
+    author_name: string;
+    author_email?: string;
+    author_role?: string;
+    author_avatar?: string;
+    content: string;
+    image_url?: string;
+    tags?: string[];
+    category?: string;
+    created_at?: string;
+    reactions?: Record<string, number>;
+    userReactions?: Record<string, string>;
+    comments?: TimelineComment[];
+}
+
 // In-memory fallback post store to guarantee functionality out-of-the-box
-let memoryPosts: any[] = [
+const memoryPosts: TimelinePost[] = [
     {
         id: "post-1",
         author_name: "Dr. Elena Rostova",
@@ -98,11 +124,11 @@ let memoryPosts: any[] = [
 
 export async function GET() {
     try {
-        let dbPosts: any[] = [];
+        let dbPosts: TimelinePost[] = [];
         let fetchedFromDb = false;
 
         try {
-            dbPosts = await db.getAll("timeline_posts");
+            dbPosts = (await db.getAll("timeline_posts")) as TimelinePost[];
 
             // Seed DB if table is empty
             if (Array.isArray(dbPosts) && dbPosts.length === 0) {
@@ -119,11 +145,13 @@ export async function GET() {
                             category: p.category
                         });
                         if (inserted && inserted.id) {
-                            p.id = inserted.id;
+                            p.id = inserted.id as string;
                         }
-                    } catch {}
+                    } catch {
+                        // Ignore DB insert errors during fallback
+                    }
                 }
-                dbPosts = await db.getAll("timeline_posts").catch(() => []);
+                dbPosts = ((await db.getAll("timeline_posts").catch(() => [])) as TimelinePost[]) || [];
             }
 
             if (Array.isArray(dbPosts) && dbPosts.length > 0) {
@@ -135,7 +163,7 @@ export async function GET() {
                         const counts: Record<string, number> = { Like: 0, Love: 0, Care: 0, Haha: 0, Wow: 0, Sad: 0, Angry: 0 };
                         const userReactions: Record<string, string> = {};
                         if (Array.isArray(reactionsList)) {
-                            reactionsList.forEach((r: any) => {
+                            (reactionsList as { reaction: string; user_email: string }[]).forEach((r) => {
                                 counts[r.reaction] = (counts[r.reaction] || 0) + 1;
                                 userReactions[r.user_email] = r.reaction;
                             });
@@ -150,9 +178,11 @@ export async function GET() {
                     try {
                         const commentsList = await db.getByField("timeline_comments", "post_id", post.id);
                         if (Array.isArray(commentsList)) {
-                            const roots = commentsList.filter((c: any) => !c.parent_id);
-                            roots.forEach((root: any) => {
-                                root.replies = commentsList.filter((c: any) => c.parent_id === root.id);
+                            type RawComment = TimelineComment & { parent_id?: string | null };
+                            const typedList = commentsList as RawComment[];
+                            const roots = typedList.filter((c) => !c.parent_id);
+                            roots.forEach((root) => {
+                                root.replies = typedList.filter((c) => c.parent_id === root.id);
                             });
                             post.comments = roots;
                         } else {
@@ -169,8 +199,8 @@ export async function GET() {
 
         const postsToReturn = fetchedFromDb && dbPosts.length > 0 ? dbPosts : memoryPosts;
         return NextResponse.json({ success: true, posts: postsToReturn });
-    } catch (err: any) {
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    } catch (err: unknown) {
+        return NextResponse.json({ success: false, error: err instanceof Error ? err.message : "Internal Server Error" }, { status: 500 });
     }
 }
 
@@ -187,19 +217,21 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: false, error: "Content is required" }, { status: 400 });
         }
 
-        let userEmail = supabaseUser?.email || body.author_email || "anonymous@asl.org";
-        let userMember: any = null;
+        const userEmail = supabaseUser?.email || body.author_email || "anonymous@asl.org";
+        let userMember: Record<string, unknown> | null = null;
         if (supabaseUser?.email) {
             try {
-                userMember = await db.getByEmail("members", supabaseUser.email);
-            } catch (e) {}
+                userMember = (await db.getByEmail("members", supabaseUser.email)) as Record<string, unknown> | null;
+            } catch {
+                // Ignore DB fallback error
+            }
         }
 
-        const name = author_name || userMember?.name || userEmail.split("@")[0] || "ASL Researcher";
-        const avatar = author_avatar || userMember?.image || userMember?.image_url || "";
-        const role = author_role || userMember?.role || "Researcher";
+        const name = author_name || (userMember?.name as string) || userEmail.split("@")[0] || "ASL Researcher";
+        const avatar = author_avatar || (userMember?.image as string) || (userMember?.image_url as string) || "";
+        const role = author_role || (userMember?.role as string) || "Researcher";
 
-        const newPostData = {
+        const newPostData: TimelinePost = {
             id: "post-" + Date.now(),
             author_name: name,
             author_email: userEmail,
@@ -228,7 +260,7 @@ export async function POST(req: Request) {
                 category: category || "General"
             });
             if (inserted && inserted.id) {
-                newPostData.id = inserted.id;
+                newPostData.id = inserted.id as string;
             }
         } catch (dbErr) {
             console.warn("DB Post insertion failed, added to memory posts:", dbErr);
@@ -236,8 +268,8 @@ export async function POST(req: Request) {
 
         memoryPosts.unshift(newPostData);
         return NextResponse.json({ success: true, post: newPostData });
-    } catch (err: any) {
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    } catch (err: unknown) {
+        return NextResponse.json({ success: false, error: err instanceof Error ? err.message : "Internal Server Error" }, { status: 500 });
     }
 }
 
@@ -252,12 +284,17 @@ export async function DELETE(req: Request) {
 
         try {
             await db.delete("timeline_posts", id);
-        } catch (e) {}
+        } catch {
+            // Ignore DB deletion error
+        }
 
-        memoryPosts = memoryPosts.filter(p => p.id !== id);
+        const index = memoryPosts.findIndex(p => p.id === id);
+        if (index !== -1) {
+            memoryPosts.splice(index, 1);
+        }
         return NextResponse.json({ success: true });
-    } catch (err: any) {
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    } catch (err: unknown) {
+        return NextResponse.json({ success: false, error: err instanceof Error ? err.message : "Internal Server Error" }, { status: 500 });
     }
 }
 

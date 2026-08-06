@@ -111,8 +111,8 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
             } else {
                 setRecoverSuccess(data.message || `Present password has been sent to ${user.email} from Alpha Science Lab.`);
             }
-        } catch (err: any) {
-            setError(err?.message || "An unexpected error occurred while sending password recovery email.");
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : "An unexpected error occurred while sending password recovery email.");
         } finally {
             setIsRecovering(false);
         }
@@ -184,8 +184,8 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                     setError(res.error || "Failed to update password. Please check your current password.");
                 }
             }
-        } catch (err: any) {
-            setError(err?.message || "An unexpected error occurred while saving.");
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : "An unexpected error occurred while saving.");
         } finally {
             setIsLoading(false);
         }

@@ -74,7 +74,7 @@ export default function Preloader() {
             onEnded={handleVideoEnd}
             className="w-full h-full object-cover md:object-contain bg-black"
           >
-            <source src="/assests/ASL_PV.mp4" type="video/mp4" />
+            <source src="/assets/ASL_PV.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </motion.div>

@@ -154,7 +154,7 @@ export default function Features() {
                             {/* Image Part */}
                             <div className="absolute top-0 inset-x-0 h-[50%] overflow-hidden">
                                 <Image
-                                    src={area.image || "/assests/asl.png"}
+                                    src={area.image || "/assets/asl.png"}
                                     alt={area.title}
                                     fill
                                     sizes="(max-width: 768px) 100vw, 354px"

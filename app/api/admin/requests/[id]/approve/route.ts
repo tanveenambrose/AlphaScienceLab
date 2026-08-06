@@ -34,8 +34,8 @@ export async function POST(req: Request, props: { params: Promise<{ id: string }
         // 3. Create user in Supabase Auth (or handle existing user)
         try {
             await adminCreateUser(joinRequest.email, tempPassword, joinRequest.full_name);
-        } catch (authError: any) {
-            console.warn("Supabase Auth notice (may already exist):", authError?.message || authError);
+        } catch (authError: unknown) {
+            console.warn("Supabase Auth notice (may already exist):", authError instanceof Error ? authError.message : authError);
         }
 
         // 4. Save member record in Supabase members table
@@ -76,8 +76,8 @@ export async function POST(req: Request, props: { params: Promise<{ id: string }
             emailSent: emailResult.success,
             tempPassword
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Approval workflow error:", error);
-        return NextResponse.json({ error: error.message || "Failed to approve member application" }, { status: 500 });
+        return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to approve member application" }, { status: 500 });
     }
 }

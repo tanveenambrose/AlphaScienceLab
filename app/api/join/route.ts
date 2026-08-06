@@ -50,8 +50,8 @@ export async function POST(req: Request) {
         const inserted = await db.insert("join_requests", joinRequestData);
 
         return NextResponse.json({ success: true, data: inserted });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Join submission error:", error);
-        return NextResponse.json({ error: error?.message || "Failed to submit request" }, { status: 500 });
+        return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to submit request" }, { status: 500 });
     }
 }

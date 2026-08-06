@@ -45,9 +45,10 @@ export async function POST(req: Request) {
         // Attempt DB sync
         try {
             const existing = await db.getByField("timeline_reactions", "post_id", postId);
-            let userRecord = Array.isArray(existing) ? existing.find((r: any) => r.user_email === userEmail) : null;
+            type ReactionRecord = { id?: string; user_email?: string; reaction?: string };
+            const userRecord = Array.isArray(existing) ? (existing as ReactionRecord[]).find((r: ReactionRecord) => r.user_email === userEmail) : null;
 
-            if (userRecord) {
+            if (userRecord && userRecord.id) {
                 if (userRecord.reaction === reaction) {
                     await db.delete("timeline_reactions", userRecord.id);
                 } else {
@@ -67,9 +68,9 @@ export async function POST(req: Request) {
         return NextResponse.json({
             success: true,
             postReactions: post?.reactions || {},
-            currentUserReaction: post?.userReactions[userEmail] || null
+            currentUserReaction: post?.userReactions?.[userEmail] || null
         });
-    } catch (err: any) {
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    } catch (err: unknown) {
+        return NextResponse.json({ success: false, error: err instanceof Error ? err.message : "Internal Server Error" }, { status: 500 });
     }
 }

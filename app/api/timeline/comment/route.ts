@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getUser, db } from "@/lib/supabase";
-import { memoryPosts } from "../route";
+import { memoryPosts, type TimelineComment } from "../route";
 
 export const dynamic = "force-dynamic";
 
@@ -18,18 +18,20 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: false, error: "Post ID and comment content are required" }, { status: 400 });
         }
 
-        let userEmail = supabaseUser?.email || body.author_email || "guest@asl.org";
-        let userMember: any = null;
+        const userEmail = supabaseUser?.email || body.author_email || "guest@asl.org";
+        let userMember: Record<string, unknown> | null = null;
         if (supabaseUser?.email) {
             try {
-                userMember = await db.getByEmail("members", supabaseUser.email);
-            } catch (e) {}
+                userMember = (await db.getByEmail("members", supabaseUser.email)) as Record<string, unknown> | null;
+            } catch {
+                // Ignore fallback
+            }
         }
 
-        const name = author_name || userMember?.name || (userEmail !== "guest@asl.org" ? userEmail.split("@")[0] : "You");
-        const avatar = author_avatar || userMember?.image || userMember?.image_url || "";
+        const name = author_name || (userMember?.name as string) || (userEmail !== "guest@asl.org" ? userEmail.split("@")[0] : "You");
+        const avatar = author_avatar || (userMember?.image as string) || (userMember?.image_url as string) || "";
 
-        const newCommentObj = {
+        const newCommentObj: TimelineComment = {
             id: "c_" + Date.now(),
             author_name: name,
             author_email: userEmail,
@@ -45,7 +47,7 @@ export async function POST(req: Request) {
             if (!parentId) {
                 post.comments.push(newCommentObj);
             } else {
-                const parentComment = post.comments.find((c: any) => c.id === parentId);
+                const parentComment = post.comments.find((c: TimelineComment) => c.id === parentId);
                 if (parentComment) {
                     if (!parentComment.replies) parentComment.replies = [];
                     parentComment.replies.push(newCommentObj);
@@ -66,7 +68,7 @@ export async function POST(req: Request) {
                 content: content.trim()
             });
             if (inserted && inserted.id) {
-                newCommentObj.id = inserted.id;
+                newCommentObj.id = inserted.id as string;
             }
         } catch (dbErr) {
             console.warn("DB comment insert skipped:", dbErr);
@@ -77,7 +79,7 @@ export async function POST(req: Request) {
             comment: newCommentObj,
             postComments: post?.comments || []
         });
-    } catch (err: any) {
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    } catch (err: unknown) {
+        return NextResponse.json({ success: false, error: err instanceof Error ? err.message : "Internal Server Error" }, { status: 500 });
     }
 }

@@ -70,8 +70,8 @@ export default function LoginPage() {
             } else {
                 setSuccess(data.message || `Present password sent to ${email}. Please check your inbox.`);
             }
-        } catch (err: any) {
-            setError(err?.message || "Failed to send recovery email.");
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : "Failed to send recovery email.");
         } finally {
             setIsRecovering(false);
         }
@@ -108,7 +108,7 @@ export default function LoginPage() {
                 {/* Logo & Heading */}
                 <div className="flex flex-col items-center justify-center mb-8 relative z-20">
                     <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4 shadow-inner">
-                        <Image src="/assests/asl.png" alt="ASL Logo" width={40} height={40} style={{ width: "auto", height: "auto" }} className="object-contain" priority />
+                        <Image src="/assets/asl.png" alt="ASL Logo" width={40} height={40} style={{ width: "auto", height: "auto" }} className="object-contain" priority />
                     </div>
                     <h1 className="text-3xl font-display uppercase font-extrabold text-white tracking-wider text-center">
                         Login

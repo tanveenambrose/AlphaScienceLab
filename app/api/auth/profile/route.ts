@@ -58,9 +58,9 @@ export async function PUT(req: Request) {
         const normalizedEmail = email.toLowerCase().trim();
 
         // 1. Fetch current member record from database
-        let currentMember: any = null;
+        let currentMember: Record<string, unknown> | null = null;
         try {
-            currentMember = await db.getByEmail("members", normalizedEmail);
+            currentMember = (await db.getByEmail("members", normalizedEmail)) as Record<string, unknown> | null;
         } catch (e) {
             console.error("Error fetching current member:", e);
         }
@@ -101,9 +101,9 @@ export async function PUT(req: Request) {
             }
 
             // Update temp_password in members table
-            if (currentMember) {
+            if (currentMember && currentMember.id) {
                 try {
-                    await db.update("members", currentMember.id, {
+                    await db.update("members", currentMember.id as string, {
                         temp_password: newPassword,
                         updated_at: new Date().toISOString(),
                     });
@@ -114,11 +114,11 @@ export async function PUT(req: Request) {
         }
 
         // 3. Handle File Upload / Avatar Change
-        let finalAvatarUrl = avatarUrl || currentMember?.image || currentMember?.image_url || "";
+        let finalAvatarUrl = (avatarUrl || currentMember?.image || currentMember?.image_url || "") as string;
 
         if (fileBuffer) {
             // Delete previous image from Supabase storage if it was stored there
-            const oldImageUrl = currentMember?.image || currentMember?.image_url;
+            const oldImageUrl = (currentMember?.image || currentMember?.image_url) as string | undefined;
             if (oldImageUrl) {
                 await deleteFileByUrl(oldImageUrl);
             }
@@ -136,7 +136,7 @@ export async function PUT(req: Request) {
             }
         } else if (avatarUrl && avatarUrl !== currentMember?.image) {
             // If explicit new avatar URL is provided and differs from old
-            const oldImageUrl = currentMember?.image || currentMember?.image_url;
+            const oldImageUrl = (currentMember?.image || currentMember?.image_url) as string | undefined;
             if (oldImageUrl && oldImageUrl !== avatarUrl) {
                 await deleteFileByUrl(oldImageUrl);
             }
@@ -157,9 +157,9 @@ export async function PUT(req: Request) {
             updatePayload.temp_password = newPassword;
         }
 
-        if (currentMember) {
+        if (currentMember && currentMember.id) {
             try {
-                await db.update("members", currentMember.id, updatePayload);
+                await db.update("members", currentMember.id as string, updatePayload);
             } catch (updErr) {
                 console.error("Failed to update member record in DB:", updErr);
             }
@@ -175,8 +175,8 @@ export async function PUT(req: Request) {
                 avatarUrl: finalAvatarUrl,
             },
         });
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error("Profile update error:", err);
-        return NextResponse.json({ error: err?.message || "Failed to update profile" }, { status: 500 });
+        return NextResponse.json({ error: err instanceof Error ? err.message : "Failed to update profile" }, { status: 500 });
     }
 }

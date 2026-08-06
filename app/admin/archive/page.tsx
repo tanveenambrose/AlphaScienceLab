@@ -131,7 +131,7 @@ export default function AdminArchive() {
                             >
                                 <div className="relative aspect-video w-full overflow-hidden bg-black/40">
                                     <Image
-                                        src={item.image || "/assests/asl.png"}
+                                        src={item.image || "/assets/asl.png"}
                                         alt={item.title || "Archive item"}
                                         fill
                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

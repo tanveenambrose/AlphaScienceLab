@@ -3,10 +3,9 @@
 import { useState, useEffect } from "react";
 import RequireAuth from "@/components/admin/RequireAuth";
 import { 
-    Trash2, Info, X, CheckCircle, XCircle, Mail, Phone, 
-    GraduationCap, Calendar, User, ShieldCheck, AlertCircle, RefreshCw
+    Info, X, CheckCircle, XCircle, Mail, Phone, 
+    User, ShieldCheck, AlertCircle, RefreshCw
 } from "lucide-react";
-import Image from "next/image";
 
 interface JoinRequestItem {
     id: string;
@@ -83,7 +82,7 @@ export default function AdminJoinRequests() {
                     message: data.error || "Failed to approve the application."
                 });
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Approve error", error);
             setActionFeedback({
                 type: "error",

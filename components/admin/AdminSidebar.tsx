@@ -49,7 +49,10 @@ export default function AdminSidebar() {
     }, []);
 
     useEffect(() => {
-        fetchCounts();
+        const load = async () => {
+            await fetchCounts();
+        };
+        load();
         
         // Poll every 12 seconds for real-time updates
         const interval = setInterval(fetchCounts, 12000);
@@ -65,7 +68,7 @@ export default function AdminSidebar() {
             window.removeEventListener("focus", handleFocus);
             window.removeEventListener("asl-counts-updated", handleCustomEvent);
         };
-    }, [fetchCounts, pathname]);
+    }, [fetchCounts]);
 
     const handleLogout = async () => {
         try {

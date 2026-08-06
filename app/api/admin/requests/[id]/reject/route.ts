@@ -44,8 +44,8 @@ export async function POST(req: Request, props: { params: Promise<{ id: string }
             id,
             emailSent
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Rejection workflow error:", error);
-        return NextResponse.json({ error: error?.message || "Failed to reject application" }, { status: 500 });
+        return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to reject application" }, { status: 500 });
     }
 }

@@ -20,10 +20,25 @@ export async function GET() {
     try {
         const data = await db.getAll("notifications", token);
         // Exclude join requests - only events, projects, archive, and achievements updates are shown in notifications
-        const filtered = (data || []).filter((n: any) => n.type !== "join_request");
+        type NotifRecord = {
+            id?: string;
+            type?: string;
+            title?: string;
+            description?: string;
+            link?: string;
+            created_at?: string;
+            read?: boolean;
+            author_name?: string;
+            author_role?: string;
+            author_email?: string;
+            target_name?: string;
+            content?: string;
+            status?: string;
+        };
+        const filtered = (data || []).filter((n: NotifRecord) => n.type !== "join_request");
 
         // Map database schema to frontend expectations
-        const formatted = filtered.map((n: any) => ({
+        const formatted = filtered.map((n: NotifRecord) => ({
             id: n.id,
             type: n.type,
             title: n.title,
@@ -35,7 +50,7 @@ export async function GET() {
             },
             targetName: n.target_name,
             content: n.content,
-            timestamp: new Date(n.created_at).toLocaleString(),
+            timestamp: n.created_at ? new Date(n.created_at).toLocaleString() : new Date().toLocaleString(),
             status: n.status || "pending",
         }));
         return NextResponse.json(formatted || []);

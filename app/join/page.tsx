@@ -3,11 +3,11 @@
 import { useState, useRef } from "react";
 import {
     UploadCloud, Check, AlertCircle, ChevronRight, ChevronLeft,
-    ShieldCheck, Star, ArrowRight, Users, Gavel, BookOpen, Clock,
-    DollarSign, Lock, AlertTriangle, HeartHandshake, Award
+    ShieldCheck, Star, ArrowRight, Users, Gavel, BookOpen, Clock
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Link from "next/link";
 
 /* ─────────────────────────────────────────── */
 /*  Types                                       */
@@ -235,9 +235,9 @@ export default function JoinPage() {
                             <p>1. The admin committee will review your academic and contact details.</p>
                             <p>2. Once approved, you will receive an automated email at <strong className="text-white">{formData.email}</strong> with your login credentials to access the ASL Member Portal.</p>
                         </div>
-                        <a href="/" className="inline-block mt-4 px-8 py-3 rounded-full bg-gradient-to-r from-[#EC0D6E] to-[#962E9B] text-white font-bold text-xs uppercase tracking-widest hover:shadow-[0_0_20px_rgba(236,13,110,0.4)] transition-all">
+                        <Link href="/" className="inline-block mt-4 px-8 py-3 rounded-full bg-gradient-to-r from-[#EC0D6E] to-[#962E9B] text-white font-bold text-xs uppercase tracking-widest hover:shadow-[0_0_20px_rgba(236,13,110,0.4)] transition-all">
                             Return to Homepage
-                        </a>
+                        </Link>
                     </div>
                 </div>
                 <Footer />
