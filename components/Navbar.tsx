@@ -23,6 +23,7 @@ const navLinks = [
         ]
     },
     { name: "Events", href: "/events" },
+    { name: "Timeline", href: "/timeline" },
     { name: "Team", href: "#team" },
     { name: "About", href: "/about" },
     { name: "Join ASL", href: "/join" },
@@ -63,9 +64,10 @@ export default function Navbar() {
 
     const isHome = pathname === "/";
 
-    const isLinkActive = (linkName: string) => {
+    const isLinkActive = (linkName: string, href: string) => {
         if (linkName === "Home" && pathname === "/") return true;
         if (linkName === "Projects" && pathname.startsWith("/projects")) return true;
+        if (href && href.startsWith("/") && pathname.startsWith(href)) return true;
         return false;
     };
 
@@ -148,7 +150,7 @@ export default function Navbar() {
                                         href={link.href}
                                         className={clsx(
                                             "font-label-sm text-label-sm uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95",
-                                            isLinkActive(link.name)
+                                            isLinkActive(link.name, link.href)
                                                 ? "text-primary font-bold border-b border-primary/50"
                                                 : "text-on-surface-variant hover:text-secondary"
                                         )}
@@ -160,7 +162,7 @@ export default function Navbar() {
                                         onClick={() => isMobile && handleLinkClick(link)}
                                         className={clsx(
                                             "font-label-sm text-label-sm uppercase tracking-widest transition-all duration-300 hover:scale-105 active:scale-95",
-                                            activeDropdown === link.name || isLinkActive(link.name)
+                                            activeDropdown === link.name || isLinkActive(link.name, link.href)
                                                 ? "text-primary font-bold border-b border-primary/50"
                                                 : "text-on-surface-variant hover:text-secondary"
                                         )}

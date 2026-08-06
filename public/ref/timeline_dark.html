@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>ASL Timeline</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;family=Geist:wght@400;500&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Tailwind CSS with custom config -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "surface-container": "#122131",
+                        "on-tertiary-container": "#4d0059",
+                        "background": "#051424",
+                        "primary": "#ddb7ff",
+                        "surface-dim": "#051424",
+                        "surface-bright": "#2c3a4c",
+                        "surface-container-low": "#0d1c2d",
+                        "on-primary-fixed-variant": "#6900b3",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "inverse-on-surface": "#233143",
+                        "on-tertiary-fixed": "#36003e",
+                        "on-primary-fixed": "#2c0051",
+                        "surface-container-high": "#1c2b3c",
+                        "on-background": "#d4e4fa",
+                        "inverse-surface": "#d4e4fa",
+                        "inverse-primary": "#842bd2",
+                        "surface-tint": "#ddb7ff",
+                        "secondary-container": "#03b5d3",
+                        "outline": "#988d9f",
+                        "tertiary": "#fbabff",
+                        "surface": "#051424",
+                        "secondary": "#4cd7f6",
+                        "on-secondary": "#003640",
+                        "surface-variant": "#273647",
+                        "outline-variant": "#4d4354",
+                        "surface-container-highest": "#273647",
+                        "tertiary-fixed-dim": "#fbabff",
+                        "on-tertiary": "#580065",
+                        "surface-container-lowest": "#010f1f",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#b76dff",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed": "#001f26",
+                        "secondary-fixed": "#acedff",
+                        "on-primary-container": "#400071",
+                        "on-surface-variant": "#cfc2d6",
+                        "tertiary-fixed": "#ffd6fd",
+                        "on-primary": "#490080",
+                        "on-tertiary-fixed-variant": "#7c008e",
+                        "primary-fixed": "#f0dbff",
+                        "primary-fixed-dim": "#ddb7ff",
+                        "on-secondary-container": "#00424e",
+                        "tertiary-container": "#e14ef6",
+                        "on-surface": "#d4e4fa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "margin-desktop": "48px",
+                        "gutter": "24px",
+                        "stack-md": "24px",
+                        "margin-mobile": "16px",
+                        "container-max": "1280px",
+                        "stack-lg": "64px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Space Grotesk"],
+                        "display-md": ["Space Grotesk"],
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Space Grotesk"],
+                        "label-sm": ["Geist"],
+                        "headline-md": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg-mobile": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-md": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Cyber-Scientific Grid Background */
+        body {
+            background-image:
+                linear-gradient(to right, rgba(152, 141, 159, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(152, 141, 159, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: rgba(18, 33, 49, 0.6);
+            /* surface-container with opacity */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(221, 183, 255, 0.15);
+            /* primary with opacity */
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(76, 215, 246, 0.3);
+            /* secondary with opacity */
+            box-shadow: 0 0 20px rgba(76, 215, 246, 0.05);
+        }
+
+        /* Hide scrollbar for horizontal lists */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Facebook style Reaction popover animations */
+        @keyframes fadeInUpBounce {
+            0% {
+                opacity: 0;
+                transform: translateY(12px) scale(0.9);
+            }
+
+            70% {
+                transform: translateY(-2px) scale(1.05);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .animate-pop-up {
+            animation: fadeInUpBounce 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col relative overflow-x-hidden">
+    <!-- Ambient Glows -->
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <!-- SHARED COMPONENT: TopNavBar -->
+    <nav
+        class="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-container-max rounded-full border border-primary/20 bg-surface/80 backdrop-blur-xl border-primary/15 shadow-[0_0_20px_rgba(221,183,255,0.1)] z-50">
+        <div class="flex justify-between items-center px-8 py-3 w-full">
+            <a class="flex items-center hover:scale-105 active:scale-95 transition-all cursor-pointer" href="#">
+                <img src="asl.png" alt="ASL Logo" class="h-8 w-auto object-contain" />
+            </a>
+            <div class="hidden md:flex gap-6 items-center">
+                <!-- Assuming "Home" maps to the main timeline feed based on provided options -->
+                <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all py-1"
+                    href="#">Home</a>
+                <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all py-1"
+                    href="#">Research &amp; Domains</a>
+                <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all py-1"
+                    href="#">Projects</a>
+                <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all py-1"
+                    href="#">Events</a>
+                <a class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold border-b border-primary/50 py-1 hover:text-secondary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all"
+                    href="#">Timeline</a>
+                <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all py-1"
+                    href="#">Community</a>
+                <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all py-1"
+                    href="#">About</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button
+                    class="font-label-sm text-label-sm uppercase tracking-widest bg-primary-container text-on-primary-container px-4 py-2 rounded-full hover:bg-primary hover:text-on-primary transition-colors duration-300 hover:scale-105 active:scale-95 transition-all font-bold">
+                    Join ASL
+                </button>
+                <button class="text-on-surface-variant hover:text-secondary transition-all duration-300 flex items-center justify-center p-2 rounded-full hover:bg-white/5" onclick="window.location.href='code_light.html'" title="Switch to Light Theme">
+                    <span class="material-symbols-outlined text-[22px]">light_mode</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop pt-32 pb-stack-lg">
+        <div class="grid grid-cols-1 lg:grid-cols-[260px_1fr] xl:grid-cols-[260px_1fr_320px] gap-gutter">
+            <!-- LEFT SIDEBAR (Sticky Navigation) -->
+            <aside class="hidden lg:block relative">
+                <div class="sticky top-32 space-y-stack-sm">
+                    <div class="glass-panel rounded-xl p-4 flex flex-col gap-2">
+                        <!-- Active Item -->
+                        <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 text-primary border-l-2 border-primary transition-colors"
+                            href="#">
+                            <span class="material-symbols-outlined"
+                                style="font-variation-settings: 'FILL' 1;">view_timeline</span>
+                            <span class="font-body-md text-body-md font-medium">Timeline</span>
+                        </a>
+                        <!-- Inactive Items -->
+                        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors group"
+                            href="#">
+                            <span
+                                class="material-symbols-outlined group-hover:text-secondary transition-colors">article</span>
+                            <span class="font-body-md text-body-md">My Posts</span>
+                        </a>
+                        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors group"
+                            href="#">
+                            <span
+                                class="material-symbols-outlined group-hover:text-secondary transition-colors">bookmark</span>
+                            <span class="font-body-md text-body-md">Saved Posts</span>
+                        </a>
+                        <hr class="border-outline-variant/20 my-2" />
+                        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors group"
+                            href="#">
+                            <span
+                                class="material-symbols-outlined group-hover:text-secondary transition-colors">trending_up</span>
+                            <span class="font-body-md text-body-md">Trending</span>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+            <!-- CENTER COLUMN (Feed) -->
+            <section class="flex flex-col gap-stack-md min-w-0">
+                <!-- Hero Section -->
+                <div class="mb-4">
+                    <h1 class="font-display-md text-display-md text-on-surface mb-2 tracking-tight">ASL <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Timeline</span>
+                    </h1>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Discover the latest research
+                        updates, engineering projects, achievements, events, and innovations shared by the Alpha Science
+                        Lab community.</p>
+                </div>
+                <!-- Create Post Card -->
+                <div class="glass-panel rounded-xl p-6 transition-transform duration-300 hover:-translate-y-1">
+                    <div class="flex gap-4 mb-4">
+                        <div
+                            class="w-12 h-12 rounded-full bg-surface-container-highest border border-outline-variant/30 flex-shrink-0 overflow-hidden">
+                            <img class="w-full h-full object-cover"
+                                data-alt="A futuristic, highly detailed avatar portrait of a cybernetic researcher with glowing blue neural implants, wearing a sleek dark lab coat against a high-contrast dark metallic background. Cinematic lighting, cyberpunk aesthetic."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-H6BeDS5h13kScxQJFXtjslDhUfBJRyZ6MBpPNdGfyMwIfuRlh761cvtMZdz7oxWm7Ch2C8y15qpEDid-ZyrYSsqDSFpYUQ2KJhUTvnzoiA3IrotymIXO7J5wIJQGNBG9e0IXAQJoEMkLCBc21NxKxf9VUhCa7QtdtJjvr5VsDkvSWcl4AiDlwBydUCfD2gwhRBv3gd1aQUtWF0J7KOlBS2UzduBsxbTPXFODejkgoXmKt8VKiMkp" />
+                        </div>
+                        <input
+                            class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-4 py-3 text-on-surface font-body-md focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/50 placeholder-on-surface-variant/50 transition-all"
+                            placeholder="Share your latest research..." type="text" />
+                    </div>
+                    <div
+                        class="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-outline-variant/10">
+                        <div class="flex gap-2">
+                            <button
+                                class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-secondary transition-colors font-label-sm text-label-sm">
+                                <span class="material-symbols-outlined text-[18px]">image</span> Image
+                            </button>
+                            <button
+                                class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-secondary transition-colors font-label-sm text-label-sm hidden sm:flex">
+                                <span class="material-symbols-outlined text-[18px]">tag</span> Tag
+                            </button>
+                        </div>
+                        <button
+                            class="bg-primary-container text-on-primary-container px-6 py-2 rounded-full font-label-sm text-label-sm uppercase tracking-wider font-bold hover:bg-primary transition-colors shadow-[0_0_15px_rgba(183,109,255,0.4)]">
+                            Post
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Feed: Post 1 -->
+                <article class="glass-panel rounded-xl p-6 transition-transform duration-300 hover:-translate-y-1">
+                    <!-- Author Header -->
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex gap-3 items-center">
+                            <div
+                                class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant/30 overflow-hidden">
+                                <img class="w-full h-full object-cover"
+                                    data-alt="Close-up portrait of a female aerospace engineer in a dark tech-lab environment. She is wearing augmented reality glasses reflecting glowing schematics. Cool cybernetic lighting, high contrast, obsidian and cyan tones."
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXZJM8TPAjqTDsX0K9sfVPMhQw0KfKxpkj2kIkjVM_LP7Cp-6Fu9nZdlQnJGoLxPv3vIJCFUHkD9XZ3EPDkQE_V_Xz-yaYUzRFei6Hhla4gaLC1IJ1M6yViXxOaDY-i8Snvsc8iKedTSoPMarp0vZptUVwNMTNjA2LDYi9-1aY1x3io4CeKrruAnqyE8-bqLW3cpkMCd7uxmLKjzgqTd0PZ-DJBwoCththAuQuwlSk-TVeDriKlJuY" />
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-headline-sm font-semibold text-on-surface">Dr. Elena
+                                        Rostova</span>
+                                    <span
+                                        class="bg-primary/10 border border-primary/30 text-primary px-2 py-0.5 rounded text-[10px] font-label-sm uppercase tracking-wider">Lead
+                                        Researcher</span>
+                                </div>
+                                <div class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">2 hours ago •
+                                    Robotics Division</div>
+                            </div>
+                        </div>
+                        <button class="text-on-surface-variant hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined">more_horiz</span>
+                        </button>
+                    </div>
+                    <!-- Content -->
+                    <div class="mb-4">
+                        <p class="font-body-md text-body-md text-on-surface leading-relaxed mb-3">
+                            Initial tests on the Series-7 autonomous drone navigation matrix have shown a 24% increase
+                            in spatial mapping efficiency. The integration of the new LiDAR synthesis algorithm is
+                            proving highly effective in zero-light environments. Next phase: thermal interference
+                            testing.
+                        </p>
+                        <!-- Image Gallery (Single Image) -->
+                        <div
+                            class="w-full h-64 sm:h-80 rounded-lg overflow-hidden border border-outline-variant/20 relative group">
+                            <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                data-alt="A highly advanced, sleek black autonomous drone hovering in a pitch-black testing chamber. It emits sweeping cyan LiDAR laser beams mapping the geometric environment. High tech, futuristic aerospace laboratory setting, cinematic lighting, sharp details."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2_BDaat6YcGQkA_LlHHYrddZUsOhSQ6V6bLoZ8h73mczGnvTEANO1YbStCche4Injnyb6BgbT7O5XfLf8hCHttTpiN4ZaKz-5haa6thelEhSdTuHEZV_jL0JjXI2QJVvluIAoeXgnCe0KXSbsr2EN58DNqqECh_z4gpR4YiyLbKH2Cy400RwPxjEkujRrGWu8VKXT1KuOqKWM3nU_y4cZ5yXkFn3p4rCw_3yrlxRysQhYkfDWFVgU" />
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                                <span
+                                    class="text-white font-label-sm bg-black/50 px-3 py-1 rounded backdrop-blur-sm border border-white/10">LiDAR
+                                    Test Cam #04</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tags -->
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span
+                            class="bg-surface-container-highest px-3 py-1 rounded-full text-xs font-label-sm text-on-surface-variant border border-outline-variant/10">#Robotics</span>
+                        <span
+                            class="bg-surface-container-highest px-3 py-1 rounded-full text-xs font-label-sm text-on-surface-variant border border-outline-variant/10">#AutonomousNav</span>
+                        <span
+                            class="bg-surface-container-highest px-3 py-1 rounded-full text-xs font-label-sm text-on-surface-variant border border-outline-variant/10">#LiDAR</span>
+                    </div>
+                    <!-- Engagement Bar -->
+                    <div class="flex items-center justify-between pt-3 border-t border-outline-variant/10">
+                        <div class="flex gap-4 sm:gap-6">
+                            <!-- Facebook React Button Wrapper -->
+                            <div class="relative group/react flex items-center">
+                                <button
+                                    class="flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-all duration-200 reaction-btn-main"
+                                    onclick="toggleDefaultLike(this)">
+                                    <span
+                                        class="material-symbols-outlined text-[20px] reaction-icon-main">thumb_up</span>
+                                    <span
+                                        class="font-label-sm text-label-sm font-semibold reaction-text-main">Like</span>
+                                </button>
+
+                                <!-- Reaction Count -->
+                                <span
+                                    class="font-label-sm text-label-sm text-on-surface-variant ml-2 reaction-count">342</span>
+
+                                <!-- Reactions Popup Card -->
+                                <div
+                                    class="absolute bottom-full left-0 mb-3 hidden group-hover/react:flex items-center gap-2 bg-surface-container-high/95 backdrop-blur-md border border-primary/20 px-3 py-2 rounded-full shadow-2xl z-50 animate-pop-up">
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Like" data-emoji="👍" data-color="#4cd7f6" title="Like"
+                                        onclick="selectReaction(this, 'Like', '👍', '#4cd7f6')">👍</button>
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Love" data-emoji="❤️" data-color="#fbabff" title="Love"
+                                        onclick="selectReaction(this, 'Love', '❤️', '#fbabff')">❤️</button>
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Care" data-emoji="🥰" data-color="#ddb7ff" title="Care"
+                                        onclick="selectReaction(this, 'Care', '🥰', '#ddb7ff')">🥰</button>
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Haha" data-emoji="😆" data-color="#ffb4ab" title="Haha"
+                                        onclick="selectReaction(this, 'Haha', '😆', '#ffb4ab')">😆</button>
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Wow" data-emoji="😮" data-color="#ddb7ff" title="Wow"
+                                        onclick="selectReaction(this, 'Wow', '😮', '#ddb7ff')">😮</button>
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Sad" data-emoji="😢" data-color="#4cd7f6" title="Sad"
+                                        onclick="selectReaction(this, 'Sad', '😢', '#4cd7f6')">😢</button>
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Angry" data-emoji="😡" data-color="#ffb4ab" title="Angry"
+                                        onclick="selectReaction(this, 'Angry', '😡', '#ffb4ab')">😡</button>
+                                </div>
+                            </div>
+                            <button onclick="toggleCommentsSection(this)"
+                                class="flex items-center gap-1.5 text-on-surface-variant hover:text-secondary transition-colors group">
+                                <span
+                                    class="material-symbols-outlined group-hover:scale-110 transition-transform">chat_bubble</span>
+                                <span class="font-label-sm text-label-sm comment-btn-count">45</span>
+                            </button>
+                            <button
+                                class="flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors group">
+                                <span
+                                    class="material-symbols-outlined group-hover:scale-110 transition-transform">share</span>
+                                <span class="font-label-sm text-label-sm">12</span>
+                            </button>
+                        </div>
+                        <button class="text-on-surface-variant hover:text-on-surface transition-colors">
+                            <span class="material-symbols-outlined">bookmark_border</span>
+                        </button>
+                    </div>
+
+                    <!-- Comments Section -->
+                    <div class="comments-section mt-4 pt-4 border-t border-outline-variant/10 hidden">
+                        <!-- Comment Form -->
+                        <div class="flex gap-3 mb-4">
+                            <div
+                                class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/30 flex-shrink-0 overflow-hidden">
+                                <img class="w-full h-full object-cover"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-H6BeDS5h13kScxQJFXtjslDhUfBJRyZ6MBpPNdGfyMwIfuRlh761cvtMZdz7oxWm7Ch2C8y15qpEDid-ZyrYSsqDSFpYUQ2KJhUTvnzoiA3IrotymIXO7J5wIJQGNBG9e0IXAQJoEMkLCBc21NxKxf9VUhCa7QtdtJjvr5VsDkvSWcl4AiDlwBydUCfD2gwhRBv3gd1aQUtWF0J7KOlBS2UzduBsxbTPXFODejkgoXmKt8VKiMkp" />
+                            </div>
+                            <div class="flex-grow flex gap-2">
+                                <input
+                                    class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-1.5 text-on-surface font-body-md text-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/50 placeholder-on-surface-variant/50 transition-all comment-input"
+                                    placeholder="Write a comment..." type="text" />
+                                <button
+                                    class="bg-primary-container text-on-primary-container px-4 py-1.5 rounded-lg font-label-sm text-xs uppercase tracking-wider font-bold hover:bg-primary transition-colors submit-comment-btn">Comment</button>
+                            </div>
+                        </div>
+
+                        <!-- Comment List -->
+                        <div class="space-y-4 comment-list max-h-96 overflow-y-auto pr-1">
+                            <!-- Comment 1 -->
+                            <div class="comment-item flex gap-3" data-comment-id="post1_c1">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden flex-shrink-0">
+                                    <img class="w-full h-full object-cover"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXZJM8TPAjqTDsX0K9sfVPMhQw0KfKxpkj2kIkjVM_LP7Cp-6Fu9nZdlQnJGoLxPv3vIJCFUHkD9XZ3EPDkQE_V_Xz-yaYUzRFei6Hhla4gaLC1IJ1M6yViXxOaDY-i8Snvsc8iKedTSoPMarp0vZptUVwNMTNjA2LDYi9-1aY1x3io4CeKrruAnqyE8-bqLW3cpkMCd7uxmLKjzgqTd0PZ-DJBwoCththAuQuwlSk-TVeDriKlJuY" />
+                                </div>
+                                <div class="flex-grow">
+                                    <div class="bg-surface-container-high/60 px-3 py-2 rounded-xl">
+                                        <div class="font-label-sm font-semibold text-primary text-xs">Dr. Elena Rostova
+                                        </div>
+                                        <div class="text-xs text-on-surface mt-1 leading-relaxed">This is a breakthrough
+                                            result for our LiDAR integration experiments!</div>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-3 text-[10px] text-on-surface-variant mt-1 ml-2 font-label-sm">
+                                        <span>2 hours ago</span>
+                                        <button class="hover:text-secondary font-semibold reply-toggle-btn"
+                                            onclick="toggleReplyInput(this)">Reply</button>
+                                    </div>
+
+                                    <!-- Nested Replies -->
+                                    <div
+                                        class="replies-list space-y-3 mt-2 ml-6 border-l border-outline-variant/20 pl-4">
+                                        <div class="flex gap-2 mt-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-surface-container-highest overflow-hidden flex-shrink-0">
+                                                <img class="w-full h-full object-cover"
+                                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-H6BeDS5h13kScxQJFXtjslDhUfBJRyZ6MBpPNdGfyMwIfuRlh761cvtMZdz7oxWm7Ch2C8y15qpEDid-ZyrYSsqDSFpYUQ2KJhUTvnzoiA3IrotymIXO7J5wIJQGNBG9e0IXAQJoEMkLCBc21NxKxf9VUhCa7QtdtJjvr5VsDkvSWcl4AiDlwBydUCfD2gwhRBv3gd1aQUtWF0J7KOlBS2UzduBsxbTPXFODejkgoXmKt8VKiMkp" />
+                                            </div>
+                                            <div class="flex-grow bg-surface-container-high/40 px-3 py-1.5 rounded-lg">
+                                                <div class="font-label-sm font-semibold text-secondary text-[11px]">Alex
+                                                    Mercer</div>
+                                                <div class="text-[11px] text-on-surface mt-0.5 leading-relaxed">
+                                                    Excellent work, congratulations!</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Comment 2 -->
+                            <div class="comment-item flex gap-3" data-comment-id="post1_c2">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden flex-shrink-0 flex items-center justify-center text-xs font-bold text-secondary bg-secondary/15">
+                                    SJ
+                                </div>
+                                <div class="flex-grow">
+                                    <div class="bg-surface-container-high/60 px-3 py-2 rounded-xl">
+                                        <div class="font-label-sm font-semibold text-primary text-xs">Sarah Jenkins
+                                        </div>
+                                        <div class="text-xs text-on-surface mt-1 leading-relaxed">Are there any plans
+                                            for publication in the upcoming symposium?</div>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-3 text-[10px] text-on-surface-variant mt-1 ml-2 font-label-sm">
+                                        <span>1 hour ago</span>
+                                        <button class="hover:text-secondary font-semibold reply-toggle-btn"
+                                            onclick="toggleReplyInput(this)">Reply</button>
+                                    </div>
+
+                                    <!-- Nested Replies -->
+                                    <div
+                                        class="replies-list space-y-3 mt-2 ml-6 border-l border-outline-variant/20 pl-4">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <!-- Feed: Post 2 -->
+                <article class="glass-panel rounded-xl p-6 transition-transform duration-300 hover:-translate-y-1">
+                    <!-- Author Header -->
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex gap-3 items-center">
+                            <div
+                                class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant/30 overflow-hidden flex items-center justify-center bg-primary/20 text-primary font-bold font-headline-sm">
+                                ASL
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-headline-sm font-semibold text-on-surface">Official ASL
+                                        Announcment</span>
+                                    <span
+                                        class="bg-secondary/10 border border-secondary/30 text-secondary px-2 py-0.5 rounded text-[10px] font-label-sm uppercase tracking-wider flex items-center gap-1"><span
+                                            class="material-symbols-outlined text-[12px]">verified</span>
+                                        Verified</span>
+                                </div>
+                                <div class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Yesterday •
+                                    General</div>
+                            </div>
+                        </div>
+                        <button class="text-on-surface-variant hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined">more_horiz</span>
+                        </button>
+                    </div>
+                    <!-- Content -->
+                    <div class="mb-4">
+                        <p class="font-body-md text-body-md text-on-surface leading-relaxed mb-3">
+                            We are thrilled to announce the successful deployment of the Quantum Sensor Array node in
+                            the upper stratosphere. This marks a critical milestone for Project AETHER. Data streams are
+                            normalizing, and we expect preliminary atmospheric readings within 48 hours. Congratulations
+                            to the propulsion and payload teams!
+                        </p>
+                    </div>
+                    <!-- Engagement Bar -->
+                    <div class="flex items-center justify-between pt-3 border-t border-outline-variant/10">
+                        <div class="flex gap-4 sm:gap-6">
+                            <!-- Facebook React Button Wrapper -->
+                            <div class="relative group/react flex items-center" data-has-reaction="true"
+                                data-current-reaction="Love">
+                                <button class="flex items-center gap-1.5 transition-all duration-200 reaction-btn-main"
+                                    style="color: #fbabff;" onclick="toggleDefaultLike(this)">
+                                    <span class="text-[18px] reaction-icon-main mr-0.5">❤️</span>
+                                    <span
+                                        class="font-label-sm text-label-sm font-semibold reaction-text-main">Love</span>
+                                </button>
+
+                                <!-- Reaction Count -->
+                                <span
+                                    class="font-label-sm text-label-sm text-on-surface-variant ml-2 reaction-count">1.2k</span>
+
+                                <!-- Reactions Popup Card -->
+                                <div
+                                    class="absolute bottom-full left-0 mb-3 hidden group-hover/react:flex items-center gap-2 bg-surface-container-high/95 backdrop-blur-md border border-primary/20 px-3 py-2 rounded-full shadow-2xl z-50 animate-pop-up">
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Like" data-emoji="👍" data-color="#4cd7f6" title="Like"
+                                        onclick="selectReaction(this, 'Like', '👍', '#4cd7f6')">👍</button>
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Love" data-emoji="❤️" data-color="#fbabff" title="Love"
+                                        onclick="selectReaction(this, 'Love', '❤️', '#fbabff')">❤️</button>
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Care" data-emoji="🥰" data-color="#ddb7ff" title="Care"
+                                        onclick="selectReaction(this, 'Care', '🥰', '#ddb7ff')">🥰</button>
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Haha" data-emoji="😆" data-color="#ffb4ab" title="Haha"
+                                        onclick="selectReaction(this, 'Haha', '😆', '#ffb4ab')">😆</button>
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Wow" data-emoji="😮" data-color="#ddb7ff" title="Wow"
+                                        onclick="selectReaction(this, 'Wow', '😮', '#ddb7ff')">😮</button>
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Sad" data-emoji="😢" data-color="#4cd7f6" title="Sad"
+                                        onclick="selectReaction(this, 'Sad', '😢', '#4cd7f6')">😢</button>
+                                    <button
+                                        class="reaction-option hover:scale-150 active:scale-95 transition-transform duration-200 text-2xl flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container-lowest"
+                                        data-reaction="Angry" data-emoji="😡" data-color="#ffb4ab" title="Angry"
+                                        onclick="selectReaction(this, 'Angry', '😡', '#ffb4ab')">😡</button>
+                                </div>
+                            </div>
+                            <button onclick="toggleCommentsSection(this)"
+                                class="flex items-center gap-1.5 text-on-surface-variant hover:text-secondary transition-colors group">
+                                <span
+                                    class="material-symbols-outlined group-hover:scale-110 transition-transform">chat_bubble</span>
+                                <span class="font-label-sm text-label-sm comment-btn-count">128</span>
+                            </button>
+                        </div>
+                        <button class="text-on-surface-variant hover:text-on-surface transition-colors">
+                            <span class="material-symbols-outlined">bookmark_border</span>
+                        </button>
+                    </div>
+
+                    <!-- Comments Section -->
+                    <div class="comments-section mt-4 pt-4 border-t border-outline-variant/10 hidden">
+                        <!-- Comment Form -->
+                        <div class="flex gap-3 mb-4">
+                            <div
+                                class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/30 flex-shrink-0 overflow-hidden">
+                                <img class="w-full h-full object-cover"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-H6BeDS5h13kScxQJFXtjslDhUfBJRyZ6MBpPNdGfyMwIfuRlh761cvtMZdz7oxWm7Ch2C8y15qpEDid-ZyrYSsqDSFpYUQ2KJhUTvnzoiA3IrotymIXO7J5wIJQGNBG9e0IXAQJoEMkLCBc21NxKxf9VUhCa7QtdtJjvr5VsDkvSWcl4AiDlwBydUCfD2gwhRBv3gd1aQUtWF0J7KOlBS2UzduBsxbTPXFODejkgoXmKt8VKiMkp" />
+                            </div>
+                            <div class="flex-grow flex gap-2">
+                                <input
+                                    class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-1.5 text-on-surface font-body-md text-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/50 placeholder-on-surface-variant/50 transition-all comment-input"
+                                    placeholder="Write a comment..." type="text" />
+                                <button
+                                    class="bg-primary-container text-on-primary-container px-4 py-1.5 rounded-lg font-label-sm text-xs uppercase tracking-wider font-bold hover:bg-primary transition-colors submit-comment-btn">Comment</button>
+                            </div>
+                        </div>
+
+                        <!-- Comment List -->
+                        <div class="space-y-4 comment-list max-h-96 overflow-y-auto pr-1">
+                            <!-- Comment 1 -->
+                            <div class="comment-item flex gap-3" data-comment-id="post2_c1">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden flex-shrink-0 flex items-center justify-center text-xs font-bold text-primary bg-primary/15">
+                                    CE
+                                </div>
+                                <div class="flex-grow">
+                                    <div class="bg-surface-container-high/60 px-3 py-2 rounded-xl">
+                                        <div class="font-label-sm font-semibold text-primary text-xs">Chief Engineer
+                                            David</div>
+                                        <div class="text-xs text-on-surface mt-1 leading-relaxed">Project AETHER is
+                                            reaching new heights! Proud of the propulsion team.</div>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-3 text-[10px] text-on-surface-variant mt-1 ml-2 font-label-sm">
+                                        <span>Yesterday</span>
+                                        <button class="hover:text-secondary font-semibold reply-toggle-btn"
+                                            onclick="toggleReplyInput(this)">Reply</button>
+                                    </div>
+
+                                    <!-- Nested Replies -->
+                                    <div
+                                        class="replies-list space-y-3 mt-2 ml-6 border-l border-outline-variant/20 pl-4">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Comment 2 -->
+                            <div class="comment-item flex gap-3" data-comment-id="post2_c2">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden flex-shrink-0">
+                                    <img class="w-full h-full object-cover"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXZJM8TPAjqTDsX0K9sfVPMhQw0KfKxpkj2kIkjVM_LP7Cp-6Fu9nZdlQnJGoLxPv3vIJCFUHkD9XZ3EPDkQE_V_Xz-yaYUzRFei6Hhla4gaLC1IJ1M6yViXxOaDY-i8Snvsc8iKedTSoPMarp0vZptUVwNMTNjA2LDYi9-1aY1x3io4CeKrruAnqyE8-bqLW3cpkMCd7uxmLKjzgqTd0PZ-DJBwoCththAuQuwlSk-TVeDriKlJuY" />
+                                </div>
+                                <div class="flex-grow">
+                                    <div class="bg-surface-container-high/60 px-3 py-2 rounded-xl">
+                                        <div class="font-label-sm font-semibold text-primary text-xs">Dr. Elena Rostova
+                                        </div>
+                                        <div class="text-xs text-on-surface mt-1 leading-relaxed">Looking forward to
+                                            seeing the preliminary readings!</div>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-3 text-[10px] text-on-surface-variant mt-1 ml-2 font-label-sm">
+                                        <span>Yesterday</span>
+                                        <button class="hover:text-secondary font-semibold reply-toggle-btn"
+                                            onclick="toggleReplyInput(this)">Reply</button>
+                                    </div>
+
+                                    <!-- Nested Replies -->
+                                    <div
+                                        class="replies-list space-y-3 mt-2 ml-6 border-l border-outline-variant/20 pl-4">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+            <!-- RIGHT SIDEBAR -->
+            <aside class="hidden xl:block relative">
+                <div class="sticky top-32 space-y-stack-md">
+
+                    <!-- Upcoming Events -->
+                    <div class="glass-panel rounded-xl p-5">
+                        <h3 class="font-headline-sm text-on-surface font-semibold mb-4 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">calendar_month</span> Upcoming Events
+                        </h3>
+                        <div class="space-y-3">
+                            <div
+                                class="flex gap-3 items-start bg-surface-container-high/50 p-3 rounded-lg border border-outline-variant/10 hover:border-primary/30 transition-colors cursor-pointer">
+                                <div
+                                    class="flex flex-col items-center justify-center bg-surface-container-lowest rounded px-3 py-2 border border-outline-variant/20 min-w-[50px]">
+                                    <span
+                                        class="font-label-sm text-secondary uppercase text-[10px] font-bold">Oct</span>
+                                    <span class="font-headline-md text-on-surface font-bold leading-none">14</span>
+                                </div>
+                                <div>
+                                    <div class="font-body-md text-on-surface font-medium text-sm">Symposium on Applied
+                                        AI</div>
+                                    <div
+                                        class="font-label-sm text-on-surface-variant text-xs mt-1 flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[14px]">schedule</span> 09:00 AM -
+                                        Main Hall
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="flex gap-3 items-start bg-surface-container-high/50 p-3 rounded-lg border border-outline-variant/10 hover:border-primary/30 transition-colors cursor-pointer">
+                                <div
+                                    class="flex flex-col items-center justify-center bg-surface-container-lowest rounded px-3 py-2 border border-outline-variant/20 min-w-[50px]">
+                                    <span
+                                        class="font-label-sm text-secondary uppercase text-[10px] font-bold">Oct</span>
+                                    <span class="font-headline-md text-on-surface font-bold leading-none">22</span>
+                                </div>
+                                <div>
+                                    <div class="font-body-md text-on-surface font-medium text-sm">Lab Q3 Review
+                                        Presentation</div>
+                                    <div
+                                        class="font-label-sm text-on-surface-variant text-xs mt-1 flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[14px]">videocam</span> Virtual
+                                        Stream
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            class="w-full mt-4 py-2 border border-outline-variant/30 rounded-lg text-on-surface-variant font-label-sm hover:bg-surface-container-high hover:text-on-surface transition-colors">View
+                            All Events</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+    <!-- SHARED COMPONENT: Footer -->
+    <footer
+        class="w-full border-t border-outline-variant/20 bg-surface-container-lowest border-t border-outline-variant/10 transition-all duration-200 z-10 relative">
+        <div
+            class="max-w-container-max mx-auto px-margin-desktop py-stack-lg flex flex-col md:flex-row justify-between items-center gap-stack-md">
+            <a class="flex items-center hover:scale-105 active:scale-95 transition-all cursor-pointer" href="#">
+                <img src="asl.png" alt="ASL Logo" class="h-8 w-auto object-contain" />
+            </a>
+            <div class="font-body-md text-body-md text-on-surface-variant">
+                © 2024 Alpha Science Lab. MEC Bangladesh.
+            </div>
+            <div class="flex gap-6">
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-opacity transition-all duration-200"
+                    href="#">Privacy Policy</a>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-opacity transition-all duration-200"
+                    href="#">Terms of Service</a>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-opacity transition-all duration-200"
+                    href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleDefaultLike(btn) {
+            const container = btn.closest('.group\\/react');
+
+            // Ignore click if it was just handled by a drag-to-select release
+            if (container.getAttribute('data-ignore-click') === 'true') {
+                container.removeAttribute('data-ignore-click');
+                return;
+            }
+
+            const countEl = container.querySelector('.reaction-count');
+            const textEl = container.querySelector('.reaction-text-main');
+            const iconEl = container.querySelector('.reaction-icon-main');
+
+            const isReacted = container.getAttribute('data-has-reaction') === 'true';
+
+            if (isReacted) {
+                container.removeAttribute('data-has-reaction');
+                container.removeAttribute('data-current-reaction');
+                btn.style.color = '';
+                iconEl.outerHTML = '<span class="material-symbols-outlined text-[20px] reaction-icon-main">thumb_up</span>';
+                textEl.innerText = 'Like';
+                updateCount(countEl, -1);
+            } else {
+                container.setAttribute('data-has-reaction', 'true');
+                container.setAttribute('data-current-reaction', 'Like');
+                btn.style.color = '#4cd7f6';
+                iconEl.outerHTML = '<span class="text-[18px] reaction-icon-main mr-0.5">👍</span>';
+                textEl.innerText = 'Like';
+                updateCount(countEl, 1);
+            }
+        }
+
+        function selectReaction(optionEl, reactionName, emoji, color) {
+            const container = optionEl.closest('.group\\/react');
+            const btn = container.querySelector('.reaction-btn-main');
+            const countEl = container.querySelector('.reaction-count');
+            const textEl = container.querySelector('.reaction-text-main');
+            const iconEl = container.querySelector('.reaction-icon-main');
+
+            const hasReactionBefore = container.getAttribute('data-has-reaction') === 'true';
+
+            container.setAttribute('data-has-reaction', 'true');
+            container.setAttribute('data-current-reaction', reactionName);
+
+            btn.style.color = color;
+            iconEl.outerHTML = `<span class="text-[18px] reaction-icon-main mr-0.5">${emoji}</span>`;
+            textEl.innerText = reactionName;
+
+            if (!hasReactionBefore) {
+                updateCount(countEl, 1);
+            }
+        }
+
+        function updateCount(countEl, change) {
+            let val = countEl.innerText.trim();
+            let isK = val.includes('k');
+            let num = parseFloat(val);
+            if (isK) {
+                num = num * 1000;
+            }
+            num += change;
+            if (num >= 1000) {
+                countEl.innerText = (num / 1000).toFixed(1).replace('.0', '') + 'k';
+            } else {
+                countEl.innerText = num;
+            }
+        }
+
+        // Initialize drag-to-select and swipe-to-select pointer listeners
+        document.querySelectorAll('.group\\/react').forEach(container => {
+            const mainBtn = container.querySelector('.reaction-btn-main');
+            const popup = container.querySelector('.animate-pop-up');
+            const options = container.querySelectorAll('.reaction-option');
+            let pressTimer = null;
+            let isLongPress = false;
+            let activeOption = null;
+
+            mainBtn.addEventListener('pointerdown', (e) => {
+                if (e.button !== 0) return; // Left click or touch only
+
+                mainBtn.setPointerCapture(e.pointerId);
+                isLongPress = false;
+                activeOption = null;
+
+                // Start a timer for long press
+                pressTimer = setTimeout(() => {
+                    isLongPress = true;
+                    // Force the popup display during drag
+                    popup.style.display = 'flex';
+                }, 200);
+            });
+
+            mainBtn.addEventListener('pointermove', (e) => {
+                if (!mainBtn.hasPointerCapture(e.pointerId)) return;
+
+                if (isLongPress) {
+                    let found = null;
+                    options.forEach(opt => {
+                        const rect = opt.getBoundingClientRect();
+                        if (e.clientX >= rect.left && e.clientX <= rect.right &&
+                            e.clientY >= rect.top && e.clientY <= rect.bottom) {
+                            found = opt;
+                        }
+                    });
+
+                    // Highlight option under pointer, reset others
+                    options.forEach(opt => {
+                        if (opt === found) {
+                            opt.classList.add('scale-150', 'bg-surface-container-lowest');
+                            opt.classList.remove('scale-100');
+                        } else {
+                            opt.classList.remove('scale-150', 'bg-surface-container-lowest');
+                        }
+                    });
+                    activeOption = found;
+                }
+            });
+
+            mainBtn.addEventListener('pointerup', (e) => {
+                if (!mainBtn.hasPointerCapture(e.pointerId)) return;
+                mainBtn.releasePointerCapture(e.pointerId);
+                clearTimeout(pressTimer);
+
+                if (isLongPress) {
+                    // Ignore the next native click event
+                    container.setAttribute('data-ignore-click', 'true');
+
+                    if (activeOption) {
+                        const reactionName = activeOption.getAttribute('data-reaction');
+                        const emoji = activeOption.getAttribute('data-emoji');
+                        const color = activeOption.getAttribute('data-color');
+                        selectReaction(activeOption, reactionName, emoji, color);
+                    }
+
+                    // Reset styling
+                    options.forEach(opt => {
+                        opt.classList.remove('scale-150', 'bg-surface-container-lowest');
+                    });
+
+                    // Remove forced display and let CSS take over
+                    popup.style.display = '';
+                }
+            });
+        });
+
+        // Commenting System Logic
+        function toggleCommentsSection(btn) {
+            const article = btn.closest('article');
+            const commentsSection = article.querySelector('.comments-section');
+            if (commentsSection) {
+                commentsSection.classList.toggle('hidden');
+            }
+        }
+
+        document.querySelectorAll('.comments-section').forEach(section => {
+            const submitBtn = section.querySelector('.submit-comment-btn');
+            const input = section.querySelector('.comment-input');
+            const commentList = section.querySelector('.comment-list');
+            const countEl = section.closest('article').querySelector('.comment-btn-count');
+
+            const addComment = () => {
+                const text = input.value.trim();
+                if (!text) return;
+
+                const commentId = 'c_' + Date.now();
+                const newComment = document.createElement('div');
+                newComment.className = 'comment-item flex gap-3 mt-4';
+                newComment.setAttribute('data-comment-id', commentId);
+                newComment.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden flex-shrink-0">
+                        <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-H6BeDS5h13kScxQJFXtjslDhUfBJRyZ6MBpPNdGfyMwIfuRlh761cvtMZdz7oxWm7Ch2C8y15qpEDid-ZyrYSsqDSFpYUQ2KJhUTvnzoiA3IrotymIXO7J5wIJQGNBG9e0IXAQJoEMkLCBc21NxKxf9VUhCa7QtdtJjvr5VsDkvSWcl4AiDlwBydUCfD2gwhRBv3gd1aQUtWF0J7KOlBS2UzduBsxbTPXFODejkgoXmKt8VKiMkp" />
+                    </div>
+                    <div class="flex-grow">
+                        <div class="bg-surface-container-high/60 px-3 py-2 rounded-xl">
+                            <div class="font-label-sm font-semibold text-primary text-xs">You</div>
+                            <div class="text-xs text-on-surface mt-1 leading-relaxed">${escapeHtml(text)}</div>
+                        </div>
+                        <div class="flex items-center gap-3 text-[10px] text-on-surface-variant mt-1 ml-2 font-label-sm">
+                            <span>Just now</span>
+                            <button class="hover:text-secondary font-semibold reply-toggle-btn" onclick="toggleReplyInput(this)">Reply</button>
+                        </div>
+                        <div class="replies-list space-y-3 mt-2 ml-6 border-l border-outline-variant/20 pl-4"></div>
+                    </div>
+                `;
+                commentList.appendChild(newComment);
+                input.value = '';
+
+                // Increment comment count
+                updateCount(countEl, 1);
+            };
+
+            submitBtn.addEventListener('click', addComment);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addComment();
+                }
+            });
+        });
+
+        function toggleReplyInput(btn) {
+            const commentItem = btn.closest('.comment-item');
+            const repliesList = commentItem.querySelector('.replies-list');
+
+            // Check if input already exists
+            let existingForm = commentItem.querySelector('.reply-form');
+            if (existingForm) {
+                existingForm.remove();
+                return;
+            }
+
+            // Create reply input form
+            const replyForm = document.createElement('div');
+            replyForm.className = 'reply-form flex gap-2 mt-2 w-full';
+            replyForm.innerHTML = `
+                <input class="flex-grow bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-1 text-xs text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/50 placeholder-on-surface-variant/50 transition-all reply-input" placeholder="Write a reply..." type="text" />
+                <button class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-lg font-label-sm text-[10px] uppercase tracking-wider font-bold hover:bg-secondary hover:text-on-secondary transition-colors" onclick="submitReply(this)">Reply</button>
+            `;
+            repliesList.parentNode.insertBefore(replyForm, repliesList);
+
+            const replyInput = replyForm.querySelector('.reply-input');
+            replyInput.focus();
+            replyInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    submitReply(replyForm.querySelector('button'));
+                }
+            });
+        }
+
+        function submitReply(btn) {
+            const replyForm = btn.closest('.reply-form');
+            const input = replyForm.querySelector('.reply-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const commentItem = btn.closest('.comment-item');
+            const repliesList = commentItem.querySelector('.replies-list');
+            const countEl = commentItem.closest('article').querySelector('.comment-btn-count');
+
+            const newReply = document.createElement('div');
+            newReply.className = 'flex gap-2 mt-2';
+            newReply.innerHTML = `
+                <div class="w-6 h-6 rounded-full bg-surface-container-highest overflow-hidden flex-shrink-0">
+                    <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-H6BeDS5h13kScxQJFXtjslDhUfBJRyZ6MBpPNdGfyMwIfuRlh761cvtMZdz7oxWm7Ch2C8y15qpEDid-ZyrYSsqDSFpYUQ2KJhUTvnzoiA3IrotymIXO7J5wIJQGNBG9e0IXAQJoEMkLCBc21NxKxf9VUhCa7QtdtJjvr5VsDkvSWcl4AiDlwBydUCfD2gwhRBv3gd1aQUtWF0J7KOlBS2UzduBsxbTPXFODejkgoXmKt8VKiMkp" />
+                </div>
+                <div class="flex-grow bg-surface-container-high/40 px-3 py-1.5 rounded-lg">
+                    <div class="font-label-sm font-semibold text-secondary text-[11px]">You</div>
+                    <div class="text-[11px] text-on-surface mt-0.5 leading-relaxed">${escapeHtml(text)}</div>
+                </div>
+            `;
+            repliesList.appendChild(newReply);
+            replyForm.remove();
+
+            // Increment comment count
+            updateCount(countEl, 1);
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+
+</html>
